@@ -23,5 +23,7 @@ package actors;
  * A message that can be sent among actors
  *
  */
-public interface Message {
+public class Message 
+{
+    public String x;
 }

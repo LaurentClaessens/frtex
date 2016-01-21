@@ -16,18 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.utils.messages;
+package actors;
 
 import actors.Message;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class StoreMessage implements Message {
-    private String payload;
 
-    public StoreMessage(String payload) {
-        this.payload = payload;
-    }
+/**
+*  An actors has its mail box.
+*/
 
-    public String getPayload() {
-        return payload;
-    }
+public class MailBox
+{
+    private Queue<Message> queue = new LinkedList<Message>();
+
+    public void  add(Message m) { queue.add(m); }
+    public Message  poll() {return queue.poll();  }            // return the first element and remove it
 }
+
