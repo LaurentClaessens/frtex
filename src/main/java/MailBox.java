@@ -31,7 +31,14 @@ public class MailBox
 {
     private Queue<Message> queue = new LinkedList<Message>();
 
-    public void  add(Message m) { queue.add(m); }
-    public Message  poll() {return queue.poll();  }            // return the first element and remove it
+    public void  add(Message m) 
+    {
+        synchronized(this) { queue.add(m); } }
+    public Message  poll()  // return the first element and then remove it
+    {
+        synchronized(this) { Message m= queue.poll();  }
+        return m;
+    }           
+    public int size() {return queue.size();  }
 }
 

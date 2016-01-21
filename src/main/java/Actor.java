@@ -16,16 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-
 package actors;
 
 /**
- * A message that can be sent among actors
- *
+ * An actor in the <code>pcd-actor</code> system that receives
+ * messages of a defined type.
  */
-// The type 'T' is the type of the data.
-public interface Message <T>
-{
-    public String getTag();
-    public T getData();
-};
+
+public interface Actor<T extends Message> {
+
+    /**
+     * Defines the interface of the actor.
+     *
+     * @param message The type of messages the actor can receive
+     * @throws actors.exceptions.UnsupportedMessageException If the message is not supported by
+     *         the actor.
+     */
+    void receive(T message);
+    void send(T message, ActorRef to);
+}

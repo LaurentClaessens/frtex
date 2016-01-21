@@ -16,16 +16,23 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
+// This is testing the Echo implementation of my actor system.
 
 package actors;
 
-/**
- * A message that can be sent among actors
- *
- */
-// The type 'T' is the type of the data.
-public interface Message <T>
-{
-    public String getTag();
-    public T getData();
-};
+
+import actors.Message;
+import actors.impl.EchoText;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class EchoTest {
+
+    private ActorSystem system;
+
+    @Before
+    public void init() {
+        system = ActorSystemFactory.buildActorSystem();
+    }
+}
