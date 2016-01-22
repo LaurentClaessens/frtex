@@ -16,23 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-// This is testing the Echo implementation of my actor system.
-
 package actors;
+import actors.exceptions.NoSuchActorException;
 
+public class EchoActorSystem extends AbsActorSystem
+{
 
-import actors.AbsActorSystem;
-import actors.impl.EchoText;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-public class EchoTest {
-
-    private AbsActorSystem system;
-
-    @Before
-    public void init() {
-        system = new AbsActorSystem();
-    }
 }
+

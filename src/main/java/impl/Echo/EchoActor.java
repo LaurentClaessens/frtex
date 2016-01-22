@@ -1,10 +1,26 @@
+/*
+Copyright 2016 Laurent Claessens
+contact : moky.math@gmail.com
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//*/
+
 // An 'EchoActor' is an actor that does -1 on the data and resent the message if the data is still positive.
 
 
-public class EchoActor implements Actor<EchoText>
+public class EchoActor extends AbsEchoActor<EchoText>
 {
-    private Boolean is_working;
-    private actors.MailBox mail_box = new actors.MailBox();
     private void process(actors.impl.EchoText m)
     {
         int data=m.getData()-1;
@@ -14,26 +30,5 @@ public class EchoActor implements Actor<EchoText>
             m.from_actor
         }
         is_working=false;
-    }
-    private void process_next_message()
-    {
-        if (!is_working && mail_box.size()>0 )
-        {
-            actors.Message m=mail_box.poll();
-            process(m);   
-        }
-    }
-
-    void receive(T message)
-    {
-        mail_box.add(message);
-        process_next_message();
-    }
-    void receive(Message m)
-    {
-        throw UnsupportedMessageException;
-    }
-    void send(T Message, ActorRef to)
-    {
     }
 }

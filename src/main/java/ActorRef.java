@@ -16,23 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-// This is testing the Echo implementation of my actor system.
-
 package actors;
 
+/**
+ * A reference of an actor that allow to locate it in the actor system.
+ * Using this reference it is possible to send a message among actors.
+ */
 
-import actors.AbsActorSystem;
-import actors.impl.EchoText;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
 
-public class EchoTest {
-
-    private AbsActorSystem system;
-
-    @Before
-    public void init() {
-        system = new AbsActorSystem();
-    }
+    /**
+     * Sends a {@code message} to another actor
+     *
+     * @param message The message to send
+     * @param to The actor to which sending the message
+     */
+    void send(T message, ActorRef to);
 }

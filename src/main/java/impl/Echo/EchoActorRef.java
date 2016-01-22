@@ -16,23 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-// This is testing the Echo implementation of my actor system.
+public class EchoActorRef implements ActorRef<EchoText>
+{
+    private EchoActorSystem actor_system;
 
-package actors;
+    public EchoActorRef(EchoActorSystem ac) { actor_system=ac; }
 
-
-import actors.AbsActorSystem;
-import actors.impl.EchoText;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-public class EchoTest {
-
-    private AbsActorSystem system;
-
-    @Before
-    public void init() {
-        system = new AbsActorSystem();
+    public void send(m Message, ActorRef to) 
+    { 
+        EchoActor actor = actor_system.getActor(this);
+        synchronized (actor.getMailBox())
     }
+
+
 }
