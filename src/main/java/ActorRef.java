@@ -36,5 +36,6 @@ public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
     // can *send* messages of any type.
 
     //void send(T message, ActorRef to);
+
     void send(Message message, ActorRef to);
 }

@@ -57,5 +57,9 @@ public abstract class AbsActorSystem implements ActorSystem {
         return this.actorOf(actor, ActorMode.LOCAL);
     }
 
+    public Actor getActor(ActorRef reference)
+    {
+        return actors.get(reference);
+    } 
     protected abstract ActorRef createActorReference(ActorMode mode);
 }

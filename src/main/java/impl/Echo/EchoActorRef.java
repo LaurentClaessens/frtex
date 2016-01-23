@@ -18,15 +18,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
+import actors.exceptions.ShouldNotHappenException;
+
 public class EchoActorRef implements ActorRef<EchoText>
 {
     private EchoActorSystem actor_system;
+    private Integer serie_number;
 
-    public EchoActorRef(EchoActorSystem ac) { actor_system=ac; }
+    public EchoActorRef(EchoActorSystem ac,Integer number) { 
+        actor_system=ac; 
+        serie_number=number;
+    }
 
     public void send(Message m, ActorRef to) 
     { 
-        EchoActor actor = actor_system.getActor(this);
+        EchoActor actor = (EchoActor) actor_system.getActor(this);
         synchronized (actor.getMailBox()) { actor.getMailBox().add(m);  }
     }
+    public int getSerieNumber() { return serie_number;  }
+    public int compareTo(ActorRef oth)
+    {
+        EchoActorRef other=(EchoActorRef) oth;
+        final int BEFORE = -1;
+        final int EQUAL = 0;
+        final int AFTER = 1;
+        if (other==this) { return EQUAL;  }
+        if (other.getSerieNumber()>serie_number) { return -1; }
+        if (other.getSerieNumber()<serie_number) { return 1; }
+        throw new ShouldNotHappenException("comparaison should always be possible.");
+    }
+
 }

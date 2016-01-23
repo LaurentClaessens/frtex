@@ -17,6 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
 // This is testing the Echo implementation of my actor system.
+//
+// To be tested 
+//   - if the serie number of the first one is -1 or 0 or 1.
+//   - if the ordering is correct.
 
 package actors;
 
@@ -32,7 +36,17 @@ public class EchoTest {
     private AbsActorSystem system;
 
     @Before
-    public void init() {
+    public void init() 
+    {
         system = new AbsActorSystem();
+    }
+    @Test
+    public void Numbering()
+    {
+        a1 = system.ActorOf(EchoActor);
+        a2 = system.ActorOf(EchoActor);
+        Assert.assertTrue(a1.getSerieNumber()==0);
+        Assert.assertTrue(a1.getSerieNumber()==2);
+        Assert.assertTrue(a2>a1);
     }
 }

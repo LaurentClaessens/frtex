@@ -26,17 +26,18 @@ import actors.Message;
 public abstract class AbsEchoActor extends AbsActor<EchoText>
 {
 
-    private actors.MailBox mail_box = new actors.MailBox();
+    private actors.MailBox<EchoText> mail_box = new actors.MailBox<EchoText>();
     private EchoActorRef myReference;
 
-    private EchoActorRef getActorRef() { return myReferece;  }
+    private EchoActorRef getActorRef() { return myReference;  }
 
     public abstract  void process(EchoText m);
     private void process_next_message()
     {
         if ( mail_box.size()>0 )
         {
-            synchronized(mail_box) { actors.Message m=mail_box.poll(); }
+            EchoText m;
+            synchronized(mail_box) { m=mail_box.poll(); }
             process(m);   
         }
     }
@@ -54,5 +55,7 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
     {
         getActorRef().send(m,to); 
     }
+
+    public MailBox getMailBox() { return mail_box;  }
 }
 

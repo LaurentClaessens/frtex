@@ -19,15 +19,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-
-
 // 'EchoText' is a message that is supposed to be resent with a -1 on the data.
 public class EchoText implements Message<Integer>
 {
 
     private actors.Actor from_actor;
     private actors.Actor to_actor;
-    private Integer data;
+    private final Integer data;
+    private final String tag="echo";
 
     EchoText(actors.Actor from,actors.Actor to,Integer d)
     {
@@ -36,9 +35,6 @@ public class EchoText implements Message<Integer>
         data=d;
     }
 
-    public String getTag() {return "echo";} 
-    public String getData()
-    {
-        return data;
-    }
+    public String getTag() {return tag;} 
+    public Integer getData() { return data; }
 }

@@ -16,27 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
-import actors.exceptions.NoSuchActorException;
+package actors.exceptions;
 
-public class EchoActorSystem extends AbsActorSystem
+public class ShouldNotHappenException extends RuntimeException
 {
-    private Integer  created_serie_number;
-
-    public void EchoActorSystem()
+    public ShouldNotHappenException(String message)
     {
-        created_serie_number=-1;
+        super(message);
     }
-
-    protected final EchoActorRef createActorReference(ActorMode mode)
-    {
-        EchoActorRef actor_ref;
-        synchronized(created_serie_number)
-        {
-            actor_ref = new EchoActorRef(this,++created_serie_number);
-        }
-        return actor_ref;
-    }
-    public void stop() {}
-    public void stop(ActorRef<?> actor) { }
 }

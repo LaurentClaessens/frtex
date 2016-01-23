@@ -27,13 +27,15 @@ import java.util.Queue;
 *  An actors has its mail box.
 */
 
-public class MailBox
+public class MailBox<M extends Message>
 {
-    private Queue<Message> queue = new LinkedList<Message>();
+    private Queue<M> queue = new LinkedList<M>();
 
-    public void  add(Message m) 
+    public void  add(M m) 
     {
-        synchronized(this) { queue.add(m); } }
+        synchronized(this) { queue.add(m); } 
+    }
+    public void add(Message m) {  throw  UnsupportedMessageException("I'm a Echo mail box receiving"+m.typename());  }
     public Message  poll()  // return the first element and then remove it
     {
         synchronized(this) { Message m= queue.poll();  }
