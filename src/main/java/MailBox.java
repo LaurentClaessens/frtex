@@ -33,12 +33,17 @@ public class MailBox<M extends Message>
 
     public void  add(M m) 
     {
-        synchronized(this) { queue.add(m); } 
+        try { synchronized(this) { queue.add(m); } }
+        catch (ClassCastException e)
+        {
+            throw  UnsupportedMessageException("I'm a Echo mail box receiving"+m.typename());  
+        }
     }
-    public void add(Message m) {  throw  UnsupportedMessageException("I'm a Echo mail box receiving"+m.typename());  }
-    public Message  poll()  // return the first element and then remove it
+
+    public M poll()  // return the first element and then remove it
     {
-        synchronized(this) { Message m= queue.poll();  }
+        M m;
+        synchronized(this) { m= queue.poll();  }
         return m;
     }           
     public int size() {return queue.size();  }

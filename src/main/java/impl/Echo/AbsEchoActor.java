@@ -43,13 +43,10 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
     }
     public void receive(EchoText message)
     {
-        mail_box.add(message);
+        synchronized(mail_box) { mail_box.add(message);}
         process_next_message();
     }
-    public void receive(Message m)
-    {
-        throw UnsupportedMessageException;
-    }
+    public void receive(Message m) { throw UnsupportedMessageException; }
 
     public void send(actors.Message   m, ActorRef to) 
     {
