@@ -16,25 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+
+package actors.exceptions;
+import actors.Message;
 
 /**
- * A reference of an actor that allow to locate it in the actor system.
- * Using this reference it is possible to send a message among actors.
+ * Thrown to indicate that the message requested is not accepted by an actor.
+ *
  */
-
-public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
+public class UnsupportedMessageException extends RuntimeException {
 
     /**
-     * Sends a {@code message} to another actor
-     *
-     * @param message The message to send
-     * @param to The actor to which sending the message
+     * The unsupported message
      */
+    private Message message;
 
-    // An actor that can only *receive* messages of type T 
-    // can *send* messages of any type.
-
-    //void send(T message, ActorRef to);
-    void send(Message message, ActorRef to);
+    public UnsupportedMessageException(Message message) {
+        this.message = message;
+    }
 }

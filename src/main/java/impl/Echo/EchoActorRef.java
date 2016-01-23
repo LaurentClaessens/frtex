@@ -16,17 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
+package actors;
+
 public class EchoActorRef implements ActorRef<EchoText>
 {
     private EchoActorSystem actor_system;
 
     public EchoActorRef(EchoActorSystem ac) { actor_system=ac; }
 
-    public void send(m Message, ActorRef to) 
+    public void send(Message m, ActorRef to) 
     { 
         EchoActor actor = actor_system.getActor(this);
-        synchronized (actor.getMailBox())
+        synchronized (actor.getMailBox()) { actor.getMailBox().add(m);  }
     }
-
-
 }

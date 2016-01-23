@@ -16,7 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-public abstract class AbsEchoActor implements Actor<EchoText>
+package actors;
+
+import actors.AbsActor;
+import actors.EchoText;
+import actors.ActorRef;
+import actors.Message;
+
+public abstract class AbsEchoActor extends AbsActor<EchoText>
 {
 
     private actors.MailBox mail_box = new actors.MailBox();
@@ -24,12 +31,12 @@ public abstract class AbsEchoActor implements Actor<EchoText>
 
     private EchoActorRef getActorRef() { return myReferece;  }
 
-    private abstract  void process(actors.impl.EchoText m)
+    public abstract  void process(EchoText m);
     private void process_next_message()
     {
         if ( mail_box.size()>0 )
         {
-            synchronize(mail_box) { actors.Message m=mail_box.poll(); }
+            synchronized(mail_box) { actors.Message m=mail_box.poll(); }
             process(m);   
         }
     }
@@ -43,6 +50,9 @@ public abstract class AbsEchoActor implements Actor<EchoText>
         throw UnsupportedMessageException;
     }
 
-    public void send(m Message, ActorRef to) {  getActorRef().send(m,to); }
+    public void send(actors.Message   m, ActorRef to) 
+    {
+        getActorRef().send(m,to); 
+    }
 }
 

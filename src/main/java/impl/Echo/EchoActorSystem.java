@@ -21,6 +21,11 @@ import actors.exceptions.NoSuchActorException;
 
 public class EchoActorSystem extends AbsActorSystem
 {
-
+    protected final EchoActorRef createActorReference(ActorMode mode)
+    {
+        return new EchoActorRef(this);
+    }
+    public void stop() {}
+    public void stop(ActorRef<?> actor) { }
 }
 

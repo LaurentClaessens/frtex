@@ -18,16 +18,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // An 'EchoActor' is an actor that does -1 on the data and resent the message if the data is still positive.
 
+package actors;
 
-public class EchoActor extends AbsEchoActor<EchoText>
+import actors.EchoText;
+
+public class EchoActor extends AbsEchoActor
 {
-    private void process(actors.impl.EchoText m)
+    private void process(EchoText m)
     {
         int data=m.getData()-1;
         if (data > 0)
         {
             actors.impl.EchoText new_message = actors.impl.EchoText(this,m.getSender(),data);
-            m.from_actor
+            new_message.from_actor=getReference();
+            new_message.to_actor=m.from_actor.getReference();
+            getReference().send(new_message,getReference());
         }
         is_working=false;
     }
