@@ -22,6 +22,7 @@ import actors.AbsActor;
 import actors.EchoText;
 import actors.ActorRef;
 import actors.Message;
+import actors.exceptions.UnsupportedMessageException;
 
 public abstract class AbsEchoActor extends AbsActor<EchoText>
 {
@@ -41,12 +42,12 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
             process(m);   
         }
     }
+    @Override
     public void receive(EchoText message)
     {
         synchronized(mail_box) { mail_box.add(message);}
         process_next_message();
     }
-    public void receive(Message m) { throw UnsupportedMessageException; }
 
     public void send(actors.Message   m, ActorRef to) 
     {
@@ -55,4 +56,3 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
 
     public MailBox getMailBox() { return mail_box;  }
 }
-
