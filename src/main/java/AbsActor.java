@@ -18,10 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
+import actors.exceptions.UnsupportedMessageException;
+
 /**
  * Defines common properties of all actors.
 */
-public abstract class AbsActor<T extends Message> implements Actor<T> {
+public abstract class AbsActor<T extends Message> implements Actor<T> 
+{
 
     /**
      * Self-reference of the actor
@@ -39,8 +42,18 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
      * @param self The reference to itself
      * @return The actor.
      */
-    protected final Actor<T> setSelf(ActorRef<T> self) {
+    protected final Actor<T> setSelf(ActorRef<T> self) 
+    {
         this.self = self;
         return this;
     }
 
+    // The method 'receive' here receives the messages that were not 
+    // received by the subclass's 'receive'.
+    // This is not an override because it will precisely receive the messages that
+    // are NOT of the type T.
+    public <S extends Message> void receive(S message)
+    {
+        throw new UnsupportedMessageException(message);  
+    }
+}

@@ -22,7 +22,6 @@ import actors.AbsActor;
 import actors.EchoText;
 import actors.ActorRef;
 import actors.Message;
-import actors.exceptions.UnsupportedMessageException;
 
 public abstract class AbsEchoActor extends AbsActor<EchoText>
 {
@@ -49,7 +48,7 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
         process_next_message();
     }
 
-    public void send(actors.Message   m, ActorRef to) 
+    public void send(actors.Message m, ActorRef to) 
     {
         getActorRef().send(m,to); 
     }

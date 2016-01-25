@@ -36,7 +36,7 @@ public class MailBox<M extends Message>
         try { synchronized(this) { queue.add(m); } }
         catch (ClassCastException e)
         {
-            throw  UnsupportedMessageException("I'm a Echo mail box receiving"+m.typename());  
+           throw new ShouldNotHappenException("Messages that are not of the correct type shoud be already filtred. More specifically, I'm a Echo mail box receiving"+m.typename());
         }
     }
 
