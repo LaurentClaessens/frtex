@@ -31,6 +31,9 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
 
     private EchoActorRef getActorRef() { return myReference;  }
 
+    @Override
+    protected void setAcceptedType(Class<Message> t) { super.setAcceptedType(t) ; }
+
     public abstract  void process(EchoText m);
     private void process_next_message()
     {
@@ -42,7 +45,7 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
         }
     }
     @Override
-    public void receive(EchoText message)
+    public void do_receive(Message message)
     {
         synchronized(mail_box) { mail_box.add(message);}
         process_next_message();

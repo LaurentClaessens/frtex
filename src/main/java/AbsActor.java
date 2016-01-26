@@ -30,6 +30,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
      * Self-reference of the actor
      */
     protected ActorRef<T> self;
+    protected Class<Message> accepted_type;
+
+    protected void setAcceptedType(Class<Message> t) { accepted_type=t; }
 
     /**
      * Sender of the current message
@@ -47,13 +50,10 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         this.self = self;
         return this;
     }
-
-    // The method 'receive' here receives the messages that were not 
-    // received by the subclass's 'receive'.
-    // This is not an override because it will precisely receive the messages that
-    // are NOT of the type T.
-    public <S extends Message> void receive(S message)
+    abstract void do_receive(Message message);
+    public void receive(Message m)
     {
-        throw new UnsupportedMessageException(message);  
+        if (accepted_type.isInstance(m)) { do_receive(m); }
+        else { throw new UnsupportedMessageException(m);  }
     }
 }
