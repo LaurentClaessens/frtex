@@ -24,8 +24,10 @@ import actors.EchoText;
 
 public class EchoActor extends AbsEchoActor
 {
-    protected void EchoActor() {super.setAcceptedType(EchoText.class);}
-    private void process(EchoText m)
+    //protected void EchoActor() {setAcceptedType(EchoText.class);}
+    protected void EchoActor() {accepted_type=EchoText.class;}
+    @Override
+    protected void process(EchoText m)
     {
         int data=m.getData()-1;
         if (data > 0)

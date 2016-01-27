@@ -31,10 +31,10 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
 
     private EchoActorRef getActorRef() { return myReference;  }
 
-    @Override
-    protected void setAcceptedType(Class<Message> t) { super.setAcceptedType(t) ; }
+    //@Override
+    //protected void setAcceptedType(Class<Message> t) { super.setAcceptedType(t) ; }
 
-    public abstract  void process(EchoText m);
+    protected abstract  void process(EchoText m);
     private void process_next_message()
     {
         if ( mail_box.size()>0 )
@@ -47,11 +47,12 @@ public abstract class AbsEchoActor extends AbsActor<EchoText>
     @Override
     public void do_receive(Message message)
     {
-        synchronized(mail_box) { mail_box.add(message);}
+        synchronized(mail_box) { mail_box.add( (EchoText) message);}
         process_next_message();
     }
 
-    public void send(actors.Message m, ActorRef to) 
+    @Override
+    public  void send(EchoText m, ActorRef to) 
     {
         getActorRef().send(m,to); 
     }

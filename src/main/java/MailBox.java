@@ -18,9 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-import actors.Message;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import actors.Message;
+import actors.exceptions.ShouldNotHappenException;
+
 
 
 /**
@@ -31,12 +34,12 @@ public class MailBox<M extends Message>
 {
     private Queue<M> queue = new LinkedList<M>();
 
-    public void  add(M m) 
+    public void add(M m) 
     {
         try { synchronized(this) { queue.add(m); } }
         catch (ClassCastException e)
         {
-           throw new ShouldNotHappenException("Messages that are not of the correct type shoud be already filtred. More specifically, I'm a Echo mail box receiving"+m.typename());
+           throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
         }
     }
 
