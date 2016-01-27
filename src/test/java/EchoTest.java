@@ -27,7 +27,7 @@ package actors;
 
 
 import actors.AbsActorSystem;
-import actors.impl.EchoText;
+import actors.impl.Echo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

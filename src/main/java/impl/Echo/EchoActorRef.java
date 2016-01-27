@@ -16,8 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.impl.Echo;
 
+import actors.ActorRef;
+import actors.Message;
 import actors.exceptions.ShouldNotHappenException;
 
 public class EchoActorRef implements ActorRef<EchoText>

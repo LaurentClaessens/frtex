@@ -17,7 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.impl.Echo;
+
+import actors.Message;
+import actors.Actor;
 
 // 'EchoText' is a message that is supposed to be resent with a -1 on the data.
 public class EchoText implements Message<Integer>
@@ -37,4 +40,5 @@ public class EchoText implements Message<Integer>
 
     public String getTag() {return tag;} 
     public Integer getData() { return data; }
+    public Actor getSender() { return from_actor; }
 }

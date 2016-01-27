@@ -18,25 +18,53 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // An 'EchoActor' is an actor that does -1 on the data and resent the message if the data is still positive.
 
-package actors;
+package actors.impl.Echo;
 
-import actors.EchoText;
+import actors.AbsActor;
+import actors.ActorRef;
+import actors.Message;
+import actors.MailBox;
 
-public class EchoActor extends AbsEchoActor
+
+
+public class EchoActor extends AbsActor<EchoText>
 {
-    //protected void EchoActor() {setAcceptedType(EchoText.class);}
-    protected void EchoActor() {accepted_type=EchoText.class;}
+    
+    private actors.MailBox<EchoText> mail_box = new actors.MailBox<EchoText>();
+    private EchoActorRef myReference;
+    private EchoActorRef getActorRef() { return myReference;  }
+    EchoActor() {accepted_type=EchoText.class;}
+
+    private void process_next_message()
+    {
+        if ( mail_box.size()>0 )
+        {
+            EchoText m;
+            synchronized(mail_box) { m=mail_box.poll(); }
+            process(m);   
+        }
+    }
     @Override
+    public void do_receive(Message message)
+    {
+        synchronized(mail_box) { mail_box.add( (EchoText) message);}
+        process_next_message();
+    }
+    @Override
+    public  void send(EchoText m, ActorRef to) 
+    {
+        getActorRef().send(m,to); 
+    }
+
+    public MailBox getMailBox() { return mail_box;  }
+
     protected void process(EchoText m)
     {
-        int data=m.getData()-1;
+        Integer data=m.getData()-1;
         if (data > 0)
         {
-            actors.impl.EchoText new_message = actors.impl.EchoText(this,m.getSender(),data);
-            new_message.from_actor=getReference();
-            new_message.to_actor=m.from_actor.getReference();
-            getReference().send(new_message,getReference());
+            EchoText new_message = new EchoText(this,m.getSender(),data);
+            getActorRef().send(new_message,getActorRef());
         }
-        is_working=false;
     }
 }

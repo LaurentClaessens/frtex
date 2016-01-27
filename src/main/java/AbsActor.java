@@ -31,7 +31,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
      * Self-reference of the actor
      */
     protected ActorRef<T> self;
-    protected Class<Message> accepted_type;
+    protected Class accepted_type;
 
     protected void setAcceptedType(Class<Message> t) { accepted_type=t; }
 
@@ -51,7 +51,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         this.self = self;
         return this;
     }
-    abstract void do_receive(Message message);
+    // If I remove the 'public' here, the override is not understood as an overrive.
+    public abstract void do_receive(Message message);
     public void receive(Message m)
     {
         if (accepted_type.isInstance(m)) { do_receive(m); }
