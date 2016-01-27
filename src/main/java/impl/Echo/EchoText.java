@@ -21,17 +21,18 @@ package actors.impl.Echo;
 
 import actors.Message;
 import actors.Actor;
+import actors.ActorRef;
 
 // 'EchoText' is a message that is supposed to be resent with a -1 on the data.
 public class EchoText implements Message<Integer>
 {
 
-    private actors.Actor from_actor;
-    private actors.Actor to_actor;
+    private ActorRef from_actor;
+    private ActorRef to_actor;
     private final Integer data;
     private final String tag="echo";
 
-    EchoText(actors.Actor from,actors.Actor to,Integer d)
+    EchoText(ActorRef from, ActorRef to,Integer d)
     {
         from_actor=from;
         to_actor=to;
@@ -40,5 +41,5 @@ public class EchoText implements Message<Integer>
 
     public String getTag() {return tag;} 
     public Integer getData() { return data; }
-    public Actor getSender() { return from_actor; }
+    public ActorRef getSender() { return from_actor; }
 }

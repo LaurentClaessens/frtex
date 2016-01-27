@@ -63,7 +63,7 @@ public class EchoActor extends AbsActor<EchoText>
         Integer data=m.getData()-1;
         if (data > 0)
         {
-            EchoText new_message = new EchoText(this,m.getSender(),data);
+            EchoText new_message = new EchoText(getActorRef(),m.getSender(),data);
             getActorRef().send(new_message,getActorRef());
         }
     }

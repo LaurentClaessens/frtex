@@ -26,10 +26,7 @@ public class EchoActorSystem extends AbsActorSystem
 {
     private Integer  created_serie_number;
 
-    public void EchoActorSystem()
-    {
-        created_serie_number=-1;
-    }
+    public EchoActorSystem() { created_serie_number=-1; }
 
     protected final EchoActorRef createActorReference(ActorMode mode)
     {
