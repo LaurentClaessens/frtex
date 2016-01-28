@@ -44,11 +44,14 @@ public abstract class AbsActorSystem implements ActorSystem {
             // Create the new instance of the actor
             Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
+            System.out.println("AAS 1");
             actors.put(reference, actorInstance);
+            System.out.println("AAS 2");
 
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
         }
+        System.out.println("AAS 3");
         return reference;
     }
 

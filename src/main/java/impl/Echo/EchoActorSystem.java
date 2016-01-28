@@ -30,10 +30,14 @@ public class EchoActorSystem extends AbsActorSystem
 
     protected final EchoActorRef createActorReference(ActorMode mode)
     {
+        System.out.println("D1");
         EchoActorRef actor_ref;
         synchronized(created_serie_number)
         {
             actor_ref = new EchoActorRef(this,++created_serie_number);
+            System.out.println("D2");
+            System.out.println(actor_ref);
+            System.out.println(actor_ref.getSerieNumber());
         }
         return actor_ref;
     }

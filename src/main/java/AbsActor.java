@@ -49,9 +49,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     protected final Actor<T> setSelf(ActorRef<T> self) 
     {
         this.self = self;
+        System.out.println("AR 1");
         return this;
     }
-    // If I remove the 'public' here, the override is not understood as an overrive.
     public abstract void do_receive(Message message);
     public void receive(Message m)
     {
