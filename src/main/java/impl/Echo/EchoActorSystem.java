@@ -20,27 +20,35 @@ package actors.impl.Echo;
 
 import actors.AbsActorSystem;
 import actors.ActorRef;
+import actors.Actor;
 import actors.exceptions.NoSuchActorException;
+
+import java.util.Map;
+import java.util.AbstractMap;
+import java.util.HashMap;
 
 public class EchoActorSystem extends AbsActorSystem
 {
     private Integer  created_serie_number;
+    private Map<ActorRef,Actor> actors_map;
 
-    public EchoActorSystem() { created_serie_number=-1; }
+    public EchoActorSystem()
+    {
+        created_serie_number=-1;
+        actors_map = new HashMap<ActorRef,Actor>();
+    }
 
     protected final EchoActorRef createActorReference(ActorMode mode)
     {
-        System.out.println("D1");
         EchoActorRef actor_ref;
         synchronized(created_serie_number)
         {
             actor_ref = new EchoActorRef(this,++created_serie_number);
-            System.out.println("D2");
-            System.out.println(actor_ref);
-            System.out.println(actor_ref.getSerieNumber());
         }
         return actor_ref;
     }
+    public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
+    public void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
     public void stop() {}
     public void stop(ActorRef<?> actor) { }
 }

@@ -21,17 +21,14 @@ package actors;
 import actors.exceptions.NoSuchActorException;
 
 import java.util.Map;
+import java.util.AbstractMap;
+import java.util.HashMap;
 
 /**
  * A map-based implementation of the actor system.
  */
 
 public abstract class AbsActorSystem implements ActorSystem {
-
-    /**
-     * Associates every Actor created with an identifier.
-     */
-    private Map<ActorRef<?>, Actor<?>> actors;
 
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
@@ -44,14 +41,12 @@ public abstract class AbsActorSystem implements ActorSystem {
             // Create the new instance of the actor
             Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
-            System.out.println("AAS 1");
-            actors.put(reference, actorInstance);
-            System.out.println("AAS 2");
+            setActor(reference, actorInstance);
+            setActor(reference, actorInstance);
 
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
         }
-        System.out.println("AAS 3");
         return reference;
     }
 
@@ -60,9 +55,7 @@ public abstract class AbsActorSystem implements ActorSystem {
         return this.actorOf(actor, ActorMode.LOCAL);
     }
 
-    public Actor getActor(ActorRef reference)
-    {
-        return actors.get(reference);
-    } 
+    public abstract Actor getActor(ActorRef reference);
+    public abstract void setActor(ActorRef reference ,Actor actor);
     protected abstract ActorRef createActorReference(ActorMode mode);
 }

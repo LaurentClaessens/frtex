@@ -49,7 +49,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     protected final Actor<T> setSelf(ActorRef<T> self) 
     {
         this.self = self;
-        System.out.println("AR 1");
         return this;
     }
     public abstract void do_receive(Message message);
