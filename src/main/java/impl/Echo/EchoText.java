@@ -32,7 +32,7 @@ public class EchoText implements Message<Integer>
     private final Integer data;
     private final String tag="echo";
 
-    EchoText(ActorRef from, ActorRef to,Integer d)
+    public EchoText(ActorRef from, ActorRef to,Integer d)
     {
         from_actor=from;
         to_actor=to;

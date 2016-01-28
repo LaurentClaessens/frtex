@@ -45,9 +45,7 @@ public class MailBox<M extends Message>
 
     public M poll()  // return the first element and then remove it
     {
-        M m;
-        synchronized(this) { m= queue.poll();  }
-        return m;
+        synchronized(this) { return queue.poll();  }
     }           
     public int size() {return queue.size();  }
 }

@@ -33,7 +33,7 @@ public class EchoActor extends AbsActor<EchoText>
     private actors.MailBox<EchoText> mail_box = new actors.MailBox<EchoText>();
     private EchoActorRef myReference;
     private EchoActorRef getActorRef() { return myReference;  }
-    EchoActor() {accepted_type=EchoText.class;}
+    public EchoActor() {accepted_type=EchoText.class;}
 
     private void process_next_message()
     {
