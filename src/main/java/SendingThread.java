@@ -18,19 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-/**
- * A reference of an actor that allow to locate it in the actor system.
- * Using this reference it is possible to send a message among actors.
- */
+public class SendingThread implements Runnable
+{
+    private Actor actor_to;
+    private Message message;
 
-public interface ActorRef<T extends Message> extends Comparable<ActorRef> {
-
-    /**
-     * Sends a {@code message} to another actor
-     *
-     * @param message The message to send
-     * @param to The actor to which sending the message
-     */
-
-    void send(T message, ActorRef to);
+    public SendingThread(Message m, Actor t) 
+    {
+        message=m;
+        actor_to=t;
+    }
+    public void run() { actor_to.receive(message); 
+    }
 }
+

@@ -28,6 +28,9 @@ import actors.ActorRef;
 import actors.impl.Echo.EchoActor;
 import actors.impl.Echo.EchoActorRef;
 import actors.impl.Echo.EchoActorSystem;
+import actors.impl.Echo.EchoText;
+
+import java.lang.InterruptedException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,5 +44,19 @@ public class EchoTest {
         EchoActorSystem system = new EchoActorSystem();
         ActorRef a1 = system.actorOf(EchoActor.class);
         ActorRef a2 = system.actorOf(EchoActor.class);
+    }
+    @Test
+    public void Send()
+    {
+        EchoActorSystem system = new EchoActorSystem();
+        ActorRef a1 = system.actorOf(EchoActor.class);
+        ActorRef a2 = system.actorOf(EchoActor.class);
+        EchoText m1 = new EchoText(a1,a2,50);
+        EchoText m2 = new EchoText(a2,a1,10);
+        EchoText m3 = new EchoText(a2,a1,100);
+        a1.send(m1,a2);
+        a2.send(m2,a1);
+        a2.send(m3,a1);
+        system.join();
     }
 }

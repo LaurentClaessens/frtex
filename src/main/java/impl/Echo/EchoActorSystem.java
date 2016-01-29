@@ -37,7 +37,6 @@ public class EchoActorSystem extends AbsActorSystem
         created_serie_number=-1;
         actors_map = new HashMap<ActorRef,Actor>();
     }
-
     protected final EchoActorRef createActorReference(ActorMode mode)
     {
         EchoActorRef actor_ref;

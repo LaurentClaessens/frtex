@@ -19,7 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.Echo;
 
 import actors.ActorRef;
+import actors.Actor;
 import actors.Message;
+import actors.SendingThread;
 import actors.exceptions.ShouldNotHappenException;
 
 public class EchoActorRef implements ActorRef<EchoText>
@@ -27,15 +29,20 @@ public class EchoActorRef implements ActorRef<EchoText>
     private EchoActorSystem actor_system;
     private Integer serie_number;
 
-    public EchoActorRef(EchoActorSystem ac,Integer number) { 
+    public String getName() { return serie_number.toString(); }
+
+    public EchoActorRef(EchoActorSystem ac,Integer number) 
+    { 
         actor_system=ac; 
         serie_number=number;
     }
 
-    public void send(Message m, ActorRef to) 
+    public void send(EchoText message, ActorRef to) 
     { 
-        EchoActor actor = (EchoActor) actor_system.getActor(this);
-        synchronized (actor.getMailBox()) { actor.getMailBox().add(m);  }
+        Actor actor_to = actor_system.getActor(to);
+        SendingThread sending_thread=new SendingThread(message,actor_to);
+        Thread t = new Thread( sending_thread );
+        t.start();
     }
     public int getSerieNumber() { return serie_number;  }
     public int compareTo(ActorRef oth)

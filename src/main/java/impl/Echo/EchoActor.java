@@ -30,41 +30,35 @@ import actors.MailBox;
 public class EchoActor extends AbsActor<EchoText>
 {
     
-    private actors.MailBox<EchoText> mail_box = new actors.MailBox<EchoText>();
-    private EchoActorRef myReference;
-    private EchoActorRef getActorRef() { return myReference;  }
-    public EchoActor() {accepted_type=EchoText.class;}
+    private actors.MailBox<EchoText> mail_box;
+    private ActorRef getActorRef() { return self;  }
+    public MailBox getMailBox() { return mail_box;  }
 
-    private void process_next_message()
+    public EchoActor() 
+    {
+        mail_box = new actors.MailBox<EchoText>();
+        accepted_type=EchoText.class;
+    }
+
+    protected void processMessage(EchoText message)
+    {
+        EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),getActorRef());
+        Thread t = new Thread(processing_thread);
+        t.start();
+    }
+    private void processNextMessage()
     {
         if ( mail_box.size()>0 )
         {
             EchoText m;
             synchronized(mail_box) { m=mail_box.poll(); }
-            process(m);   
+            processMessage(m);
         }
     }
     @Override
     public void do_receive(Message message)
     {
         synchronized(mail_box) { mail_box.add( (EchoText) message);}
-        process_next_message();
-    }
-    @Override
-    public  void send(EchoText m, ActorRef to) 
-    {
-        getActorRef().send(m,to); 
-    }
-
-    public MailBox getMailBox() { return mail_box;  }
-
-    protected void process(EchoText m)
-    {
-        Integer data=m.getData()-1;
-        if (data > 0)
-        {
-            EchoText new_message = new EchoText(getActorRef(),m.getSender(),data);
-            getActorRef().send(new_message,getActorRef());
-        }
+        processNextMessage();
     }
 }
