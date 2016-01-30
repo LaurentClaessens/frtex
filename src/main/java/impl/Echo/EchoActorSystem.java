@@ -23,19 +23,15 @@ import actors.ActorRef;
 import actors.Actor;
 import actors.exceptions.NoSuchActorException;
 
-import java.util.Map;
-import java.util.AbstractMap;
-import java.util.HashMap;
 
 public class EchoActorSystem extends AbsActorSystem
 {
     private Integer  created_serie_number;
-    private Map<ActorRef,Actor> actors_map;
 
     public EchoActorSystem()
     {
+        super();
         created_serie_number=-1;
-        actors_map = new HashMap<ActorRef,Actor>();
     }
     protected final EchoActorRef createActorReference(ActorMode mode)
     {
@@ -46,8 +42,5 @@ public class EchoActorSystem extends AbsActorSystem
         }
         return actor_ref;
     }
-    public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
-    public void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
-    public void stop() {}
-    public void stop(ActorRef<?> actor) { }
+
 }

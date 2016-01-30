@@ -30,35 +30,20 @@ import actors.MailBox;
 public class EchoActor extends AbsActor<EchoText>
 {
     
-    private actors.MailBox<EchoText> mail_box;
-    private ActorRef getActorRef() { return self;  }
-    public MailBox getMailBox() { return mail_box;  }
+    private ActorRef getActorRef() { return self; }
 
     public EchoActor() 
     {
-        mail_box = new actors.MailBox<EchoText>();
+        super();
         accepted_type=EchoText.class;
     }
 
-    protected void processMessage(EchoText message)
+    @Override
+    public void processMessage(EchoText m)
     {
-        EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),getActorRef());
+        EchoText message = (EchoText) m;
+        EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),m.getSender());
         Thread t = new Thread(processing_thread);
         t.start();
-    }
-    private void processNextMessage()
-    {
-        if ( mail_box.size()>0 )
-        {
-            EchoText m;
-            synchronized(mail_box) { m=mail_box.poll(); }
-            processMessage(m);
-        }
-    }
-    @Override
-    public void do_receive(Message message)
-    {
-        synchronized(mail_box) { mail_box.add( (EchoText) message);}
-        processNextMessage();
     }
 }

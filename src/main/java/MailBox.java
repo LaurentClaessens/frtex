@@ -33,13 +33,17 @@ import actors.exceptions.ShouldNotHappenException;
 public class MailBox<M extends Message>
 {
     private Queue<M> queue = new LinkedList<M>();
+    private Boolean closed = false;
 
     public void add(M m) 
     {
-        try { synchronized(this) { queue.add(m); } }
-        catch (ClassCastException e)
+        if (!closed)
         {
-           throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
+            try { synchronized(this) { queue.add(m); } }
+            catch (ClassCastException e)
+            {
+               throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
+            }
         }
     }
 
@@ -48,5 +52,7 @@ public class MailBox<M extends Message>
         synchronized(this) { return queue.poll();  }
     }           
     public int size() {return queue.size();  }
+    public Boolean isOpen()  { return !closed;  }
+    public void close() { closed=true;  }
 }
 

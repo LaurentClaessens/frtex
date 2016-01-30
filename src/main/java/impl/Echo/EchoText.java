@@ -26,7 +26,6 @@ import actors.ActorRef;
 // 'EchoText' is a message that is supposed to be resent with a -1 on the data.
 public class EchoText implements Message<Integer>
 {
-
     private ActorRef from_actor;
     private ActorRef to_actor;
     private final Integer data;
@@ -38,7 +37,6 @@ public class EchoText implements Message<Integer>
         to_actor=to;
         data=d;
     }
-
     public String getTag() {return tag;} 
     public Integer getData() { return data; }
     public ActorRef getSender() { return from_actor; }

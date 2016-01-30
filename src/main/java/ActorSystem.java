@@ -48,6 +48,11 @@ public interface ActorSystem {
      *
      * @param actor The actor to be stopped
      */
+
+
+    // Return the actor corresponding to the given reference.
+    Actor getActor(ActorRef actor);
+
     void stop(ActorRef<?> actor);
 
     /**
@@ -55,7 +60,7 @@ public interface ActorSystem {
      */
     void stop();
 
-    // Wait until all the mail boxes are empty.
+    // Wait until all the mail boxes are empty and no actor is working.
     void join();
 
     /**

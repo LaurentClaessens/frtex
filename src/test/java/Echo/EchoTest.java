@@ -36,8 +36,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EchoTest {
-
+public class EchoTest  
+{
     @Test
     public void Numbering()
     {
@@ -46,7 +46,7 @@ public class EchoTest {
         ActorRef a2 = system.actorOf(EchoActor.class);
     }
     @Test
-    public void Send()
+    public void Send() throws InterruptedException
     {
         EchoActorSystem system = new EchoActorSystem();
         ActorRef a1 = system.actorOf(EchoActor.class);
@@ -57,6 +57,8 @@ public class EchoTest {
         a1.send(m1,a2);
         a2.send(m2,a1);
         a2.send(m3,a1);
-        system.join();
+        Thread.sleep(10);
+        System.out.println("Le fil principal se relance");
+        system.stop();
     }
 }

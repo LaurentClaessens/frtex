@@ -23,6 +23,8 @@ import actors.exceptions.NoSuchActorException;
 import java.util.Map;
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * A map-based implementation of the actor system.
@@ -30,20 +32,30 @@ import java.util.HashMap;
 
 public abstract class AbsActorSystem implements ActorSystem {
 
+    private Map<ActorRef,Actor> actors_map;
+    public AbsActorSystem()
+    {
+        actors_map = new HashMap<ActorRef,Actor>();
+    }
+
+    @Override
+    public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
+    public void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
+    public Collection<Actor> actors_list() { return actors_map.values(); }
+    public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
 
         // ActorRef instance
         ActorRef<?> reference;
-        try {
+        try
+        {
             // Create the reference to the actor
             reference = this.createActorReference(mode);
             // Create the new instance of the actor
             Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
             setActor(reference, actorInstance);
-            setActor(reference, actorInstance);
-
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
         }
@@ -51,16 +63,33 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
 
     @Override
-    public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor) {
+    public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor) 
+    {
         return this.actorOf(actor, ActorMode.LOCAL);
     }
+    protected abstract ActorRef createActorReference(ActorMode mode);
 
+    private Boolean test_if_something_up()
+    {
+        for (Actor act : actors_list()) 
+        {
+            if (act.getMailBox().size()>0) return true;
+        }
+        return false;
+    }
     @Override
     public void join()
     {
-
+        Boolean still_up=true;
+        while (still_up==true)
+        {
+            still_up=test_if_something_up();
+        }
+        System.out.println("boh il n'y a plus rien...");
     }
-    public abstract Actor getActor(ActorRef reference);
-    public abstract void setActor(ActorRef reference ,Actor actor);
-    protected abstract ActorRef createActorReference(ActorMode mode);
+    public void stop() 
+    {
+        for (Actor act : actors_list()) { act.stop();  }
+    }
+    public void stop(ActorRef<?> actor) { }
 }

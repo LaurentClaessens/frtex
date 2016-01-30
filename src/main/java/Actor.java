@@ -34,4 +34,7 @@ public interface Actor<T extends Message> {
      */
     void receive(T message);
     void send(T message, ActorRef to);
+
+    MailBox<T> getMailBox();
+    void stop();
 }
