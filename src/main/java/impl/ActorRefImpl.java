@@ -16,27 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.Echo;
+package actors.impl;
 
-import actors.impl.ActorSystemImpl;
-import actors.exceptions.NoSuchActorException;
+import actors.AbsActorRef;
 
-public class EchoActorSystem extends ActorSystemImpl
+public class ActorRefImpl<T extends Message> extends AbsActorRef<T>
 {
-
-    public EchoActorSystem()
-    {
-        super();
-        created_serie_number=-1;
-    }
-    @Override
-    protected final EchoActorRef createActorReference(ActorMode mode)
-    {
-        EchoActorRef actor_ref;
-        synchronized(created_serie_number)
-        {
-            actor_ref = new EchoActorRef(this,++created_serie_number);
-        }
-        return actor_ref;
-    }
+    ActorRefImpl(ActorSystem system,Integer n) { super(system,n); }
 }
