@@ -16,13 +16,26 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.utils.messages.ping.pong;
+
+import actors.Message;
+import actors.utils.actors.ping.pong.PingPongActor;
 
 /**
- * A message that can be sent among actors
+ * Message sent by {@link PingPongActor}
  *
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
  */
+public abstract class PingPongMessage implements Message {
+    private String message;
 
-public interface Message 
-{
-};
+    public PingPongMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}

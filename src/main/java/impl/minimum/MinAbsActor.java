@@ -16,13 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.impl.minimum;
 
-/**
- * A message that can be sent among actors
- *
- */
+import actors.AbsActor;
 
-public interface Message 
+public abstract class MinAbsActor<T> extends AbsActor<T>
 {
-};
+}

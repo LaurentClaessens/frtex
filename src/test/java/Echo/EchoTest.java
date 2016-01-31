@@ -17,11 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
 // This is testing the Echo implementation of my actor system.
-//
-// To be tested 
-//   - if the serie number of the first one is -1 or 0 or 1.
-//   - if the ordering is correct.
-//   - try to send a Message of type other than EchoText
 
 import actors.ActorRef;
 

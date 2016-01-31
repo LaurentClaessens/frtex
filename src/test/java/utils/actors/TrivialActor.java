@@ -16,13 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+
+package actors.utils.actors;
+
+import actors.AbsActor;
+import actors.utils.messages.TrivialMessage;
 
 /**
- * A message that can be sent among actors
+ * A trivial actor that do nothing.
  *
+ * @author Riccardo Cardin
+ * @version 1.0
+ * @since 1.0
  */
-
-public interface Message 
-{
-};
+public class TrivialActor extends AbsActor<TrivialMessage> {
+    @Override
+    public void receive(TrivialMessage message) {
+        // Do nothing.
+    }
+}

@@ -20,14 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.AbsActor;
+import actors.impl.minimum.MinAbsActor;
 import actors.ActorRef;
 import actors.Message;
 import actors.MailBox;
 
 
 
-public class EchoActor extends AbsActor<EchoText>
+public class EchoActor extends MinAbsActor<EchoText>
 {
     
     private ActorRef getActorRef() { return self; }

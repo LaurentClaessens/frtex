@@ -16,13 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.utils.actors.counter;
 
-/**
- * A message that can be sent among actors
- *
- */
+import actors.AbsActor;
+import actors.utils.messages.counter.*;
 
-public interface Message 
-{
-};
+public class CounterActor extends AbsActor<CounterMessage> {
+
+    private int counter = 0;
+
+    @Override
+    public void receive(CounterMessage message) {
+        if (message instanceof Increment) {
+            counter++;
+        } else if (message instanceof Decrement) {
+            counter--;
+        } else if (message instanceof Get) {
+            self.send(new Result(counter), sender);
+        }
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+}

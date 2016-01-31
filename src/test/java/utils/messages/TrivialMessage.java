@@ -16,13 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.utils.messages;
 
-/**
- * A message that can be sent among actors
- *
- */
+import actors.Message;
 
-public interface Message 
-{
-};
+public class TrivialMessage implements Message {
+}

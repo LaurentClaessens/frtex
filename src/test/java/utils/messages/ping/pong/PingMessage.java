@@ -16,13 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.utils.messages.ping.pong;
 
 /**
- * A message that can be sent among actors
- *
+ * A ping message.
  */
+public class PingMessage extends PingPongMessage {
 
-public interface Message 
-{
-};
+    public PingMessage() {
+        super("Ping");
+    }
+}

@@ -16,13 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.utils.actors;
 
-/**
- * A message that can be sent among actors
- *
- */
+import actors.AbsActor;
+import actors.utils.messages.StoreMessage;
 
-public interface Message 
-{
-};
+public class StoreActor extends AbsActor<StoreMessage> {
+
+    private String data;
+
+    @Override
+    public void receive(StoreMessage message) {
+        this.data = message.getPayload();
+    }
+
+    public String getData() {
+        return data;
+    }
+}

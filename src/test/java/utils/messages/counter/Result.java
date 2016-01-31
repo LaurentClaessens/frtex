@@ -16,13 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.utils.messages.counter;
 
 /**
- * A message that can be sent among actors
+ * The current value of the counter.
  *
  */
+public class Result extends CounterMessage {
+    private int result;
 
-public interface Message 
-{
-};
+    public Result(int result) {
+        this.result = result;
+    }
+
+    public int getResult() {
+        return result;
+    }
+}
