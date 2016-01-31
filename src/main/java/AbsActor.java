@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-import actors.exceptions.UnsupportedMessageException;
 import actors.exceptions.ShouldNotHappenException;
 
 /**
@@ -58,27 +57,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         this.self = self;
         return this;
     }
-    private void processNextMessage()
-    {
-        if ( mail_box.size()>0 )
-        {
-            T m;
-            synchronized(mail_box) { m=mail_box.poll(); }
-            processMessage(m);
-        }
-    }
-    public void do_receive(Message message)
-    {
-        T m=(T) message;
-        synchronized(mail_box) { mail_box.add(m);}
-        processNextMessage();
-    }
-
-    public void receive(Message m)
-    {
-        if (accepted_type.isInstance(m)) { do_receive(m); }
-        else { throw new UnsupportedMessageException(m);  }
-    }
+    public abstract void receive(T m);
     public void send(T m, ActorRef to)
     {
         if (accepted_type.isInstance(m)) 
@@ -87,6 +66,5 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         }
         else { throw new ShouldNotHappenException("Trying to send a message of wrong type. Your actor implementation should not have such evil plans.");}
     }
-    public abstract void processMessage(T m);
     public void stop() { getMailBox().close(); }
 }

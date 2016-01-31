@@ -19,7 +19,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.minimum;
 
 import actors.AbsActor;
+import actors.Message;
+import actors.exceptions.UnsupportedMessageException;
 
-public abstract class MinAbsActor<T> extends AbsActor<T>
+public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
 {
+    public abstract void processMessage(T m);
+    private void processNextMessage()
+    {
+        if ( mail_box.size()>0 )
+        {
+            T m;
+            synchronized(mail_box) { m=mail_box.poll(); }
+            processMessage(m);
+        }
+    }
+
+    public void do_receive(Message message)
+    {
+        T m=(T) message;
+        synchronized(mail_box) { mail_box.add(m);}
+        processNextMessage();
+    }
+    @Override
+    public void receive(Message m)
+    {
+        if (accepted_type.isInstance(m)) { do_receive(m); }
+        else { throw new UnsupportedMessageException(m);  }
+    }
 }
