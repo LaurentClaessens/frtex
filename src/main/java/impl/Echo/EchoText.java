@@ -19,12 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.Message;
+import actors.AbsMessage;
 import actors.Actor;
 import actors.ActorRef;
 
 // 'EchoText' is a message that is supposed to be resent with a -1 on the data.
-public class EchoText implements Message<Integer>
+public class EchoText extends AbsMessage<Integer>
 {
     private ActorRef from_actor;
     private ActorRef to_actor;

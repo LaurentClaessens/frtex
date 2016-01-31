@@ -16,34 +16,35 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-// An 'EchoActor' is an actor that does -1 on the data and resent the message if the data is still positive.
+package actors.impl.minimum;
 
-package actors.impl.Echo;
-
-import actors.impl.minimum.MinAbsActor;
-import actors.ActorRef;
+import actors.AbsActor;
 import actors.Message;
-import actors.MailBox;
+import actors.exceptions.UnsupportedMessageException;
 
-
-
-public class EchoActor extends MinAbsActor<EchoText>
+public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
 {
-    
-    private ActorRef getActorRef() { return self; }
-
-    public EchoActor() 
+    public abstract void processMessage(T m);
+    private void processNextMessage()
     {
-        super();
-        accepted_type=EchoText.class;
+        if ( mail_box.size()>0 )
+        {
+            T m;
+            synchronized(mail_box) { m=mail_box.poll(); }
+            processMessage(m);
+        }
     }
 
-    @Override
-    public void processMessage(EchoText m)
+    public void do_receive(Message message)
     {
-        EchoText message = (EchoText) m;
-        EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),m.getSender());
-        Thread t = new Thread(processing_thread);
-        t.start();
+        T m=(T) message;
+        synchronized(mail_box) { mail_box.add(m);}
+        processNextMessage();
+    }
+    @Override
+    public void receive(Message m)
+    {
+        if (accepted_type.isInstance(m)) { do_receive(m); }
+        else { throw new UnsupportedMessageException(m);  }
     }
 }

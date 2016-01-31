@@ -18,11 +18,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-/**
- * A message that can be sent among actors
- *
- */
+// This is a partial implementation of Message that will fit some users' needs.
+// 'T' is the type of the data.
 
-public interface Message 
+public abstract class AbsMessage<T> implements Message
 {
+    public abstract String getTag();
+    public abstract T getData(); 
 };
