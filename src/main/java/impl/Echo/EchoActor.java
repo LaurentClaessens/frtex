@@ -33,7 +33,7 @@ public class EchoActor extends MinAbsActor<EchoText>
         super(actor_system);
         accepted_type=EchoText.class;
     }
-    public EchoActor() {}       // This one is for 'actorOf' to work.
+    public EchoActor() { accepted_type=EchoText.class;  }    
 
     @Override
     public void processMessage(EchoText m)

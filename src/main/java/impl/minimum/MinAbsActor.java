@@ -26,6 +26,12 @@ import actors.exceptions.UnsupportedMessageException;
 public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
 {
     private AbsActorSystem actor_system;
+    public MinAbsActor(AbsActorSystem ac,Class<Message> type)
+    { 
+        super(); 
+        actor_system=ac;
+        setAcceptedType(type);
+    }
     public MinAbsActor(AbsActorSystem ac)
     { 
         super(); 
@@ -52,7 +58,10 @@ public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
     @Override
     public void receive(Message m)
     {
-        if (accepted_type.isInstance(m)) { do_receive(m); }
+        if (accepted_type.isInstance(m)) 
+        {
+            do_receive(m); 
+        }
         else { throw new UnsupportedMessageException(m);  }
     }
 }

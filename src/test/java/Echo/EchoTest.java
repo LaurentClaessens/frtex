@@ -51,7 +51,7 @@ public class EchoTest
         a1.send(m1,a2);
         a2.send(m2,a1);
         a2.send(m3,a1);
-        Thread.sleep(10);
+        Thread.sleep(50);
         System.out.println("Le fil principal se relance");
         system.stop();
     }
