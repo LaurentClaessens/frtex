@@ -18,9 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.AbsActorRef;
+import actors.impl.ActorRefImpl;
 
-public class EchoActorRef extends AbsActorRef<EchoText>
+public class EchoActorRef extends ActorRefImpl<EchoText>
 {
     EchoActorRef(EchoActorSystem system,Integer n) { super(system,n); }
 }

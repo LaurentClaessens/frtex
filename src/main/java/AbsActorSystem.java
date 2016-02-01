@@ -26,6 +26,7 @@ import actors.exceptions.NoSuchActorException;
 
 public abstract class AbsActorSystem implements ActorSystem {
 
+    protected abstract void setActor(ActorRef reference, Actor act);
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
 

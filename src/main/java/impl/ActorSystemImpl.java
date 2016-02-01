@@ -40,7 +40,8 @@ public class ActorSystemImpl extends AbsActorSystem
     }
     @Override
     public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
-    public void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
+    @Override
+    protected void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
     public Collection<Actor> actors_list() { return actors_map.values(); }
     public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
 

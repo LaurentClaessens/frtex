@@ -19,16 +19,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl;
 
 import actors.ActorRef;
-import actors.AbsActorRef;
 import actors.ActorSystem;
 import actors.Message;
 import actors.Actor;
+import actors.SendingThread;
 
-public class ActorRefImpl<T extends Message> extends AbsActorRef<T>
+import actors.exceptions.ShouldNotHappenException;
+
+public class ActorRefImpl<T extends Message> implements ActorRef<T>
 {
-    ActorRefImpl(ActorSystem system,Integer n) { super(system,n); }
-    public ActorSystemImpl getActorSystem() { return actor_system; }
+
+    private ActorSystemImpl actor_system;
+    private Integer serie_number;
+
+
+    public ActorRefImpl(ActorSystemImpl ac,Integer number) 
+    { 
+        actor_system=ac; 
+        serie_number=number;
+    }
+    public String getName() { return serie_number.toString(); }
     public Actor getActor() { return getActorSystem().getActor(this);  }
+    public ActorSystemImpl getActorSystem() { return actor_system; }
+
+    public void send(Message message, ActorRef to) 
+    { 
+        Actor actor_to = actor_system.getActor(to);
+        SendingThread sending_thread=new SendingThread(message,actor_to);
+        Thread t = new Thread( sending_thread );
+        t.start();
+    }
+    public Integer getSerieNumber() { return serie_number;  }
+
+
     @Override
     public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
 }
