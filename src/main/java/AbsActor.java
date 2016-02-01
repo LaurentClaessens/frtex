@@ -32,13 +32,11 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     protected ActorRef<T> self;
     protected Class accepted_type;
     protected MailBox<T> mail_box;
+    private  AbsActorSystem actor_system;
 
     protected void setAcceptedType(Class<Message> t) { accepted_type=t; }
     
-    protected AbsActor()
-    {
-        mail_box = new actors.MailBox<T>();
-    }
+    protected AbsActor() { mail_box = new actors.MailBox<T>(); }
     public MailBox<T> getMailBox() {return mail_box;}
 
     /**
@@ -62,7 +60,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     {
         if (accepted_type.isInstance(m)) 
         {
-            to.getActor().receive(m); 
+            actor_system.getActor(to).receive(m); 
         }
         else { throw new ShouldNotHappenException("Trying to send a message of wrong type. Your actor implementation should not have such evil plans.");}
     }

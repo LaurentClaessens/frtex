@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.AbstractMap;
 import java.util.HashMap;
 
-
 import actors.exceptions.ShouldNotHappenException;
 
 public abstract class AbsActorRef<T extends Message> implements ActorRef<T>
@@ -38,7 +37,6 @@ public abstract class AbsActorRef<T extends Message> implements ActorRef<T>
         serie_number=number;
     }
 
-    public Actor getActor() { return actor_system.getActor(this);  }
     public void send(Message message, ActorRef to) 
     { 
         Actor actor_to = actor_system.getActor(to);
@@ -46,16 +44,5 @@ public abstract class AbsActorRef<T extends Message> implements ActorRef<T>
         Thread t = new Thread( sending_thread );
         t.start();
     }
-    @Override
     public Integer getSerieNumber() { return serie_number;  }
-    public int compareTo(ActorRef other)
-    {
-        final int BEFORE = -1;
-        final int EQUAL = 0;
-        final int AFTER = 1;
-        if (other==this) { return EQUAL;  }
-        if (other.getSerieNumber()>serie_number) { return -1; }
-        if (other.getSerieNumber()<serie_number) { return 1; }
-        throw new ShouldNotHappenException("comparaison should always be possible.");
-    }
 }

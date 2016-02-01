@@ -19,11 +19,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.minimum;
 
 import actors.AbsActor;
+import actors.AbsActorSystem;
 import actors.Message;
 import actors.exceptions.UnsupportedMessageException;
 
 public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
 {
+    private AbsActorSystem actor_system;
+    public MinAbsActor(AbsActorSystem ac)
+    { 
+        super(); 
+        actor_system=ac;
+    }
     public abstract void processMessage(T m);
     private void processNextMessage()
     {

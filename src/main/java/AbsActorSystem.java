@@ -20,29 +20,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors;
 import actors.exceptions.NoSuchActorException;
 
-import java.util.Map;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.Set;
-
 /**
  * A map-based implementation of the actor system.
  */
 
 public abstract class AbsActorSystem implements ActorSystem {
 
-    private Map<ActorRef,Actor> actors_map;
-    public AbsActorSystem()
-    {
-        actors_map = new HashMap<ActorRef,Actor>();
-    }
-
-    @Override
-    public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
-    public void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
-    public Collection<Actor> actors_list() { return actors_map.values(); }
-    public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
 
@@ -69,27 +52,6 @@ public abstract class AbsActorSystem implements ActorSystem {
     }
     protected abstract ActorRef createActorReference(ActorMode mode);
 
-    private Boolean test_if_something_up()
-    {
-        for (Actor act : actors_list()) 
-        {
-            if (act.getMailBox().size()>0) return true;
-        }
-        return false;
-    }
-    @Override
-    public void join()
-    {
-        Boolean still_up=true;
-        while (still_up==true)
-        {
-            still_up=test_if_something_up();
-        }
-        System.out.println("boh il n'y a plus rien...");
-    }
-    public void stop() 
-    {
-        for (Actor act : actors_list()) { act.stop();  }
-    }
     public void stop(ActorRef<?> actor) { }
+    abstract public  void stop() ;
 }

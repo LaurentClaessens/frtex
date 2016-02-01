@@ -18,9 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl;
 
+import actors.ActorRef;
 import actors.AbsActorRef;
+import actors.ActorSystem;
+import actors.Message;
+import actors.Actor;
 
 public class ActorRefImpl<T extends Message> extends AbsActorRef<T>
 {
     ActorRefImpl(ActorSystem system,Integer n) { super(system,n); }
+    public ActorSystemImpl getActorSystem() { return actor_system; }
+    public Actor getActor() { return getActorSystem().getActor(this);  }
+    @Override
+    public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
 }

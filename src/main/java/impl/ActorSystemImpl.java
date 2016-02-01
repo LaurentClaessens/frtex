@@ -18,12 +18,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl;
 
+import java.util.Map;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Collection;
+import java.util.Set;
+
 import actors.AbsActorSystem;
 import actors.ActorRef;
+import actors.Actor;
+import actors.exceptions.ShouldNotHappenException;
 
 public class ActorSystemImpl extends AbsActorSystem
 {
     private Integer  created_serie_number;
+    private Map<ActorRef,Actor> actors_map;
+    public ActorSystemImpl() 
+    { 
+        created_serie_number=-1; 
+        actors_map = new HashMap<ActorRef,Actor>();
+    }
+    @Override
+    public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
+    public void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
+    public Collection<Actor> actors_list() { return actors_map.values(); }
+    public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
+
     protected final ActorRef createActorReference(ActorMode mode)
     {
         ActorRef actor_ref;
@@ -32,5 +52,43 @@ public class ActorSystemImpl extends AbsActorSystem
             actor_ref = new ActorRefImpl(this,++created_serie_number);
         }
         return actor_ref;
+    }
+
+    private Boolean test_if_something_up()
+    {
+        for (Actor act : actors_list()) 
+        {
+            if (act.getMailBox().size()>0) return true;
+        }
+        return false;
+    }
+    @Override
+    public void join()
+    {
+        Boolean still_up=true;
+        while (still_up==true)
+        {
+            still_up=test_if_something_up();
+        }
+        System.out.println("boh il n'y a plus rien...");
+    }
+    @Override
+    public void stop() 
+    {
+        for (Actor act : actors_list()) { act.stop();  }
+    }
+
+    public int compareRefs(ActorRef one,ActorRef two)
+    {
+        final int BEFORE = -1;
+        final int EQUAL = 0;
+        final int AFTER = 1;
+        if (one==two) { return EQUAL;  }
+        for (ActorRef ar :  actors_ref_list() )
+        {
+            if (ar==one) { return 1; }
+            if (ar==two) { return -1; }
+        }
+        throw new ShouldNotHappenException("comparaison should always be possible.");
     }
 }

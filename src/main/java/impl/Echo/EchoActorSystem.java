@@ -23,20 +23,5 @@ import actors.exceptions.NoSuchActorException;
 
 public class EchoActorSystem extends ActorSystemImpl
 {
-
-    public EchoActorSystem()
-    {
-        super();
-        created_serie_number=-1;
-    }
-    @Override
-    protected final EchoActorRef createActorReference(ActorMode mode)
-    {
-        EchoActorRef actor_ref;
-        synchronized(created_serie_number)
-        {
-            actor_ref = new EchoActorRef(this,++created_serie_number);
-        }
-        return actor_ref;
-    }
+    public EchoActorSystem() { super(); }
 }

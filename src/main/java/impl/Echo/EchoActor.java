@@ -22,19 +22,15 @@ package actors.impl.Echo;
 
 import actors.impl.minimum.MinAbsActor;
 import actors.ActorRef;
-import actors.Message;
-import actors.MailBox;
-
-
+import actors.AbsActorSystem;
 
 public class EchoActor extends MinAbsActor<EchoText>
 {
-    
     private ActorRef getActorRef() { return self; }
 
-    public EchoActor() 
+    public EchoActor(AbsActorSystem actor_system) 
     {
-        super();
+        super(actor_system);
         accepted_type=EchoText.class;
     }
 
