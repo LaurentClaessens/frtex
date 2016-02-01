@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-
 package actors;
 import actors.exceptions.NoSuchActorException;
 
@@ -35,10 +34,20 @@ public abstract class AbsActorSystem implements ActorSystem {
         try
         {
             // Create the reference to the actor
+            System.out.println("ooOLSAooZGXBWH  -- creating  ");
             reference = this.createActorReference(mode);
             // Create the new instance of the actor
+            System.out.println("ooOLSAooZGXBWH  -- casting 1");
+            System.out.println("ooOLSAooZGXBWH  --  le type est "+actor);
+            Actor ni=actor.newInstance();        
+            System.out.println("ooOLSAooZGXBWH  -- casting 2");
+            AbsActor ab_ni=(AbsActor) ni;
+            System.out.println("ooOLSAooZGXBWH  -- casting 3");
+            ab_ni.setSelf(reference);
+            System.out.println("ooOLSAooZGXBWH  -- casting 4");
             Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
+            System.out.println("ooOLSAooZGXBWH  -- set  ");
             setActor(reference, actorInstance);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);

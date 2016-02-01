@@ -32,6 +32,8 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
     private ActorSystemImpl actor_system;
     private Integer serie_number;
 
+    public void setActorSystem(ActorSystemImpl as) { actor_system=as;  }
+    public void setSerieNumber(Integer n) { serie_number=n;  }
 
     public ActorRefImpl(ActorSystemImpl ac,Integer number) 
     { 

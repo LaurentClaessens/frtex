@@ -31,6 +31,7 @@ public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
         super(); 
         actor_system=ac;
     }
+    public MinAbsActor() {};        // After using this one, you have to put the actor system by hand.
     public abstract void processMessage(T m);
     private void processNextMessage()
     {

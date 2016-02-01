@@ -31,13 +31,17 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class ActorSystemImpl extends AbsActorSystem
 {
-    private Integer  created_serie_number;
+    private Integer created_serie_number;
     private Map<ActorRef,Actor> actors_map;
     public ActorSystemImpl() 
     { 
         created_serie_number=-1; 
         actors_map = new HashMap<ActorRef,Actor>();
     }
+
+
+    // increment the serie number of 1 and return the result.
+    public Integer newSerieNumber()  { return ++created_serie_number;  }
     @Override
     public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
     @Override
@@ -50,7 +54,7 @@ public class ActorSystemImpl extends AbsActorSystem
         ActorRef actor_ref;
         synchronized (created_serie_number)
         {
-            actor_ref = new ActorRefImpl(this,++created_serie_number);
+            actor_ref = new ActorRefImpl(this,newSerieNumber());
         }
         return actor_ref;
     }
