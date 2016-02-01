@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import actors.ActorRef;
 
 import actors.impl.Echo.EchoActor;
-import actors.impl.Echo.EchoActorRef;
 import actors.impl.Echo.EchoActorSystem;
 import actors.impl.Echo.EchoText;
 

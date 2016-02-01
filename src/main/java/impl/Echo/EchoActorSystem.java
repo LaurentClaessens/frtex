@@ -19,10 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.Echo;
 
 import actors.impl.ActorSystemImpl;
-import actors.Actor;
 import actors.ActorRef;
-import actors.Message;
-import actors.exceptions.NoSuchActorException;
+import actors.impl.ActorRefImpl;
 
 public class EchoActorSystem extends ActorSystemImpl
 {
@@ -30,7 +28,7 @@ public class EchoActorSystem extends ActorSystemImpl
     @Override
     public ActorRef<EchoText> actorOf(Class actor,ActorMode mode)
     {
-        EchoActorRef ar = (EchoActorRef) super.actorOf(EchoActor.class,mode);
+        ActorRefImpl ar = (ActorRefImpl) super.actorOf(EchoActor.class,mode);
         ar.setActorSystem(this);
         ar.setSerieNumber( this.newSerieNumber() );
         return ar;
