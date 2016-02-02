@@ -25,9 +25,11 @@ import java.util.Collection;
 import java.util.Set;
 
 import actors.AbsActorSystem;
+import actors.ActorSystem.ActorMode;
 import actors.ActorRef;
 import actors.Actor;
 import actors.exceptions.ShouldNotHappenException;
+import actors.exceptions.IllegalModeException;
 
 public class ActorSystemImpl extends AbsActorSystem
 {
@@ -39,7 +41,6 @@ public class ActorSystemImpl extends AbsActorSystem
         actors_map = new HashMap<ActorRef,Actor>();
     }
 
-
     // increment the serie number of 1 and return the result.
     public Integer newSerieNumber()  { return ++created_serie_number;  }
     @Override
@@ -49,8 +50,12 @@ public class ActorSystemImpl extends AbsActorSystem
     public Collection<Actor> actors_list() { return actors_map.values(); }
     public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
 
-    protected final ActorRef createActorReference(ActorMode mode)
+    protected final ActorRef createActorReference(ActorMode mode) throws IllegalModeException
     {
+        if (mode!=ActorMode.LOCAL)
+        {
+            throw new IllegalModeException(mode);
+        }
         ActorRef actor_ref;
         synchronized (created_serie_number)
         {
