@@ -22,7 +22,7 @@ import actors.ActorRef;
 import actors.ActorSystem;
 import actors.Message;
 import actors.Actor;
-import actors.SendingThread;
+import actors.impl.SendingThread;
 
 import actors.exceptions.ShouldNotHappenException;
 

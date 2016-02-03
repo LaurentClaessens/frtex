@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import actors.exceptions.AlreadyListedActor;
+import actors.exceptions.NoSuchActorException;
 
 
 // The 'ActorMap' is a wrapper for the two needed maps : 
@@ -39,7 +40,11 @@ public class ActorMap
 
     public Collection<Actor> actors_list() { return actors_map.values(); }
     public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
-    public Actor get(ActorRef ref) {return actors_map.get(ref); }
+    public Actor getActor(ActorRef ref) 
+    {
+        if (!isActive(ref)) {throw new NoSuchActorException();}
+        return actors_map.get(ref); 
+    }
 
     public ActorMap()
     {
