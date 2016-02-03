@@ -30,15 +30,18 @@ import actors.ActorRef;
 import actors.Actor;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.IllegalModeException;
+import actors.exceptions.NoSuchActorException;
 
 public class ActorSystemImpl extends AbsActorSystem
 {
     private Integer created_serie_number;
     private Map<ActorRef,Actor> actors_map;
+    private Map<ActorRef,Boolean> actors_active;
     public ActorSystemImpl() 
     { 
         created_serie_number=-1; 
         actors_map = new HashMap<ActorRef,Actor>();
+        actors_active = new HashMap<ActorRef,Boolean>();
     }
 
     // increment the serie number of 1 and return the result.
@@ -46,7 +49,11 @@ public class ActorSystemImpl extends AbsActorSystem
     @Override
     public Actor getActor(ActorRef reference) { return actors_map.get(reference); } 
     @Override
-    protected void setActor(ActorRef reference,Actor actor) { actors_map.put(reference,actor); }
+    protected void setActor(ActorRef reference,Actor actor) 
+    { 
+        actors_map.put(reference,actor); 
+        actors_active.put(reference,true);
+    }
     public Collection<Actor> actors_list() { return actors_map.values(); }
     public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
 
@@ -63,7 +70,6 @@ public class ActorSystemImpl extends AbsActorSystem
         }
         return actor_ref;
     }
-
     private Boolean test_if_something_up()
     {
         for (Actor act : actors_list()) 
@@ -82,10 +88,25 @@ public class ActorSystemImpl extends AbsActorSystem
         }
         System.out.println("boh il n'y a plus rien...");
     }
+    private Boolean isActive(ActorRef<?> actor_ref)
+    {
+        return actors_active.get(actor_ref);
+    }
+    private void setActive(ActorRef ref,Boolean ac)
+    
+    {
+        actors_active.put(ref,ac);  
+    }
+    @Override 
+    public void stop(ActorRef<?> actor)
+    {
+        if (isActive(actor)){  setActive(actor,false) ;}
+        else { throw new NoSuchActorException("This actor is not active anymore.");  }
+    }
     @Override
     public void stop() 
     {
-        for (Actor act : actors_list()) { act.stop();  }
+        for (ActorRef act_ref : actors_ref_list()) { stop(act_ref);  }
     }
 
     public int compareRefs(ActorRef one,ActorRef two)

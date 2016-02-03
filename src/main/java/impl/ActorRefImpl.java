@@ -28,7 +28,6 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class ActorRefImpl<T extends Message> implements ActorRef<T>
 {
-
     private ActorSystemImpl actor_system;
     private Integer serie_number;
 
