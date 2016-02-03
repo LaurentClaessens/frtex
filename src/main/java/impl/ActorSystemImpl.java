@@ -18,9 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl;
 
-import java.util.Map;
-import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Set;
 
@@ -28,6 +25,7 @@ import actors.AbsActorSystem;
 import actors.ActorSystem.ActorMode;
 import actors.ActorRef;
 import actors.Actor;
+import actors.ActorMap;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.IllegalModeException;
 import actors.exceptions.NoSuchActorException;
@@ -35,13 +33,12 @@ import actors.exceptions.NoSuchActorException;
 public class ActorSystemImpl extends AbsActorSystem
 {
     private Integer created_serie_number;
-    private Map<ActorRef,Actor> actors_map;
-    private Map<ActorRef,Boolean> actors_active;
+    private ActorMap actors_map;
+
     public ActorSystemImpl() 
     { 
         created_serie_number=-1; 
-        actors_map = new HashMap<ActorRef,Actor>();
-        actors_active = new HashMap<ActorRef,Boolean>();
+        actors_map=new ActorMap();
     }
 
     // increment the serie number of 1 and return the result.
@@ -52,10 +49,7 @@ public class ActorSystemImpl extends AbsActorSystem
     protected void setActor(ActorRef reference,Actor actor) 
     { 
         actors_map.put(reference,actor); 
-        actors_active.put(reference,true);
     }
-    public Collection<Actor> actors_list() { return actors_map.values(); }
-    public Set<ActorRef> actors_ref_list() { return actors_map.keySet(); }
 
     protected final ActorRef createActorReference(ActorMode mode) throws IllegalModeException
     {
@@ -88,15 +82,10 @@ public class ActorSystemImpl extends AbsActorSystem
         }
         System.out.println("boh il n'y a plus rien...");
     }
-    private Boolean isActive(ActorRef<?> actor_ref)
-    {
-        return actors_active.get(actor_ref);
-    }
-    private void setActive(ActorRef ref,Boolean ac)
-    
-    {
-        actors_active.put(ref,ac);  
-    }
+    private Boolean isActive(ActorRef ref) { return actors_map.isActive(ref);  }
+    private void setActive(ActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }
+    private Set<ActorRef> actors_ref_list() {return actors_map.actors_ref_list();}
+    private Collection<Actor> actors_list() {return actors_map.actors_list();}
     @Override 
     public void stop(ActorRef<?> actor)
     {
@@ -115,10 +104,10 @@ public class ActorSystemImpl extends AbsActorSystem
         final int EQUAL = 0;
         final int AFTER = 1;
         if (one==two) { return EQUAL;  }
-        for (ActorRef ar :  actors_ref_list() )
+        for (ActorRef ref :  actors_ref_list() )
         {
-            if (ar==one) { return 1; }
-            if (ar==two) { return -1; }
+            if (ref==one) { return 1; }
+            if (ref==two) { return -1; }
         }
         throw new ShouldNotHappenException("comparaison should always be possible.");
     }
