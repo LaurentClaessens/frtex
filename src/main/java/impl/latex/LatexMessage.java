@@ -16,27 +16,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.Echo;
+package actors.impl.latex;
 
-import actors.AbsMessage;
-import actors.Actor;
-import actors.ActorRef;
+import actors.Message;
 
-// 'EchoText' is a message that is supposed to be resent with a -1 on the data.
-public class EchoText extends AbsMessage<Integer>
+// The tag can be
+// - "ask". In this case, the message asks to provide the (recursive) content of the passed filename.
+// - "answer". In this case, the content of the message is the (recursive) content of the filename.
+class LatexMessage extends Message
 {
-    private ActorRef from_actor;
-    private ActorRef to_actor;
-    private final Integer data;
-    private final String tag="echo";
+    private final ActorRef from_actor;
+    private final ActorRef to_actor;
+    private final String filename;
+    private final String tag;
+    private final String content;
 
-    public EchoText(ActorRef from, ActorRef to,Integer d)
+    public LatexMessage(ActorRef from, ActorRef to,String tag,String filename)
     {
         from_actor=from;
         to_actor=to;
-        data=d;
+        this.tag=tag;
+        this.filename=filename;
+        content="";
     }
     public String getTag() {return tag;} 
-    public Integer getData() { return data; }
     public ActorRef getSender() { return from_actor; }
+    public String getContent() { return content; }
+    public voif setContent(String content) { this.content=content; }
 }

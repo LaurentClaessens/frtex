@@ -48,7 +48,6 @@ public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
             processMessage(m);
         }
     }
-
     public void do_receive(Message message)
     {
         T m=(T) message;

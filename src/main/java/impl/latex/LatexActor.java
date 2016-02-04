@@ -16,11 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors;
+package actors.impl.latex;
 
-/**
- * A message that can be sent among actors
- *
- */
+import actors.impl.minimum.MinAbsActor;
 
-public interface Message { };
+// a LatexActor is 'working' until it succeed to send the answer to who asked that.
+class LatexActor extends MinAbsActor<LatexMessage>
+{
+}
