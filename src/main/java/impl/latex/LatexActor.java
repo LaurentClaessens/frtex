@@ -18,9 +18,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
+import java.util.HashMap;
+import actors.exceptions.ShouldNotHappenException;
 import actors.impl.minimum.MinAbsActor;
 
 // a LatexActor is 'working' until it succeed to send the answer to who asked that.
 class LatexActor extends MinAbsActor<LatexMessage>
 {
+    private String filename;
+    private HashMap<String,String> inputed_filenames;
+    private Boolean working;
+
+    // For each inputed file, the map 'inputed_filenames' retains its content.
+    LatexActor() 
+    {
+        super();
+        inputed_filenames=new HashMap<String,String>();
+        working=true;
+    }
+    private void processMessage(LatexMessage message)
+    {
+        String tag=message.getTag();
+        synchronized(working)
+        {
+            if (tag.equals("aks") && working)
+            {
+                throw new ShouldNotHappenException("One is asking me to deal with a new file while I'm not done with my previous work.");
+            }
+            if (tag.equals("ask")) { working=true; }
+        }
+        if (tag.equals("answer"))
+        {
+            //AnswerProcessing answer_process = new AnswerProcessing(message,getActorRef(),m.getSender());
+            //Thread t = new Thread(answer_process);
+            //t.start();
+        }
+        if (tag.equals("ask"))
+        {
+            FileProcessing file_processing = new FileProcessing( this,filename );
+            Thread t = new Thread(file_processing);
+            t.start();
+        }
+    }
 }

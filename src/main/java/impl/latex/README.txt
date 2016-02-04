@@ -9,3 +9,11 @@ The behaviour of an actor is
 
 The actor system need more functionalities than the basic one.
 - A method "getFreeActor" that return an actor reference to an actor that is not working (in the sense that he has already send its result). If no free actors are available, create a new one.
+
+SIMPLIFICATION 1 : For the sake of simplicity, it assumes that all inputs are on lines that _begin_ with \input.
+
+SIMPLIFICATION 2 : We suppose that each .tex file in included only once. Thus if foo.tex needs bar.tex, it is impossible that bar.tex was already processed when the actor in charge of foo.tex initiate its work.
+
+    In this case, the answer can be sent directly to the asking actor. 
+    If a tex file could be included more than once, we should maybe use a principal actor.
+
