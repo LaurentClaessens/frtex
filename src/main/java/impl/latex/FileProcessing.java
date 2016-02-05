@@ -19,23 +19,51 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.latex;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
-public class FileProcessing implements Runnable
+class FileProcessing
 {
     private String filename;
+    private String foobar;
     private String content;
 
     FileProcessing(String filename) 
     {
         this.filename=filename;
+        this.foobar="This should never be seen.";
+        this.content="This should never be seen.";
     }
-    public void run() 
+    public String run() 
     {
         String line;
-        BufferedReader reader = new BufferedReader(new FileReader("mazhe/mazhe.tex"));
-        while (line=reader.readLine()!=null)
+        try (
+            InputStream fis = new FileInputStream(filename);
+            InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
+            BufferedReader br = new BufferedReader(isr);
+            )
         {
-            System.out.println(line);
+            while ((line = br.readLine()) != null) 
+            {
+                System.out.println(line);
+            }
         }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File not found : "+filename);
+            content="\\huge FILE NOT FOUND : "+filename;
+            return content;
+        }
+        catch (IOException e)
+        {
+            System.out.println("IO Error on file "+filename);
+            content="\\huge IO ERROR ON FILE : "+filename;
+            return content;
+        }
+        return "The file "+filename+" has been read";
     }
 }

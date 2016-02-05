@@ -36,7 +36,8 @@ class LatexActor extends MinAbsActor<LatexMessage>
         inputed_filenames=new HashMap<String,String>();
         working=true;
     }
-    private void processMessage(LatexMessage message)
+    @Override
+    public void processMessage(LatexMessage message)
     {
         String tag=message.getTag();
         synchronized(working)
@@ -55,9 +56,7 @@ class LatexActor extends MinAbsActor<LatexMessage>
         }
         if (tag.equals("ask"))
         {
-            FileProcessing file_processing = new FileProcessing( this,filename );
-            Thread t = new Thread(file_processing);
-            t.start();
+            String answer = new FileProcessing(filename).run();
         }
     }
 }

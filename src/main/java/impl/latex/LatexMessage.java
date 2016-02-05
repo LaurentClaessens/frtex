@@ -30,7 +30,7 @@ class LatexMessage implements Message
     private final ActorRef to_actor;
     private final String filename;
     private final String tag;
-    private final String content;
+    private String content;
 
     public LatexMessage(ActorRef from, ActorRef to,String tag,String filename)
     {

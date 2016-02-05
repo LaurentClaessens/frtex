@@ -24,7 +24,7 @@ public class LatexTest
     {
         LatexActorSystem system= new LatexActorSystem();
         ActorRef main_actor = system.actorOf(LatexActor.class);
-        LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","mazhe/mazhe.tex")
+        LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","mazhe/mazhe.tex");
         main_actor.send(main_message,main_actor);
     }
 }
