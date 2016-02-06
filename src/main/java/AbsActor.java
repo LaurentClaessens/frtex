@@ -34,8 +34,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     protected MailBox<T> mail_box;
     private  AbsActorSystem actor_system;
 
-    protected void setAcceptedType(Class<Message> t) { accepted_type=t; }
-    
     protected AbsActor() { mail_box = new actors.MailBox<T>(); }
     public MailBox<T> getMailBox() {return mail_box;}
 

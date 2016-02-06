@@ -23,16 +23,16 @@ import actors.exceptions.ShouldNotHappenException;
 import actors.impl.minimum.MinAbsActor;
 
 // a LatexActor is 'working' until it succeed to send the answer to who asked that.
-class LatexActor extends MinAbsActor<LatexMessage>
+public class LatexActor extends MinAbsActor<LatexMessage>
 {
-    private String filename;
     private HashMap<String,String> inputed_filenames;
     private Boolean working;
 
     // For each inputed file, the map 'inputed_filenames' retains its content.
-    LatexActor() 
+    public LatexActor() 
     {
         super();
+        accepted_type=LatexMessage.class;
         inputed_filenames=new HashMap<String,String>();
         working=true;
     }
@@ -56,7 +56,7 @@ class LatexActor extends MinAbsActor<LatexMessage>
         }
         if (tag.equals("ask"))
         {
-            String answer = new FileProcessing(filename).run();
+            String answer = new FileProcessing(message.getFilename()).run();
         }
     }
 }

@@ -42,7 +42,6 @@ public class EchoThreadProcessing implements Runnable
     public void run() 
     {
         Integer data=message.getData()-1;
-        System.out.println("Nombre : "+data.toString());
         if (data > 0)
         {
             EchoText new_message = new EchoText(actor_making,sender,data);

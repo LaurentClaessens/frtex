@@ -29,13 +29,11 @@ import java.nio.charset.Charset;
 class FileProcessing
 {
     private String filename;
-    private String foobar;
     private String content;
 
     FileProcessing(String filename) 
     {
         this.filename=filename;
-        this.foobar="This should never be seen.";
         this.content="This should never be seen.";
     }
     public String run() 

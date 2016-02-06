@@ -32,6 +32,7 @@ public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
         actor_system=ac;
         setAcceptedType(type);
     }
+    public void setAcceptedType(Class t) {  accepted_type=t; }
     public MinAbsActor(AbsActorSystem ac)
     { 
         super(); 
@@ -57,10 +58,7 @@ public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
     @Override
     public void receive(Message m)
     {
-        if (accepted_type.isInstance(m)) 
-        {
-            do_receive(m); 
-        }
+        if (accepted_type.isInstance(m)) { do_receive(m); }
         else { throw new UnsupportedMessageException(m);  }
     }
 }

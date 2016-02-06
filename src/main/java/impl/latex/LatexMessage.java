@@ -24,7 +24,7 @@ import actors.ActorRef;
 // The tag can be
 // - "ask". In this case, the message asks to provide the (recursive) content of the passed filename.
 // - "answer". In this case, the content of the message is the (recursive) content of the filename.
-class LatexMessage implements Message
+public class LatexMessage implements Message
 {
     private final ActorRef from_actor;
     private final ActorRef to_actor;
@@ -44,4 +44,5 @@ class LatexMessage implements Message
     public String getTag() {return tag;} 
     public String getContent() { return content; }
     public void setContent(String content) { this.content=content; }
+    public String getFilename() { return filename; }
 }

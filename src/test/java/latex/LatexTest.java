@@ -16,15 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import actors.impl.latex.LatexActorSystem;
+import actors.impl.latex.LatexMessage;
+import actors.impl.latex.LatexActor;
+import actors.ActorRef;
+
 public class LatexTest
 {
     private LatexActorSystem system;
     @Test
-    public void test_content()
+    public void test_content() throws InterruptedException
     {
+        System.out.println("DÉPART DU TEST LATEX");
         LatexActorSystem system= new LatexActorSystem();
         ActorRef main_actor = system.actorOf(LatexActor.class);
         LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","mazhe/mazhe.tex");
         main_actor.send(main_message,main_actor);
+        Thread.sleep(500);
+        System.out.println("Le fil principal LATEX se relance");
     }
 }

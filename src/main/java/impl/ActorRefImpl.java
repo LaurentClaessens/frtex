@@ -43,6 +43,7 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
     public Actor getActor() { return getActorSystem().getActor(this);  }
     public ActorSystemImpl getActorSystem() { return actor_system; }
 
+    @Override
     public void send(Message message, ActorRef to) 
     { 
         Actor actor_to = actor_system.getActor(to);
@@ -51,7 +52,6 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
         t.start();
     }
     public Integer getSerieNumber() { return serie_number;  }
-
 
     @Override
     public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
