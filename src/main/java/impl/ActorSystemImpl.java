@@ -44,7 +44,10 @@ public class ActorSystemImpl extends AbsActorSystem
     // increment the serie number of 1 and return the result.
     public Integer newSerieNumber()  { return ++created_serie_number;  }
     @Override
-    public Actor getActor(ActorRef reference) { return actors_map.getActor(reference); } 
+    public Actor getActor(ActorRef reference) 
+    {
+        return actors_map.getActor(reference); 
+    } 
     @Override
     protected void setActor(ActorRef reference,Actor actor) 
     { 

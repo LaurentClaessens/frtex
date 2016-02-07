@@ -43,6 +43,8 @@ public class ActorMap
     public Actor getActor(ActorRef ref) 
     {
         if (!isActive(ref)) {throw new NoSuchActorException();}
+        // Cette ligne peut ête enlevée :
+        Actor a = actors_map.get(ref); 
         return actors_map.get(ref); 
     }
 

@@ -37,7 +37,7 @@ public class LatexActor extends MinAbsActor<LatexMessage>
         working=true;
     }
     @Override
-    public void processMessage(LatexMessage message)
+    public void receive(LatexMessage message)
     {
         String tag=message.getTag();
         synchronized(working)

@@ -47,6 +47,7 @@ public class PingPongActor extends AbsActor<PingPongMessage> {
     public void receive(PingPongMessage message) {
         this.lastMessage = message;
         if (message instanceof PingMessage)
+            System.out.println("Dans receive::PingPongActor "+sender);
             self.send(new PongMessage(), sender);
     }
 }

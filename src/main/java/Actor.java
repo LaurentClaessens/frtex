@@ -35,6 +35,7 @@ public interface Actor<T extends Message> {
     void receive(T message);
     void send(T message, ActorRef to);
 
+    public void putInMailBox(T message);
     MailBox<T> getMailBox();
     void stop();
 }

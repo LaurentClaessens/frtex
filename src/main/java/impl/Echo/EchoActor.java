@@ -36,13 +36,8 @@ public class EchoActor extends MinAbsActor<EchoText>
     public EchoActor() { accepted_type=EchoText.class;  }    
 
     @Override
-    public void processMessage(EchoText message)
+    public void receive(EchoText message)
     {
-
-        // WAS : with 'm' in argument and an useless (?) cast.
-        //EchoText message = (EchoText)  m;
-        //EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),m.getSender());
-
         EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),message.getSender());
         Thread t = new Thread(processing_thread);
         t.start();

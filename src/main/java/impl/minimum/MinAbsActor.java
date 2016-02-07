@@ -21,44 +21,27 @@ package actors.impl.minimum;
 import actors.AbsActor;
 import actors.AbsActorSystem;
 import actors.Message;
-import actors.exceptions.UnsupportedMessageException;
 
 public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
 {
     private AbsActorSystem actor_system;
+    public void setAcceptedType(Class t) {  accepted_type=t; }
     public MinAbsActor(AbsActorSystem ac,Class<Message> type)
     { 
         super(); 
         actor_system=ac;
         setAcceptedType(type);
+        System.out.println("Construit MinAbsActor avec "+type);
     }
-    public void setAcceptedType(Class t) {  accepted_type=t; }
     public MinAbsActor(AbsActorSystem ac)
     { 
         super(); 
         actor_system=ac;
+        System.out.println("Constructeur à 1 paramètre "+accepted_type);
     }
-    public MinAbsActor() {};        // After using this one, you have to put the actor system by hand.
-    public abstract void processMessage(T m);
-    private void processNextMessage()
+    public MinAbsActor()  
     {
-        if ( mail_box.size()>0 )
-        {
-            T m;
-            synchronized(mail_box) { m=mail_box.poll(); }
-            processMessage(m);
-        }
+        System.out.println("Constructeur à zéro paramètre ");
     }
-    public void do_receive(Message message)
-    {
-        T m=(T) message;
-        synchronized(mail_box) { mail_box.add(m);}
-        processNextMessage();
-    }
-    @Override
-    public void receive(Message m)
-    {
-        if (accepted_type.isInstance(m)) { do_receive(m); }
-        else { throw new UnsupportedMessageException(m);  }
-    }
+        
 }

@@ -46,6 +46,7 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
     @Override
     public void send(Message message, ActorRef to) 
     { 
+        System.out.println("ooNEJRooINinYh 1 "+to);
         Actor actor_to = actor_system.getActor(to);
         SendingThread sending_thread=new SendingThread(message,actor_to);
         Thread t = new Thread( sending_thread );

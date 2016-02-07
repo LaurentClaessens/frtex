@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors;
 
 import actors.exceptions.ShouldNotHappenException;
+import actors.exceptions.UnsupportedMessageException;
 
 /**
  * Defines common properties of all actors.
@@ -54,11 +55,32 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         return this;
     }
     public abstract void receive(T m);
+    private void processNextMessage()
+    {
+        if ( mail_box.size()>0 )
+        {
+            T m;
+            synchronized(mail_box) { m=mail_box.poll(); }
+            receive(m);
+        }
+    }
+    public void putInMailBox(Message message)
+    {
+        System.out.println("ooVVZMooHFBuoQ "+message.getClass().getSimpleName()+" comparé à "+accepted_type);
+        System.out.println("MinAbsActor::receive  1");
+        if (accepted_type.isInstance(message)) 
+        { 
+            T m=(T) message;
+            synchronized(mail_box) { mail_box.add(m);}
+            processNextMessage();
+        }
+        else { throw new UnsupportedMessageException(message);  }
+    }
     public void send(T m, ActorRef to)
     {
         if (accepted_type.isInstance(m)) 
         {
-            actor_system.getActor(to).receive(m); 
+            actor_system.getActor(to).putInMailBox(m); 
         }
         else { throw new ShouldNotHappenException("Trying to send a message of wrong type. Your actor implementation should not have such evil plans.");}
     }
