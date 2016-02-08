@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
+import actors.Mail;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.UnsupportedMessageException;
 
@@ -59,13 +60,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     {
         if ( mail_box.size()>0 )
         {
-            Mail<T> mail;
+            Mail mail;
             synchronized(this) //mail_box,sender
             {
                 mail=mail_box.poll(); 
                 sender=mail.getSender();
             }
-            T m = mail.getMessage();
+            T m=(T) mail.getMessage();
             receive(m);
         }
     }
@@ -75,8 +76,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         System.out.println("MinAbsActor::receive  1");
         if (accepted_type.isInstance(message)) 
         { 
-            T m=(T) message;
-            Mail<accepted_type> mail=Mail(m,self);
+            Mail mail=new Mail(message,self);
             synchronized(mail_box) { mail_box.add(mail);}
             processNextMessage();
         }

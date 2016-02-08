@@ -44,10 +44,10 @@ public class MailBoxTest {
         mail_box.add( new EchoText(a1,a2,13)  );
         mail_box.add( new EchoText(a1,a2,23)  );
 
-        EchoText m2=mail_box.poll();
+        EchoText m2=mail_box.poll().getMessage();
         Assert.assertTrue(m2.getData()==3);
         mail_box.add( new EchoText(a1,a2,33)  );
-        m2=mail_box.poll();
+        m2=mail_box.poll().getMessage();
         Assert.assertTrue(m2.getData()==13);
         Assert.assertTrue(mail_box.size()==2);
     }

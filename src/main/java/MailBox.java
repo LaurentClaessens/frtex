@@ -26,17 +26,22 @@ import actors.Mail;
 import actors.exceptions.ShouldNotHappenException;
 
 
-
 /**
 *  An actors has its mail box.
 */
 
 public class MailBox<M extends Message>
 {
-    private Queue<  Mail<M>  > queue = new LinkedList< Mail<M>  >();
+    private Queue<  Mail  > queue = new LinkedList<Mail>();
     private Boolean closed = false;
+    private ActorRef proprietary;  
 
-    public void add(Mail<M> m) 
+    public void add(Message m)
+    {
+        Mail mail = new Mail(m,proprietary);
+        add(mail);
+    }
+    public void add(Mail m) 
     {
         if (!closed)
         {
