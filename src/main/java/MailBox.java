@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import actors.Message;
+import actors.Mail;
 import actors.exceptions.ShouldNotHappenException;
 
 
@@ -32,10 +33,10 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class MailBox<M extends Message>
 {
-    private Queue<M> queue = new LinkedList<M>();
+    private Queue<  Mail<M>  > queue = new LinkedList< Mail<M>  >();
     private Boolean closed = false;
 
-    public void add(M m) 
+    public void add(Mail<M> m) 
     {
         if (!closed)
         {
@@ -47,7 +48,7 @@ public class MailBox<M extends Message>
         }
     }
 
-    public M poll()  // return the first element and then remove it
+    public Mail<M> poll()  // return the first element and then remove it
     {
         synchronized(this) { return queue.poll();  }
     }           

@@ -59,8 +59,13 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     {
         if ( mail_box.size()>0 )
         {
-            T m;
-            synchronized(mail_box) { m=mail_box.poll(); }
+            Mail<T> mail;
+            synchronized(this) //mail_box,sender
+            {
+                mail=mail_box.poll(); 
+                sender=mail.getSender();
+            }
+            T m = mail.getMessage();
             receive(m);
         }
     }
@@ -71,7 +76,8 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         if (accepted_type.isInstance(message)) 
         { 
             T m=(T) message;
-            synchronized(mail_box) { mail_box.add(m);}
+            Mail<accepted_type> mail=Mail(m,self);
+            synchronized(mail_box) { mail_box.add(mail);}
             processNextMessage();
         }
         else { throw new UnsupportedMessageException(message);  }
