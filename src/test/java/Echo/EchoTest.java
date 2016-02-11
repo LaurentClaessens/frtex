@@ -32,26 +32,82 @@ import org.junit.Test;
 
 public class EchoTest  
 {
+    private EchoActorSystem system; 
+    private ActorRef echo_actor;
+    private ActorRef echo_one_actor;
+    private ActorRef echo_two_actor;
+
+    @Before
+    public void initialize()
+    {
+        system = new EchoActorSystem();
+
+        echo_actor = system.actorOf(EchoActor.class);
+        echo_one_actor = system.actorOf(EchoActor.class);
+        echo_two_actor = system.actorOf(EchoActor.class);
+
+        echo_one_actor.setAcceptedType(EchoTextOne);
+        echo_two_actor.setAcceptedType(EchoTextTwo);
+    }
+
     @Test
     public void Numbering()
     {
         EchoActorSystem system = new EchoActorSystem();
         ActorRef a1 = system.actorOf(EchoActor.class);
         ActorRef a2 = system.actorOf(EchoActor.class);
+
+        Assert.isEqual(a1.getSerieNumber,0);
+        Assert.isEqual(a2.getSerieNumber,1);
     }
     @Test
-    public void Send() throws InterruptedException
+    public void setAcceptedTypeVerification() throws InterruptedException
     {
-        EchoActorSystem system = new EchoActorSystem();
-        ActorRef a1 = system.actorOf(EchoActor.class);
-        ActorRef a2 = system.actorOf(EchoActor.class);
-        EchoText m1 = new EchoText(a1,a2,50);
-        EchoText m2 = new EchoText(a2,a1,10);
-        EchoText m3 = new EchoText(a2,a1,100);
-        a1.send(m1,a2);
-        a2.send(m2,a1);
-        a2.send(m3,a1);
+        System.out.println("LANCEMENT de acceptedTypeVerification");
+
+        echo_one_actor.setAcceptedType(EchoTextOne);
+        echo_two_actor.setAcceptedType(EchoTextTwo);
+
+        Assert.isEqual(echo_actor.getAcceptedType(),EchoText.class);
+        Assert.isEqual(echo_one_actor.getAcceptedType(),EchoTextOne.class);
+        Assert.isEqual(echo_two_actor.getAcceptedType(),EchoTextTwo.class);
+    }
+
+    @Test
+    public void acceptedTypeVerification() throws InterruptedException
+    {
+        EchoText mE = new EchoText(echo_actor,echo_actor,20);
+        echo_actor.send(mE,echo_actor);
         Thread.sleep(1000);
-        system.stop();
+        System.out.println("echo_actor "+echo_actor.getLastMessage().data);
+        Assert.isEqual(echo_actor.getLastMessage().data,1);
+
+        EchoText mE = new EchoText(echo_one_actor,echo_two_actor,20);
+        echo_one_actor.send(mE,echo_two_actor);
+        Thread.sleep(1000);
+        System.out.println("echo_actor "+echo_one_actor.getLastMessage().data);
+        Assert.isEqual(echo_actor.getLastMessage().data,1);
+
+
+        EchoTextOne mO = new EchoTextOne(echo_actor,echo_actor,23);
+        echo_actor.send(mO,echo_actor);
+        Thread.sleep(1000);
+        System.out.println("echo_actor"+echo_actor.getLastMessage().data);
+        Assert.isEqual(echo_actor.getLastMessage().data,1);
+
+        EchoTextOne mO = new EchoTextOne(echo_actor,echo_one_actor,23);
+        echo_actor.send(mO,echo_one_actor);
+        Thread.sleep(1000);
+        Assert.isEqual(echo_actor.getLastMessage().data,1);
+    }
+    @Test (expected = UnsupportedMessageException.class)  
+    public void nonAcceptedTypeVerification() throws InterruptedException
+    {
+        System.out.println("LANCEMENT de nonAcceptedTypeVerification");
+
+        EchoTextOne mO = new EchoTextOne(echo_actor,echo_two_actor,23);
+        echo_actor.send(mO,echo_two_actor);
+        Thread.sleep(1000);
+        Assert.isEqual(echo_actor.getLastMessage().data,1);
     }
 }

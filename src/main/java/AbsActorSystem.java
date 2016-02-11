@@ -44,7 +44,6 @@ public abstract class AbsActorSystem implements ActorSystem {
         }
         return reference;
     }
-
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor) 
     {

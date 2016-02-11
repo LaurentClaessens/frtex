@@ -16,24 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.Echo;
+package actors.impl.decent;
 
-import actors.impl.decent.DecentActorSystem;
-import actors.ActorRef;
+import actors.Message;
+import actors.impl.ActorSystemImpl;
+import actors.ActorSystem.ActorMode;
 
-public class EchoActorSystem extends DecentActorSystem
+
+public abstract class DecentActorSystem extends ActorSystemImpl
 {
-    public EchoActorSystem() 
+    private Class accepted_type=Message.class;
+    public DecentActorSystem(Class t) 
     {
-        super(EchoText.class); 
+      super(); 
+      accepted_type=t;
     }
     @Override
-    public ActorRef<EchoText> actorOf()
+    public DecentActorRef actorOf()
     {
-        ActorRefImpl ar = (ActorRefImpl) super.actorOf(EchoActor.class,mode);
+        ActorRefImpl ar = (ActorRefImpl) super.actorOf(accepted_type,ActorMode.LOCAL);
         ar.setActorSystem(this);
-        ar.setSerieNumber( this.newSerieNumber() );
-        ar.setAcceptedType(EchoText.class);
+        ar.setAcceptedType(accepted_type);
         return ar;
     }
 }

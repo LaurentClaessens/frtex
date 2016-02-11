@@ -24,6 +24,8 @@ import org.reflections.Reflections;
 
 import java.util.Set;
 
+import actors.impl.ActorSystemImpl;
+
 /**
  * Scans the classpath and instantiates the concrete class that implements {@link it.unipd.math.pcd.actors.ActorSystem}.
  *
@@ -51,7 +53,8 @@ public class ActorSystemFactory {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-
+        system=new ActorSystemImpl();
+        System.out.println("ActorSystemFactory::trouvé "+system.getClass().getSimpleName());
         return system;
     }
 }

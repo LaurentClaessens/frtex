@@ -16,24 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
+// This is a message type which is identical to EchoText, but in a different class,
+// in order to test if the 'accepted_type' verification works.
+
 package actors.impl.Echo;
 
-import actors.impl.decent.DecentActorSystem;
+import actors.AbsMessage;
+import actors.Actor;
 import actors.ActorRef;
 
-public class EchoActorSystem extends DecentActorSystem
+public class EchoTextTwo extends EchoText
 {
-    public EchoActorSystem() 
+    public EchoTextTwo(ActorRef from, ActorRef to,Integer d)
     {
-        super(EchoText.class); 
-    }
-    @Override
-    public ActorRef<EchoText> actorOf()
-    {
-        ActorRefImpl ar = (ActorRefImpl) super.actorOf(EchoActor.class,mode);
-        ar.setActorSystem(this);
-        ar.setSerieNumber( this.newSerieNumber() );
-        ar.setAcceptedType(EchoText.class);
-        return ar;
+        super(from,to,d);
     }
 }

@@ -18,22 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.impl.decent.DecentActorSystem;
+import actors.AbsMessage;
+import actors.Actor;
 import actors.ActorRef;
 
-public class EchoActorSystem extends DecentActorSystem
+public class EchoTextOne extends EchoText
 {
-    public EchoActorSystem() 
+    public EchoTextOne(ActorRef from, ActorRef to,Integer d)
     {
-        super(EchoText.class); 
-    }
-    @Override
-    public ActorRef<EchoText> actorOf()
-    {
-        ActorRefImpl ar = (ActorRefImpl) super.actorOf(EchoActor.class,mode);
-        ar.setActorSystem(this);
-        ar.setSerieNumber( this.newSerieNumber() );
-        ar.setAcceptedType(EchoText.class);
-        return ar;
+        super(from,to,d);
     }
 }
+

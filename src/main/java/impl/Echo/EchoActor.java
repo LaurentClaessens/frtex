@@ -20,14 +20,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.impl.minimum.MinAbsActor;
+import actors.impl.decent.DecentAbsActor;
 import actors.ActorRef;
+import actors.Message;
 import actors.AbsActorSystem;
 
-public class EchoActor extends MinAbsActor<EchoText>
+public class EchoActor extends DecentAbsActor
 {
+    private EchoText last_message;
     private ActorRef getActorRef() { return self; }
 
+    public EchoText getLastMessage() { return last_message;  }
     public EchoActor(AbsActorSystem actor_system) 
     {
         super(actor_system);
@@ -36,8 +39,12 @@ public class EchoActor extends MinAbsActor<EchoText>
     public EchoActor() { accepted_type=EchoText.class;  }    
 
     @Override
-    public void receive(EchoText message)
+    public void receive(Message m)
     {
+        EchoText message = (EchoText) m; // at this point the message type
+                                        // verification should 
+                                        // already have been done.
+        last_message=message;
         EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),message.getSender());
         Thread t = new Thread(processing_thread);
         t.start();

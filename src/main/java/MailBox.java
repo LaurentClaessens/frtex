@@ -32,10 +32,13 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class MailBox<M extends Message>
 {
-    private Queue<  Mail  > queue = new LinkedList<Mail>();
+    private Queue<Mail> queue = new LinkedList<Mail>();
     private Boolean closed = false;
     private ActorRef proprietary;  
 
+    public void setProprietary(ActorRef ref) { proprietary=ref;  }
+    // It is discouraged to create a mail with this constructor.
+    // It only exists for testing purpose.
     public void add(Message m)
     {
         Mail mail = new Mail(m,proprietary);

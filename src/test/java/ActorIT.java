@@ -68,8 +68,10 @@ public class ActorIT {
         this.system = ActorSystemFactory.buildActorSystem();
     }
 
-    @Test
+    //@Test
     public void shouldBeAbleToSendAMessage() throws InterruptedException {
+        System.out.println("LANCEMENT DE 'shouldBeAbleToSendAMessage'");
+        ActorRef ar = system.actorOf(StoreActor.class);
         TestActorRef ref = new TestActorRef(system.actorOf(StoreActor.class));
         StoreActor actor = (StoreActor) ref.getUnderlyingActor(system);
         // Send a string to the actor
@@ -78,31 +80,27 @@ public class ActorIT {
         Thread.sleep(2000);
         // Verify that the message is been processed
         Assert.assertEquals("The message has to be received by the actor", "Hello World", actor.getData());
+        System.out.println("FIN DE 'shouldBeAbleToSendAMessage'");
     }
 
     @Test
     public void shouldBeAbleToRespondToAMessage() throws InterruptedException {
         System.out.println("LANCEMENT DE 'shouldBeAbleToRespondToAMessage'");
-        System.out.println("ooRWGTooXYJizM 1 "+Thread.currentThread().getName());
         TestActorRef pingRef = new TestActorRef(system.actorOf(PingPongActor.class));
-        System.out.println("ooRWGTooXYJizM 2 "+Thread.currentThread().getName());
         TestActorRef pongRef = new TestActorRef(system.actorOf(PingPongActor.class));
-        System.out.println("ooRWGTooXYJizM 3 "+Thread.currentThread().getName());
 
         pongRef.send(new PingMessage(), pingRef);
-        System.out.println("ooRWGTooXYJizM 4 "+Thread.currentThread().getName());
 
         Thread.sleep(2000);
 
         PingPongActor pingActor = (PingPongActor) pingRef.getUnderlyingActor(system);
-        System.out.println("ooRWGTooXYJizM 5 "+Thread.currentThread().getName());
         PingPongActor pongActor = (PingPongActor) pongRef.getUnderlyingActor(system);
 
-        System.out.println("ooRWGTooXYJizM 6 "+Thread.currentThread().getName());
         Assert.assertEquals("A ping actor has received a ping message", "Ping",
                 pingActor.getLastMessage().getMessage());
         Assert.assertEquals("A pong actor has received back a pong message", "Pong",
                 pongActor.getLastMessage().getMessage());
+        System.out.println("FIN DE 'shouldBeAbleToRespondToAMessage'");
     }
 
     //@Test

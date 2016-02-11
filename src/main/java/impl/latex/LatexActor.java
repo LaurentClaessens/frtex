@@ -20,10 +20,10 @@ package actors.impl.latex;
 
 import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
-import actors.impl.minimum.MinAbsActor;
+import actors.impl.decent.DecentAbsActor;
 
 // a LatexActor is 'working' until it succeed to send the answer to who asked that.
-public class LatexActor extends MinAbsActor<LatexMessage>
+public class LatexActor extends DecentAbsActor
 {
     private HashMap<String,String> inputed_filenames;
     private Boolean working;
@@ -50,9 +50,6 @@ public class LatexActor extends MinAbsActor<LatexMessage>
         }
         if (tag.equals("answer"))
         {
-            //AnswerProcessing answer_process = new AnswerProcessing(message,getActorRef(),m.getSender());
-            //Thread t = new Thread(answer_process);
-            //t.start();
         }
         if (tag.equals("ask"))
         {

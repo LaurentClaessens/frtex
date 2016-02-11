@@ -16,32 +16,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.minimum;
+package actors.impl.decent;
 
 import actors.AbsActor;
 import actors.AbsActorSystem;
 import actors.Message;
+import actors.MakeCrash;
 
-public abstract class MinAbsActor<T extends Message> extends AbsActor<T>
+// This class has no generic parameter because the message type is passed as argument.
+public abstract class DecentAbsActor extends AbsActor
 {
     private AbsActorSystem actor_system;
     public void setAcceptedType(Class t) {  accepted_type=t; }
-    public MinAbsActor(AbsActorSystem ac,Class<Message> type)
+    public DecentAbsActor(AbsActorSystem ac,Class<Message> type)
     { 
         super(); 
         actor_system=ac;
         setAcceptedType(type);
-        System.out.println("Construit MinAbsActor avec "+type);
     }
-    public MinAbsActor(AbsActorSystem ac)
+    public DecentAbsActor(AbsActorSystem ac)
     { 
         super(); 
         actor_system=ac;
-        System.out.println("Constructeur à 1 paramètre "+accepted_type);
+        System.out.println("you should not use this one parameter constructor of DecentAbsActor.");
     }
-    public MinAbsActor()  
+    public DecentAbsActor()  
     {
-        System.out.println("Constructeur à zéro paramètre ");
+        System.out.println("you should not use this zero parameter constructor of DecentAbsActor.");
     }
-        
 }

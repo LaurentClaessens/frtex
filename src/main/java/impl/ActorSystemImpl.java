@@ -83,7 +83,6 @@ public class ActorSystemImpl extends AbsActorSystem
         {
             still_up=test_if_something_up();
         }
-        System.out.println("boh il n'y a plus rien...");
     }
     private Boolean isActive(ActorRef ref) { return actors_map.isActive(ref);  }
     private void setActive(ActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }

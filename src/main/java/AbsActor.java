@@ -22,21 +22,26 @@ import actors.Mail;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.UnsupportedMessageException;
 
-/**
- * Defines common properties of all actors.
-*/
+
+// accepted_type has default value 'Message', so that no verification is done.
+// Rationale :
+// Since the type of message that the actor has to deal with is only given as generic type variable, I guess that it is impossible to perform the verification.
+// The implementation 'DecentAbsActor' has a method "setAcceptedType" that allows the user to set the type of message to be accepted.
+// See also :
+// http://stackoverflow.com/questions/34989911/java-do-something-if-implementation-t-of-base-and-something-else-if-any-othe
+
 public abstract class AbsActor<T extends Message> implements Actor<T> 
 {
 
-    /**
-     * Self-reference of the actor
-     */
-    protected ActorRef<T> self;
-    protected Class accepted_type;
+    protected ActorRef<T> self;         // self-reference
+    protected Class accepted_type=Message.class;
     protected MailBox<T> mail_box;
     private  AbsActorSystem actor_system;
 
-    protected AbsActor() { mail_box = new actors.MailBox<T>(); }
+    protected AbsActor() 
+    { 
+        mail_box = new actors.MailBox<T>(); 
+    }
     public MailBox<T> getMailBox() {return mail_box;}
 
     /**
@@ -72,8 +77,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     }
     public void putInMailBox(Message message)
     {
-        System.out.println("ooVVZMooHFBuoQ "+message.getClass().getSimpleName()+" comparé à "+accepted_type);
-        System.out.println("MinAbsActor::receive  1");
         if (accepted_type.isInstance(message)) 
         { 
             Mail mail=new Mail(message,self);

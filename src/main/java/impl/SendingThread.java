@@ -31,7 +31,9 @@ public class SendingThread implements Runnable
         message=m;
         actor_to=t;
     }
-    public void run() { actor_to.receive(message); 
+    public void run() 
+    {
+        actor_to.putInMailBox(message); 
     }
 }
 
