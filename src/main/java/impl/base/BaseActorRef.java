@@ -16,32 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl;
+package actors.impl.base;
 
 import actors.ActorRef;
 import actors.ActorSystem;
 import actors.Message;
 import actors.Actor;
-import actors.impl.SendingThread;
+import actors.impl.base.SendingThread;
 
 import actors.exceptions.ShouldNotHappenException;
 
-public class ActorRefImpl<T extends Message> implements ActorRef<T>
+public class BaseActorRef<T extends Message> implements ActorRef<T>
 {
-    private ActorSystemImpl actor_system;
-    private Integer serie_number;
-
-    public void setActorSystem(ActorSystemImpl as) { actor_system=as;  }
-    public void setSerieNumber(Integer n) { serie_number=n;  }
-
-    public ActorRefImpl(ActorSystemImpl ac,Integer number) 
-    { 
-        actor_system=ac; 
-        serie_number=number;
-    }
-    public String getName() { return serie_number.toString(); }
     public Actor getActor() { return getActorSystem().getActor(this);  }
-    public ActorSystemImpl getActorSystem() { return actor_system; }
+    public BaseActorSystem getActorSystem() { return getActor().getActorSystem(); }
 
     @Override
     public void send(Message message, ActorRef to) 
@@ -51,7 +39,6 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
         Thread t = new Thread( sending_thread );
         t.start();
     }
-    public Integer getSerieNumber() { return serie_number;  }
 
     @Override
     public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }

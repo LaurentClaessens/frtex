@@ -19,20 +19,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.Echo;
 
 import actors.impl.decent.DecentActorSystem;
+import actors.impl.decent.DecentActorRef;
 import actors.ActorRef;
+import actors.Actor;
+import actors.exceptions.ShouldNotHappenException;
 
 public class EchoActorSystem extends DecentActorSystem
 {
+
     public EchoActorSystem() 
-    {
+    { 
         super(EchoText.class); 
+        created_serie_number=-1;
     }
     @Override
-    public ActorRef<EchoText> actorOf()
+    public ActorRef<EchoText> actorOf(Class<? extends Actor> actor, ActorMode mode) 
     {
-        ActorRefImpl ar = (ActorRefImpl) super.actorOf(EchoActor.class,mode);
+        if (actor!=EchoActor.class)
+        {
+            throw new ShouldNotHappenException("Only EchoActor are supported by the Echo actor system.");
+        }
+        if (mode!=ActorMode.LOCAL)
+        {
+            throw new ShouldNotHappenException("Only local actors are supported by the Echo actor system.");
+        }
+        return actorOf(EchoActor.class,ActorMode.LOCAL);
+    }
+
+    public DecentActorRef actorOf()
+    {
+        DencetActorRef ar = (DecentActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
         ar.setActorSystem(this);
-        ar.setSerieNumber( this.newSerieNumber() );
+        synchronized(created_serie_number)
+        {
+            ar.setSerieNumber( newSerieNumber() );
+        }
         ar.setAcceptedType(EchoText.class);
         return ar;
     }

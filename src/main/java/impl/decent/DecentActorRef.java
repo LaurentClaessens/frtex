@@ -19,13 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.decent;
 
 import actors.Message;
-import actors.impl.ActorRefImpl;
+import actors.impl.BaseActorRef;
 
-public class DecentActorRef extends ActorRefImpl
-{
-    private Class accepted_type=Message.class;
-
-    public DecentActorRef(ActorSystemImpl ac,Integer number) {super (ac,number);}
-    public ActorRefImpl
-    public void setAcceptedType(Class t) { accepted_type=t;  }
+public class DecentActorRef extends BaseActorRef 
+{ 
+    public String getName() { return getActor().getName(); }
 }

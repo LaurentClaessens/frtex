@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
+import actors.Message;
 import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
 import actors.impl.decent.DecentAbsActor;
@@ -37,8 +38,10 @@ public class LatexActor extends DecentAbsActor
         working=true;
     }
     @Override
-    public void receive(LatexMessage message)
+    public void receive(Message m)
     {
+        if (!accepted_type.isInstance(m)) { throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is reveived by the LaxteActor."); }
+        LatexMessage message=(LatexMessage) m;
         String tag=message.getTag();
         synchronized(working)
         {

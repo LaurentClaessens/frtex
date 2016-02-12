@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl;
+package actors.impl.base;
 
 import java.util.Collection;
 import java.util.Set;
@@ -30,19 +30,15 @@ import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.IllegalModeException;
 import actors.exceptions.NoSuchActorException;
 
-public class ActorSystemImpl extends AbsActorSystem
+public class BaseActorSystem extends AbsActorSystem
 {
-    private Integer created_serie_number;
     private ActorMap actors_map;
 
-    public ActorSystemImpl() 
+    public BaseActorSystem() 
     { 
-        created_serie_number=-1; 
         actors_map=new ActorMap();
     }
 
-    // increment the serie number of 1 and return the result.
-    public Integer newSerieNumber()  { return ++created_serie_number;  }
     @Override
     public Actor getActor(ActorRef reference) 
     {
@@ -61,10 +57,7 @@ public class ActorSystemImpl extends AbsActorSystem
             throw new IllegalModeException(mode);
         }
         ActorRef actor_ref;
-        synchronized (created_serie_number)
-        {
-            actor_ref = new ActorRefImpl(this,newSerieNumber());
-        }
+        actor_ref = new BaseActorRef(this);
         return actor_ref;
     }
     private Boolean test_if_something_up()

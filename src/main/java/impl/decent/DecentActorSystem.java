@@ -19,24 +19,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.decent;
 
 import actors.Message;
+import actors.Actor;
 import actors.impl.ActorSystemImpl;
 import actors.ActorSystem.ActorMode;
+import actors.exceptions.ShouldNotHappenException;
 
 
 public abstract class DecentActorSystem extends ActorSystemImpl
 {
+    private Integer created_serie_number;
     private Class accepted_type=Message.class;
+
+    public Integer newSerieNumber()  { return ++created_serie_number;  }
     public DecentActorSystem(Class t) 
     {
       super(); 
       accepted_type=t;
     }
     @Override
+    public DecentActorRef actorOf(Class<? extends Actor> actor,ActorMode mode)
+    {
+        if (mode!=ActorMode.LOCAL)
+        {
+            throw new ShouldNotHappenException("Only local actors are implemented.");
+        }
+        return actorOf();
+    }
     public DecentActorRef actorOf()
     {
-        ActorRefImpl ar = (ActorRefImpl) super.actorOf(accepted_type,ActorMode.LOCAL);
-        ar.setActorSystem(this);
-        ar.setAcceptedType(accepted_type);
+        DecentActorRef ar = (DecentActorRef) super.actorOf(accepted_type,ActorMode.LOCAL);
+        DecentAbsActor actor = ar.getActor();
+        actor.setAcceptedType(accepted_type);
+        synchronized(created_serie_number){ actor.setSerieNumber(newSerieNumber());  }
         return ar;
     }
 }

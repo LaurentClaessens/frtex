@@ -18,30 +18,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.decent;
 
+import java.util.UUID;
+
 import actors.AbsActor;
 import actors.AbsActorSystem;
 import actors.Message;
-import actors.MakeCrash;
+import actors.impl.decent.DecentActorSystem;
 
 // This class has no generic parameter because the message type is passed as argument.
 public abstract class DecentAbsActor extends AbsActor
 {
-    private AbsActorSystem actor_system;
-    public void setAcceptedType(Class t) {  accepted_type=t; }
-    public DecentAbsActor(AbsActorSystem ac,Class<Message> type)
-    { 
-        super(); 
-        actor_system=ac;
-        setAcceptedType(type);
-    }
-    public DecentAbsActor(AbsActorSystem ac)
-    { 
-        super(); 
-        actor_system=ac;
-        System.out.println("you should not use this one parameter constructor of DecentAbsActor.");
-    }
-    public DecentAbsActor()  
+    private String my_name;
+    private Integer serie_number;
+    private Class accepted_type;
+
+    public void setSerieNumber(Integer n) {serie_number=n;}
+    public void setAcceptedType(Class t) {accepted_type=t;}
+    public String getName() { return my_name; }
+    @Override
+    public DecentActorSystem getActorSystem()
     {
-        System.out.println("you should not use this zero parameter constructor of DecentAbsActor.");
+        return (DecentActorSystem) super.getActorSystem();
     }
 }
