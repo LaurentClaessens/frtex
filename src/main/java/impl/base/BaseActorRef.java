@@ -28,13 +28,13 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class BaseActorRef<T extends Message> implements ActorRef<T>
 {
-    public Actor getActor() { return getActorSystem().getActor(this);  }
+    public BaseActor getActor() { return getActorSystem().getActor(this);  }
     public BaseActorSystem getActorSystem() { return getActor().getActorSystem(); }
 
     @Override
     public void send(Message message, ActorRef to) 
     { 
-        Actor actor_to = actor_system.getActor(to);
+        Actor actor_to = getActorSystem().getActor(to);
         SendingThread sending_thread=new SendingThread(message,actor_to);
         Thread t = new Thread( sending_thread );
         t.start();

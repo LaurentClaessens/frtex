@@ -48,12 +48,8 @@ public class EchoActorSystem extends DecentActorSystem
 
     public DecentActorRef actorOf()
     {
-        DencetActorRef ar = (DecentActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
+        DecentActorRef ar = (DecentActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
         ar.setActorSystem(this);
-        synchronized(created_serie_number)
-        {
-            ar.setSerieNumber( newSerieNumber() );
-        }
         ar.setAcceptedType(EchoText.class);
         return ar;
     }

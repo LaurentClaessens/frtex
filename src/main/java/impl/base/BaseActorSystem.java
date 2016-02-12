@@ -25,10 +25,11 @@ import actors.AbsActorSystem;
 import actors.ActorSystem.ActorMode;
 import actors.ActorRef;
 import actors.Actor;
-import actors.ActorMap;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.IllegalModeException;
 import actors.exceptions.NoSuchActorException;
+
+import actors.impl.base.ActorMap;
 
 public class BaseActorSystem extends AbsActorSystem
 {
@@ -40,7 +41,7 @@ public class BaseActorSystem extends AbsActorSystem
     }
 
     @Override
-    public Actor getActor(ActorRef reference) 
+    public BaseActor getActor(ActorRef reference) 
     {
         return actors_map.getActor(reference); 
     } 

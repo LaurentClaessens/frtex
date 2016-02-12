@@ -18,10 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
-import actors.impl.ActorSystemImpl;
+import actors.impl.base.BaseActorSystem;
 import actors.ActorRef;
 
-public class LatexActorSystem extends ActorSystemImpl
+public class LatexActorSystem extends BaseActorSystem
 {
     public LatexActorSystem() { super(); }
     //public ActorRef getFreeActor() {}

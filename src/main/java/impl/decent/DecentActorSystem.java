@@ -20,12 +20,12 @@ package actors.impl.decent;
 
 import actors.Message;
 import actors.Actor;
-import actors.impl.ActorSystemImpl;
+import actors.impl.base.BaseActorSystem;
 import actors.ActorSystem.ActorMode;
 import actors.exceptions.ShouldNotHappenException;
 
 
-public abstract class DecentActorSystem extends ActorSystemImpl
+public abstract class DecentActorSystem extends BaseActorSystem
 {
     private Integer created_serie_number;
     private Class accepted_type=Message.class;

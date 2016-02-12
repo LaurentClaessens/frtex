@@ -34,7 +34,7 @@ public class EchoActor extends DecentAbsActor
     public EchoActor(AbsActorSystem actor_system) 
     {
         super(actor_system);
-        accepted_type=EchoText.class;
+        setAcceptedType(EchoText.class);
     }
     public EchoActor() { accepted_type=EchoText.class;  }    
 

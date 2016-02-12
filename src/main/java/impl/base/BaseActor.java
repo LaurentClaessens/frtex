@@ -16,12 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.decent;
+package actors.impl.base;
 
-import actors.Message;
-import actors.impl.base.BaseActorRef;
+import actors.AbsActor;
 
-public class DecentActorRef extends BaseActorRef 
-{ 
-    public String getName() { return getActor().getName(); }
+// This remains an abstract class because it does not contains "receive".
+public abstract class BaseActor extends AbsActor
+{
+    private BaseActorSystem actor_system;
+
+    public void setActorSystem(BaseActorSystem as) { actor_system=as;  }
+    public BaseActorSystem getActorSystem() { return actor_system;  }
 }
