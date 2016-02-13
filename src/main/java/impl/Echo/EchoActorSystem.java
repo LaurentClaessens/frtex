@@ -32,7 +32,7 @@ public class EchoActorSystem extends DecentActorSystem
         super(EchoText.class); 
     }
     @Override
-    public DecentActorRef actorOf(Class<? extends Actor> actor, ActorMode mode) 
+    public EchoActorRef actorOf(Class<? extends Actor> actor, ActorMode mode) 
     {
         if (actor!=EchoActor.class)
         {
@@ -42,14 +42,12 @@ public class EchoActorSystem extends DecentActorSystem
         {
             throw new ShouldNotHappenException("Only local actors are supported by the Echo actor system.");
         }
-        return actorOf(EchoActor.class,ActorMode.LOCAL);
-    }
-
-    public DecentActorRef actorOf()
-    {
-        DecentActorRef ar = (DecentActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
+        EchoActorRef ar = (EchoActorRef) actorOf(EchoActor.class,ActorMode.LOCAL);
         ar.setActorSystem(this);
-        //ar.setAcceptedType(EchoText.class);
         return ar;
+    }
+    public EchoActorRef actorOf()
+    {
+        return actorOf(EchoActor.class,ActorMode.LOCAL);
     }
 }

@@ -37,7 +37,7 @@
  */
 package actors;
 
-import actors.impl.ActorSystemImpl;
+import actors.impl.base.BaseActorSystem;
 import actors.utils.ActorSystemFactory;
 import actors.utils.actors.TrivialActor;
 import actors.utils.messages.TrivialMessage;
@@ -65,7 +65,7 @@ public class ActorRefTest {
     }
 
     @Test
-    public void shouldImplementComparable() {
+    public void shouldImmplementComparable() {
         ActorRef ref1 = system.actorOf(TrivialActor.class);
         ActorRef ref2 = system.actorOf(TrivialActor.class);
         Assert.assertNotEquals("Two references must appear as different using the compareTo method",

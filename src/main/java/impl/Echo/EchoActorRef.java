@@ -16,25 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.decent;
+package actors.impl.Echo;
 
-import actors.Message;
-import actors.impl.base.BaseActorRef;
-import actors.impl.base.BaseAbsActor;
+import actors.impl.decent.DecentActorRef;
 
-public class DecentActorRef extends BaseActorRef 
-{ 
+public class EchoActorRef extends DecentActorRef
+{
     @Override
-    public DecentAbsActor getActor()
+    public EchoActor getActor()
     {
-        return (DecentAbsActor) super.getActor();
+        return (EchoActor) super.getActor();
     }
-    public void setAcceptedType(Class t) { getActor().setAcceptedType(t); }
-    public String getName() { return getActor().getName(); }
-    public Integer getSerieNumber() {return getActor().getSerieNumber();}
-    public void setActorSystem(DecentActorSystem as)
+    public EchoText getLastMessage()
     {
-        getActor().setActorSystem(as);
+        return getActor().getLastMessage();
     }
-    public Class getAcceptedType() {return getActor().getAcceptedType();}
 }
+

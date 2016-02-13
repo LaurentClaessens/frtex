@@ -33,6 +33,7 @@ public abstract class DecentAbsActor extends BaseAbsActor
     private Class accepted_type;
 
     public void setSerieNumber(Integer n) {serie_number=n;}
+    public Integer getSerieNumber() {return serie_number;}
     public void setAcceptedType(Class t) {accepted_type=t;}
     public String getName() { return my_name; }
     public Class getAcceptedType() { return accepted_type; }
