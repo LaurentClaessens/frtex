@@ -20,8 +20,19 @@ package actors.impl.decent;
 
 import actors.Message;
 import actors.impl.base.BaseActorRef;
+import actors.impl.base.BaseAbsActor;
 
 public class DecentActorRef extends BaseActorRef 
 { 
+    @Override
+    public DecentAbsActor getActor()
+    {
+        return (DecentAbsActor) super.getActor();
+    }
     public String getName() { return getActor().getName(); }
+    public void setActorSystem(DecentActorSystem as)
+    {
+        getActor().setActorSystem(as);
+    }
+    public Class getAcceptedType() {return getActor().getAcceptedType();}
 }

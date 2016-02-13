@@ -21,7 +21,7 @@ package actors.impl.base;
 import actors.AbsActor;
 
 // This remains an abstract class because it does not contains "receive".
-public abstract class BaseActor extends AbsActor
+public abstract class BaseAbsActor extends AbsActor
 {
     private BaseActorSystem actor_system;
 

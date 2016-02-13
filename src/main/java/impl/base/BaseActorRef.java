@@ -28,13 +28,18 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class BaseActorRef<T extends Message> implements ActorRef<T>
 {
-    public BaseActor getActor() { return getActorSystem().getActor(this);  }
+    public BaseAbsActor getActor() { return getActorSystem().getActor(this);  }
     public BaseActorSystem getActorSystem() { return getActor().getActorSystem(); }
 
     @Override
     public void send(Message message, ActorRef to) 
     { 
-        Actor actor_to = getActorSystem().getActor(to);
+        if (!BaseActorRef.class.isInstance(to))
+        {
+            throw new ShouldNotHappenException("The Base actor system should not have not base actors references.");
+        }
+        BaseActorRef base_ref_to=(BaseActorRef) to;
+        BaseAbsActor actor_to = getActorSystem().getActor(base_ref_to);
         SendingThread sending_thread=new SendingThread(message,actor_to);
         Thread t = new Thread( sending_thread );
         t.start();

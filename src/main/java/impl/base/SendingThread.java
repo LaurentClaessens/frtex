@@ -23,10 +23,10 @@ import actors.Message;
 
 public class SendingThread implements Runnable
 {
-    private Actor actor_to;
+    private BaseAbsActor actor_to;
     private Message message;
 
-    public SendingThread(Message m, Actor t) 
+    public SendingThread(Message m, BaseAbsActor t) 
     {
         message=m;
         actor_to=t;

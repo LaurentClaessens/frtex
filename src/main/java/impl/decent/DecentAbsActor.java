@@ -20,13 +20,13 @@ package actors.impl.decent;
 
 import java.util.UUID;
 
-import actors.AbsActor;
+import actors.impl.base.BaseAbsActor;
 import actors.AbsActorSystem;
 import actors.Message;
 import actors.impl.decent.DecentActorSystem;
 
 // This class has no generic parameter because the message type is passed as argument.
-public abstract class DecentAbsActor extends AbsActor
+public abstract class DecentAbsActor extends BaseAbsActor
 {
     private String my_name;
     private Integer serie_number;
@@ -35,6 +35,7 @@ public abstract class DecentAbsActor extends AbsActor
     public void setSerieNumber(Integer n) {serie_number=n;}
     public void setAcceptedType(Class t) {accepted_type=t;}
     public String getName() { return my_name; }
+    public Class getAcceptedType() { return accepted_type; }
     @Override
     public DecentActorSystem getActorSystem()
     {

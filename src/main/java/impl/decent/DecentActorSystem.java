@@ -35,6 +35,7 @@ public abstract class DecentActorSystem extends BaseActorSystem
     {
       super(); 
       accepted_type=t;
+      created_serie_number=-1;
     }
     @Override
     public DecentActorRef actorOf(Class<? extends Actor> actor,ActorMode mode)
@@ -48,7 +49,7 @@ public abstract class DecentActorSystem extends BaseActorSystem
     public DecentActorRef actorOf()
     {
         DecentActorRef ar = (DecentActorRef) super.actorOf(accepted_type,ActorMode.LOCAL);
-        DecentAbsActor actor = ar.getActor();
+        DecentAbsActor actor = (DecentAbsActor)  ar.getActor();
         actor.setAcceptedType(accepted_type);
         synchronized(created_serie_number){ actor.setSerieNumber(newSerieNumber());  }
         return ar;

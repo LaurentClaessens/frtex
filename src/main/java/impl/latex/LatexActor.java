@@ -33,14 +33,14 @@ public class LatexActor extends DecentAbsActor
     public LatexActor() 
     {
         super();
-        accepted_type=LatexMessage.class;
+        setAcceptedType(LatexMessage.class);
         inputed_filenames=new HashMap<String,String>();
         working=true;
     }
     @Override
     public void receive(Message m)
     {
-        if (!accepted_type.isInstance(m)) { throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is reveived by the LaxteActor."); }
+        if (!getAcceptedType().isInstance(m)) { throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is reveived by the LaxteActor."); }
         LatexMessage message=(LatexMessage) m;
         String tag=message.getTag();
         synchronized(working)

@@ -27,7 +27,10 @@ import java.util.Set;
 
 import actors.exceptions.AlreadyListedActor;
 import actors.exceptions.NoSuchActorException;
-
+import actors.ActorRef;
+import actors.Actor;
+import actors.impl.base.BaseActorRef;
+import actors.impl.base.BaseAbsActor;
 
 // The 'ActorMap' is a wrapper for the two needed maps : 
 // - one maps actor references to the actual actor
@@ -35,12 +38,12 @@ import actors.exceptions.NoSuchActorException;
 
 public class ActorMap
 {
-    private Map<BaseActorRef,BaseActor> actors_map;
+    private Map<BaseActorRef,BaseAbsActor> actors_map;
     private Map<BaseActorRef,Boolean> active_map;
 
-    public Collection<BaseActor> actors_list() { return actors_map.values(); }
+    public Collection<BaseAbsActor> actors_list() { return actors_map.values(); }
     public Set<BaseActorRef> actors_ref_list() { return actors_map.keySet(); }
-    public BaseActor getActor(BaseActorRef ref) 
+    public BaseAbsActor getActor(BaseActorRef ref) 
     {
         if (!isActive(ref)) {throw new NoSuchActorException();}
         return actors_map.get(ref); 
@@ -48,10 +51,10 @@ public class ActorMap
 
     public ActorMap()
     {
-        actors_map = new HashMap<BaseActorRef,Actor>();
+        actors_map = new HashMap<BaseActorRef,BaseAbsActor>();
         active_map = new HashMap<BaseActorRef,Boolean>();
     }
-    public void put(BaseActorRef reference,BaseActor actor)
+    public void put(BaseActorRef reference,BaseAbsActor actor)
     {
         for (BaseActorRef ref : actors_ref_list())
         {

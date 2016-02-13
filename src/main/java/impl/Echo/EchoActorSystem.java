@@ -30,10 +30,9 @@ public class EchoActorSystem extends DecentActorSystem
     public EchoActorSystem() 
     { 
         super(EchoText.class); 
-        created_serie_number=-1;
     }
     @Override
-    public ActorRef<EchoText> actorOf(Class<? extends Actor> actor, ActorMode mode) 
+    public DecentActorRef actorOf(Class<? extends Actor> actor, ActorMode mode) 
     {
         if (actor!=EchoActor.class)
         {
@@ -50,7 +49,7 @@ public class EchoActorSystem extends DecentActorSystem
     {
         DecentActorRef ar = (DecentActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
         ar.setActorSystem(this);
-        ar.setAcceptedType(EchoText.class);
+        //ar.setAcceptedType(EchoText.class);
         return ar;
     }
 }

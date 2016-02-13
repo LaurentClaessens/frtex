@@ -34,21 +34,23 @@ import actors.impl.base.ActorMap;
 public class BaseActorSystem extends AbsActorSystem
 {
     private ActorMap actors_map;
-
     public BaseActorSystem() 
     { 
         actors_map=new ActorMap();
     }
 
     @Override
-    public BaseActor getActor(ActorRef reference) 
+    public BaseAbsActor getActor(ActorRef ref) 
     {
+        BaseActorRef reference = (BaseActorRef) ref;
         return actors_map.getActor(reference); 
     } 
     @Override
-    protected void setActor(ActorRef reference,Actor actor) 
+    protected void setActor(ActorRef ref,Actor actor) 
     { 
-        actors_map.put(reference,actor); 
+        BaseActorRef base_ref=(BaseActorRef) ref;
+        BaseAbsActor base_actor=(BaseAbsActor) actor;
+        actors_map.put(base_ref,base_actor); 
     }
 
     protected final ActorRef createActorReference(ActorMode mode) throws IllegalModeException
@@ -57,8 +59,8 @@ public class BaseActorSystem extends AbsActorSystem
         {
             throw new IllegalModeException(mode);
         }
-        ActorRef actor_ref;
-        actor_ref = new BaseActorRef(this);
+        BaseActorRef actor_ref;
+        actor_ref = new BaseActorRef();
         return actor_ref;
     }
     private Boolean test_if_something_up()
@@ -78,20 +80,21 @@ public class BaseActorSystem extends AbsActorSystem
             still_up=test_if_something_up();
         }
     }
-    private Boolean isActive(ActorRef ref) { return actors_map.isActive(ref);  }
-    private void setActive(ActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }
-    private Set<ActorRef> actors_ref_list() {return actors_map.actors_ref_list();}
-    private Collection<Actor> actors_list() {return actors_map.actors_list();}
+    private Boolean isActive(BaseActorRef ref) { return actors_map.isActive(ref);  }
+    private void setActive(BaseActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }
+    private Set<BaseActorRef> actors_ref_list() {return actors_map.actors_ref_list();}
+    private Collection<BaseAbsActor> actors_list() {return actors_map.actors_list();}
     @Override 
-    public void stop(ActorRef<?> actor)
+    public void stop(ActorRef<?> actor_ref)
     {
-        if (isActive(actor)){  setActive(actor,false) ;}
+        BaseActorRef base_ref = (BaseActorRef) actor_ref;
+        if (isActive(base_ref)){  setActive(base_ref,false) ;}
         else { throw new NoSuchActorException("This actor is not active anymore.");  }
     }
     @Override
     public void stop() 
     {
-        for (ActorRef act_ref : actors_ref_list()) { stop(act_ref);  }
+        for (BaseActorRef act_ref : actors_ref_list()) { stop(act_ref);  }
     }
 
     public int compareRefs(ActorRef one,ActorRef two)

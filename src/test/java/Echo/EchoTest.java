@@ -59,6 +59,8 @@ public class EchoTest
 
         Assert.isEqual(a1.getSerieNumber,0);
         Assert.isEqual(a2.getSerieNumber,1);
+
+        Assert.isEqual(a2.getAcceptedType(),EchoText.class);
     }
     @Test
     public void setAcceptedTypeVerification() throws InterruptedException

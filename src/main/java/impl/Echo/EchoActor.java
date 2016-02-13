@@ -31,12 +31,13 @@ public class EchoActor extends DecentAbsActor
     private ActorRef getActorRef() { return self; }
 
     public EchoText getLastMessage() { return last_message;  }
-    public EchoActor(AbsActorSystem actor_system) 
+    public EchoActor(EchoActorSystem actor_system) 
     {
-        super(actor_system);
+        super();
+        setActorSystem(actor_system);
         setAcceptedType(EchoText.class);
     }
-    public EchoActor() { accepted_type=EchoText.class;  }    
+    public EchoActor() { setAcceptedType(EchoText.class);  }    
 
     @Override
     public void receive(Message m)
