@@ -88,8 +88,8 @@ public class EchoTest
         System.out.println("echo_actor "+echo_actor.getLastMessage().getData());
         Assert.assertEquals((int) echo_actor.getLastMessage().getData(),1);
 
-        EchoText mE = new EchoText(echo_one_actor,echo_two_actor,20);
-        echo_one_actor.send(mE,echo_two_actor);
+        EchoText mA = new EchoText(echo_one_actor,echo_two_actor,20);
+        echo_one_actor.send(mA,echo_two_actor);
         Thread.sleep(1000);
         System.out.println("echo_actor "+echo_one_actor.getLastMessage().getData());
         Assert.assertEquals((int) echo_actor.getLastMessage().getData(),1);
@@ -101,8 +101,8 @@ public class EchoTest
         System.out.println("echo_actor"+echo_actor.getLastMessage().getData());
         Assert.assertEquals((int)echo_actor.getLastMessage().getData(),1);
 
-        EchoTextOne mO = new EchoTextOne(echo_actor,echo_one_actor,23);
-        echo_actor.send(mO,echo_one_actor);
+        EchoTextOne mB = new EchoTextOne(echo_actor,echo_one_actor,23);
+        echo_actor.send(mB,echo_one_actor);
         Thread.sleep(1000);
         Assert.assertEquals((int)echo_actor.getLastMessage().getData(),1);
     }
