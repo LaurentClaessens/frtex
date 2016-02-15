@@ -53,6 +53,7 @@ public class ActorSystemFactory {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("On va créer le BaseActorSystem");
         system=new BaseActorSystem();
         System.out.println("ActorSystemFactory::trouvé "+system.getClass().getSimpleName());
         return system;

@@ -91,7 +91,9 @@ public class ActorIT {
 
         pongRef.send(new PingMessage(), pingRef);
 
+        System.out.println("ActorIR::avant sleep");
         Thread.sleep(2000);
+        System.out.println("ActorIR::après sleep");
 
         PingPongActor pingActor = (PingPongActor) pingRef.getUnderlyingActor(system);
         PingPongActor pongActor = (PingPongActor) pongRef.getUnderlyingActor(system);

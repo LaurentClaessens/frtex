@@ -22,7 +22,6 @@ import actors.Mail;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.UnsupportedMessageException;
 
-
 // accepted_type has default value 'Message', so that no verification is done.
 // Rationale :
 // Since the type of message that the actor has to deal with is only given as generic type variable, I guess that it is impossible to perform the verification.
@@ -37,6 +36,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     protected Class accepted_type=Message.class;
     protected MailBox<T> mail_box;
     private  AbsActorSystem actor_system;
+    protected ActorRef<T> sender;   // sender of the being processed message
 
     protected AbsActor() 
     { 
@@ -44,10 +44,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     }
     public MailBox<T> getMailBox() {return mail_box;}
 
-    /**
-     * Sender of the current message
-     */
-    protected ActorRef<T> sender;
+    public void setActorSystem(AbsActorSystem as) { actor_system=as;  }
+    public AbsActorSystem getActorSystem() { return actor_system;  }
+
 
     /**
      * Sets the self-referece.
