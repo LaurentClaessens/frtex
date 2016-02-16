@@ -16,17 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-// This one is only for compatibility with unipd requirements.
-
-
 package actors;
 
-public abstract class AbsActorSystem implements ActorSystem 
-{
-    abstract public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode);
-    abstract public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor);
-    abstract public Actor getActor(ActorRef actor);
-    abstract public void stop(ActorRef<?> actor);
-    abstract public void stop();
-}
+import actors.ActorRef;
+import actors.SendingThread;
 
+public class ActorRefImpl<T extends Message> implements ActorRef<T>
+{
+    public AbsActor getActor() { return getActorSystem().getActor(this);  }
+    public ActorSystemImpl getActorSystem() { return getActor().getActorSystem(); }
+
+    @Override
+    public void send(Message message, ActorRef to) 
+    { 
+        getActorSystem().send(message,to);
+    }
+    @Override
+    public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
+}

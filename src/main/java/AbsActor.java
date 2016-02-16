@@ -35,7 +35,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     protected ActorRef<T> self;         // self-reference
     protected Class accepted_type=Message.class;
     protected MailBox<T> mail_box;
-    private  AbsActorSystem actor_system;
+    private  ActorSystemImpl actor_system;
     protected ActorRef<T> sender;   // sender of the being processed message
 
     protected AbsActor() 
@@ -44,16 +44,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     }
     public MailBox<T> getMailBox() {return mail_box;}
 
-    public void setActorSystem(AbsActorSystem as) { actor_system=as;  }
-    public AbsActorSystem getActorSystem() { return actor_system;  }
+    public void setActorSystem(ActorSystemImpl as) { actor_system=as; }
+    public ActorSystemImpl getActorSystem() { return actor_system;  }
 
-
-    /**
-     * Sets the self-referece.
-     *
-     * @param self The reference to itself
-     * @return The actor.
-     */
     protected final Actor<T> setSelf(ActorRef<T> self) 
     {
         this.self = self;

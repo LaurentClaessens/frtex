@@ -4,10 +4,15 @@ This is the java project for the cours at unipd. The skeleton is from rcardin[1]
 
 It provides an actor system and several implementations.
 
-## The Base actor system (abstract)
+## First implementation stage : `Abs<Foo>` and `<Foo>Impl` (non abstract)
 
+These are the files that implement the very minimal actor system devoted to pass the unipd requirements. The root of the distinction between this implementation and `impl.base` is a name clash : the name `ActorRef` is imposed by unipd and is an interface. I'd like to name `ActorRef` the minimal non-abstract implementation of `AbsActorRef`, but I can't.
 
-The actors.impl.base package contains a minimal implementation of the actor system that is devoted to pass the unipd tests.
+Thus the first stage of implementation have some strange naming and is decomposed into `Abs<Foo>` and `<Foo>Impl`.
+
+## Second implementation stage : the Base actor system (abstract)
+
+This is the first stage of my own implementation that will be useful for more purposes than passing the unipd's tests. It mainly serves as a wrapper around the preceding one in order to get rid of naming problems.
 
 Its special feature is
 
@@ -15,13 +20,11 @@ Its special feature is
 
 that returns the actor system which created him.
 
-
 For a real live actor system mechanism, you should derive from actors.impl.decent which is a more decent implementation.
 
-## The Decent actor system (abstract)
+## Third implementation stage : the Decent actor system (abstract)
 
-
-The "decent" implementation of the actor system is based on the "base" implementation and adds some features that are needed to decently work.
+The "decent" implementation of the actor system is based on the "base" implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.
 
 ### accepted type
 
@@ -75,10 +78,10 @@ The actor system need more functionalities than the basic one.
 It is only for testing purpose. The system manage the message type "EchoText" whose has two subtypes "EchoTextOne" and "EchoTextTwo". They only exist in order to test the "accepted_type" system.
 
 
-[1] https://github.com/rcardin/pcd-actors
-
 # TODO
 
 * The actor reference often calls its actor in order to answer questions like the accepted type or the actor system. One should memoize them.
+* There is duplication of code between the `<Foo>impl` and the `Base` implementations. In particular, between `BaseActorMap` and `ActorMap`.
 
 
+[1] https://github.com/rcardin/pcd-actors

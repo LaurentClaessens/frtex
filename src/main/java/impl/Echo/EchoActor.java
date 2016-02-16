@@ -23,7 +23,6 @@ package actors.impl.Echo;
 import actors.impl.decent.DecentAbsActor;
 import actors.ActorRef;
 import actors.Message;
-import actors.AbsActorSystem;
 
 public class EchoActor extends DecentAbsActor
 {

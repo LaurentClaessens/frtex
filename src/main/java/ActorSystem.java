@@ -60,9 +60,6 @@ public interface ActorSystem {
      */
     void stop();
 
-    // Wait until all the mail boxes are empty and no actor is working.
-    void join();
-
     /**
      * Possible modes to create an actor. {@code LOCALE} mode is used to create an actor
      * that acts in the local system. {@code REMOTE} mode is used to create remote actors.

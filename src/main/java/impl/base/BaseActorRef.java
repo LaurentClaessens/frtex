@@ -18,33 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.base;
 
-import actors.ActorRef;
-import actors.ActorSystem;
+import actors.ActorRefImpl;
 import actors.Message;
-import actors.Actor;
-import actors.impl.base.SendingThread;
 
 import actors.exceptions.ShouldNotHappenException;
 
-public class BaseActorRef<T extends Message> implements ActorRef<T>
-{
-    public BaseAbsActor getActor() { return getActorSystem().getActor(this);  }
-    public BaseActorSystem getActorSystem() { return getActor().getActorSystem(); }
-
-    @Override
-    public void send(Message message, ActorRef to) 
-    { 
-        if (!BaseActorRef.class.isInstance(to))
-        {
-            throw new ShouldNotHappenException("The Base actor system should not have not base actors references.");
-        }
-        BaseActorRef base_ref_to=(BaseActorRef) to;
-        BaseAbsActor actor_to = getActorSystem().getActor(base_ref_to);
-        SendingThread sending_thread=new SendingThread(message,actor_to);
-        Thread t = new Thread( sending_thread );
-        t.start();
-    }
-
-    @Override
-    public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
-}
+public class BaseActorRef<T extends Message> extends ActorRefImpl<T>
+{ }

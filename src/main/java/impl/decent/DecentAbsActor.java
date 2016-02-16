@@ -21,7 +21,6 @@ package actors.impl.decent;
 import java.util.UUID;
 
 import actors.impl.base.BaseAbsActor;
-import actors.AbsActorSystem;
 import actors.Message;
 import actors.impl.decent.DecentActorSystem;
 

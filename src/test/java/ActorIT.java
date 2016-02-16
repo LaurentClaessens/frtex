@@ -68,7 +68,7 @@ public class ActorIT {
         this.system = ActorSystemFactory.buildActorSystem();
     }
 
-    //@Test
+    @Test
     public void shouldBeAbleToSendAMessage() throws InterruptedException {
         System.out.println("LANCEMENT DE 'shouldBeAbleToSendAMessage'");
         ActorRef ar = system.actorOf(StoreActor.class);
@@ -105,7 +105,7 @@ public class ActorIT {
         System.out.println("FIN DE 'shouldBeAbleToRespondToAMessage'");
     }
 
-    //@Test
+    @Test
     public void shouldNotLooseAnyMessage() throws InterruptedException {
         System.out.println("LANCEMENT DE 'shouldNotLooseAnyMessage'");
         TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));

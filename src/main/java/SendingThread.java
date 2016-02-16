@@ -16,24 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.base;
+package actors;
 
-import actors.Actor;
 import actors.Message;
+import actors.AbsActor;
 
 public class SendingThread implements Runnable
 {
-    private BaseAbsActor actor_to;
+    private ActorRefImpl actor_ref_to;
     private Message message;
 
-    public SendingThread(Message m, BaseAbsActor t) 
+    public SendingThread(Message m, ActorRefImpl t) 
     {
         message=m;
-        actor_to=t;
+        actor_ref_to=t;
     }
     public void run() 
     {
+        AbsActor actor_to = actor_ref_to.getActor();
         actor_to.putInMailBox(message); 
     }
 }
-

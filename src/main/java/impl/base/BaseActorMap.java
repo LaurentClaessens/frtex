@@ -36,7 +36,7 @@ import actors.impl.base.BaseAbsActor;
 // - one maps actor references to the actual actor
 // - one maps actor references to the activity status.
 
-public class ActorMap
+public class BaseActorMap
 {
     private Map<BaseActorRef,BaseAbsActor> actors_map;
     private Map<BaseActorRef,Boolean> active_map;
@@ -49,7 +49,7 @@ public class ActorMap
         return actors_map.get(ref); 
     }
 
-    public ActorMap()
+    public BaseActorMap()
     {
         actors_map = new HashMap<BaseActorRef,BaseAbsActor>();
         active_map = new HashMap<BaseActorRef,Boolean>();
