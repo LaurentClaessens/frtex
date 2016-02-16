@@ -83,7 +83,7 @@ public class ActorIT {
         System.out.println("FIN DE 'shouldBeAbleToSendAMessage'");
     }
 
-    @Test
+    //@Test
     public void shouldBeAbleToRespondToAMessage() throws InterruptedException {
         System.out.println("LANCEMENT DE 'shouldBeAbleToRespondToAMessage'");
         TestActorRef pingRef = new TestActorRef(system.actorOf(PingPongActor.class));
@@ -105,7 +105,7 @@ public class ActorIT {
         System.out.println("FIN DE 'shouldBeAbleToRespondToAMessage'");
     }
 
-    @Test
+    //@Test
     public void shouldNotLooseAnyMessage() throws InterruptedException {
         System.out.println("LANCEMENT DE 'shouldNotLooseAnyMessage'");
         TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
