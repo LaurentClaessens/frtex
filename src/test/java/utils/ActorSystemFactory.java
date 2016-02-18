@@ -43,19 +43,8 @@ public class ActorSystemFactory {
      * @return An instance of an implementation of {@link ActorSystem}
      */
     public static final ActorSystem buildActorSystem() {
-        ActorSystem system = null;
-
-        // XXX This code can be optimized
-        Reflections reflections = new Reflections(BASE_PACKAGE);
-        Set<Class<? extends AbsActorSystem>> subTypes = reflections.getSubTypesOf(AbsActorSystem.class);
-        Class<? extends AbsActorSystem> systemClass = subTypes.iterator().next();
-        try {
-            system = systemClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("On va créer le BaseActorSystem");
-        system=new ActorSystemImpl();
+        ActorSystem system=new ActorSystemImpl();
+        System.out.println("ActorSystemImpl créé.");
         System.out.println("ActorSystemFactory::trouvé "+system.getClass().getSimpleName());
         return system;
     }

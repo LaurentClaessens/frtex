@@ -37,6 +37,10 @@ public abstract class DecentActorSystem extends BaseActorSystem
       accepted_type=t;
       created_serie_number=-1;
     }
+    public DecentActorSystem()
+    {
+        System.out.println("This zero-parameter constructor is only for UNIPD tests purpose. Must not be used in real live.");
+    }
     @Override
     public DecentActorRef actorOf(Class<? extends Actor> actor,ActorMode mode)
     {

@@ -57,10 +57,20 @@ public class ActorMap
 
     public AbsActor getActor(ActorRefImpl impl_ref) 
     {
+        System.out.println("ActorMap::getActor(ActorRefImpl) impl_ref : "+impl_ref);
         if (!isActive(impl_ref)) {throw new NoSuchActorException();}
+        AbsActor aa =  impl_to_actor.get(impl_ref); 
+        System.out.println("aa : "+aa);
         return impl_to_actor.get(impl_ref); 
     }
-    public AbsActor getActor(ActorRef abs_ref) { return getActor( ref_to_impl.get(abs_ref)  ); }
+    public AbsActor getActor(ActorRef abs_ref) 
+    {
+        System.out.println("getActor::");
+        System.out.println("abs_ref : "+abs_ref);
+        ActorRefImpl ari = ref_to_impl.get(abs_ref);
+        System.out.println("ari : "+ari);
+        return getActor( ref_to_impl.get(abs_ref)  ); 
+    }
     public ActorRefImpl refToImpl(ActorRef ref) { return ref_to_impl.get(ref); }
 
     public ActorMap()

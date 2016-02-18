@@ -41,11 +41,13 @@ public class ActorSystemImpl extends AbsActorSystem {
     } 
     public AbsActor getActor(ActorRef reference) 
     {
+        System.out.println("ActorSystemImpl::AbsActor(ActorRef)");
+        System.out.println("reference : "+reference);
         return actors_map.getActor(reference); 
     } 
-    protected void setActor(ActorRefImpl ref,AbsActor actor) 
+    protected void setActor(ActorRefImpl impl,AbsActor actor) 
     { 
-        actors_map.put(ref,actor); 
+        actors_map.put(impl,actor); 
     }
     protected  ActorRef createActorReference(ActorMode mode) throws IllegalModeException
     {
@@ -71,7 +73,12 @@ public class ActorSystemImpl extends AbsActorSystem {
 
             //Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
             // Associate the reference to the actor
-            setActor( (ActorRefImpl) reference, abs_actor);
+            
+            ActorRefImpl impl = (ActorRefImpl) reference;
+            impl.setActorSystem(this);
+            setActor( impl  , abs_actor);
+            actors_map.assingRefToImpl(reference,impl); 
+
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
         }
@@ -119,9 +126,11 @@ public class ActorSystemImpl extends AbsActorSystem {
     }
     public void send(Message message, ActorRef ref_to)
     {
+        System.out.println("ActorSystemImpl::send");
         ActorRefImpl impl_to=refToImpl(ref_to);
         SendingThread sending_thread=new SendingThread(message,impl_to);
         Thread t = new Thread( sending_thread );
         t.start();
+        System.out.println("ActorSystemImpl::SendingThread lancé");
     }
 }

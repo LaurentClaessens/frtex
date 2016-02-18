@@ -23,12 +23,17 @@ import actors.SendingThread;
 
 public class ActorRefImpl<T extends Message> implements ActorRef<T>
 {
+    private ActorSystemImpl  actor_system;
+
+    public void setActorSystem(ActorSystemImpl as)  {actor_system=as;}
+    public ActorSystemImpl getActorSystem()  {return actor_system;}
+
     public AbsActor getActor() { return getActorSystem().getActor(this);  }
-    public ActorSystemImpl getActorSystem() { return getActor().getActorSystem(); }
 
     @Override
     public void send(Message message, ActorRef to) 
     { 
+        System.out.println("ActorRefImpl::send");
         getActorSystem().send(message,to);
     }
     @Override

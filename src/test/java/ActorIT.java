@@ -65,6 +65,7 @@ public class ActorIT {
      */
     @Before
     public void init() {
+        System.out.println("ActorSystemFactory en action");
         this.system = ActorSystemFactory.buildActorSystem();
     }
 
@@ -74,10 +75,13 @@ public class ActorIT {
         ActorRef ar = system.actorOf(StoreActor.class);
         TestActorRef ref = new TestActorRef(system.actorOf(StoreActor.class));
         StoreActor actor = (StoreActor) ref.getUnderlyingActor(system);
+        System.out.println("getUnderlyingActor ... fait");
         // Send a string to the actor
         ref.send(new StoreMessage("Hello World"), ref);
+        System.out.println("ActorIT : message envoyé");
         // Wait that the message is processed
         Thread.sleep(2000);
+        System.out.println("ActorIT : sleep fini");
         // Verify that the message is been processed
         Assert.assertEquals("The message has to be received by the actor", "Hello World", actor.getData());
         System.out.println("FIN DE 'shouldBeAbleToSendAMessage'");
