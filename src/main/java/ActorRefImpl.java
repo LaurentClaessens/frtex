@@ -38,4 +38,8 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
     }
     @Override
     public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
+    public void stop()
+    {
+        getActorSystem().stop(this);
+    }
 }

@@ -10,15 +10,16 @@ These are the files that implement the very minimal actor system devoted to pass
 
 Thus the first stage of implementation have some strange naming and is decomposed into `Abs<Foo>` and `<Foo>Impl`.
 
-## Second implementation stage : the Base actor system (abstract)
-
-This is the first stage of my own implementation that will be useful for more purposes than passing the unipd's tests. It mainly serves as a wrapper around the preceding one in order to get rid of naming problems.
-
 Its special feature is
 
     BaseActorSystem getActorSystem()
 
 that returns the actor system which created him.
+
+
+## Second implementation stage : the Base actor system (abstract)
+
+This is the first stage of my own implementation that will be useful for more purposes than passing the unipd's tests. It mainly serves as a wrapper around the preceding one in order to get rid of naming problems.
 
 For a real live actor system mechanism, you should derive from actors.impl.decent which is a more decent implementation.
 
@@ -62,7 +63,7 @@ The actor system need more functionalities than the basic one.
 
 - A method `getFreeActor` that return an actor reference to an actor that is not working (in the sense that he has already send its result). If no free actors are available, create a new one.
 
-### Simplifications
+### Hypothesis on the LaTeX source code (simplification)
 
 * For the sake of simplicity, it assumes that all inputs are on lines that _begin_ with \input.
 

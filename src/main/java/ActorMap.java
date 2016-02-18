@@ -27,6 +27,7 @@ import java.util.Set;
 
 import actors.exceptions.AlreadyListedActor;
 import actors.exceptions.NoSuchActorException;
+import actors.exceptions.ShouldNotHappenException;
 import actors.ActorRefImpl;
 import actors.Actor;
 import actors.AbsActor;
@@ -58,7 +59,10 @@ public class ActorMap
     public AbsActor getActor(ActorRefImpl impl_ref) 
     {
         System.out.println("ActorMap::getActor(ActorRefImpl) impl_ref : "+impl_ref);
-        if (!isActive(impl_ref)) {throw new NoSuchActorException();}
+        if (!isActive(impl_ref)) 
+        {
+            throw new ShouldNotHappenException("The actor activeness should have been verified before.");
+        }
         AbsActor aa =  impl_to_actor.get(impl_ref); 
         System.out.println("aa : "+aa);
         return impl_to_actor.get(impl_ref); 

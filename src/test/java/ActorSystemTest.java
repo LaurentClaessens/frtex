@@ -66,12 +66,15 @@ public class ActorSystemTest {
 
     @Test
     public void shouldCreateAnActorRefWithActorOfTest() {
+        System.out.println("LANCEMENT de shouldCreateAnActorRefWithActorOfTest");
         ActorRef ref = system.actorOf(TrivialActor.class);
         Assert.assertNotNull("A reference was created and it is not null", ref);
+        System.out.println("FIN de shouldCreateAnActorRefWithActorOfTest");
     }
 
     @Test
     public void shouldCreateAnActorRefOfWithActorModeLocalTest() {
+        System.out.println("LANCEMENT de shouldCreateAnActorRefOfWithActorModeLocalTest");
         ActorRef ref = system.actorOf(TrivialActor.class, ActorSystem.ActorMode.LOCAL);
         Assert.assertNotNull("A reference to a local actor was created and it is not null", ref);
     }
@@ -82,6 +85,7 @@ public class ActorSystemTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void shouldCreateAnActorRefOfWithActorModeRemoteTest() {
+        System.out.println("LANCEMENT de shouldCreateAnActorRefOfWithActorModeRemoteTest");
         system.actorOf(TrivialActor.class, ActorSystem.ActorMode.REMOTE);
     }
 
@@ -94,6 +98,7 @@ public class ActorSystemTest {
 
     @Test(expected = NoSuchActorException.class)
     public void shouldStopAnActorAndThisCouldNotBeAbleToReceiveNewMessages() {
+        System.out.println("LANCEMENT de shouldStopAnActorAndThisCouldNotBeAbleToReceiveNewMessages");
         ActorRef ref1 = system.actorOf(TrivialActor.class);
         system.stop(ref1);
         ref1.send(new TrivialMessage(), ref1);
@@ -101,6 +106,7 @@ public class ActorSystemTest {
 
     @Test(expected = NoSuchActorException.class)
     public void shouldStopAnActorAndThisCouldNotStoppedASecondTime() {
+        System.out.println("LANCEMENT de shouldStopAnActorAndThisCouldNotStoppedASecondTime");
         ActorRef ref1 = system.actorOf(TrivialActor.class);
         system.stop(ref1);
         system.stop(ref1);

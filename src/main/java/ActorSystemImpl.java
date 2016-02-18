@@ -102,7 +102,6 @@ public class ActorSystemImpl extends AbsActorSystem {
         }
         throw new ShouldNotHappenException("comparaison should always be possible.");
     }
-    //private Boolean isActive(ActorRefImpl ref) { return actors_map.isActive(ref);  }
     private Boolean isActive(ActorRef ref) { return actors_map.isActive(ref);  }
     private void setActive(ActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }
     @Override 
@@ -128,9 +127,16 @@ public class ActorSystemImpl extends AbsActorSystem {
     {
         System.out.println("ActorSystemImpl::send");
         ActorRefImpl impl_to=refToImpl(ref_to);
+
+        if (!isActive(ref_to))
+        {
+            throw new NoSuchActorException();
+        }
+
         SendingThread sending_thread=new SendingThread(message,impl_to);
         Thread t = new Thread( sending_thread );
         t.start();
+
         System.out.println("ActorSystemImpl::SendingThread lancé");
     }
 }
