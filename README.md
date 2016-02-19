@@ -1,6 +1,6 @@
 # actors
 
-This is the java project for the cours at unipd. The skeleton is from rcardin[1].
+This is the java project for the cours at unipd. The skeleton is from [rcardin](https://github.com/rcardin/pcd-actors)
 
 It provides an actor system and several implementations.
 
@@ -10,9 +10,11 @@ These are the files that implement the very minimal actor system devoted to pass
 
 Thus the first stage of implementation have some strange naming and is decomposed into `Abs<Foo>` and `<Foo>Impl`.
 
-Its special feature is
+Its special feature is 
 
-    BaseActorSystem getActorSystem()
+```java
+BaseActorSystem getActorSystem()
+```
 
 that returns the actor system which created him.
 
@@ -27,17 +29,13 @@ For a real live actor system mechanism, you should derive from actors.impl.decen
 
 The "decent" implementation of the actor system is based on the "base" implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.
 
-### accepted type
+### DecentAbsActor
 
-Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system.
+Its features are :
 
-### name / serie number
+* __accepted type__ Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system.
 
-Each actor has a name with the usual method
-
-    String getName()
-
-The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
+* __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
 
 
 ## The Latex actor system
@@ -85,4 +83,3 @@ It is only for testing purpose. The system manage the message type "EchoText" wh
 * There is duplication of code between the `<Foo>impl` and the `Base` implementations. In particular, between `BaseActorMap` and `ActorMap`.
 
 
-[1] https://github.com/rcardin/pcd-actors
