@@ -21,6 +21,7 @@ package actors.impl.decent;
 import actors.Message;
 import actors.Actor;
 import actors.impl.base.BaseActorSystem;
+import actors.impl.base.BaseActorRef;
 import actors.ActorSystem.ActorMode;
 import actors.exceptions.ShouldNotHappenException;
 
@@ -46,31 +47,25 @@ public abstract class DecentActorSystem extends BaseActorSystem
     // calls the actorOf(2-parameters) here, the latter should call 'actorOf()', but
     // that would call the Echo's actorOf() and creates circular calls ending in a
     // StackOverflow.
-    public DecentActorRef newDecentActorRef()
+    public DecentActorRef newDecentActorRef(Class<? extends Actor> actor_type)
     {
-        System.out.println("DecentActorSystem::newDecentActorRef() --1");
-        DecentActorRef ar = (DecentActorRef) super.actorOf(accepted_type,ActorMode.LOCAL);
-        System.out.println("DecentActorSystem::newDecentActorRef() --2");
-        DecentAbsActor actor = (DecentAbsActor)  ar.getActor();
-        System.out.println("DecentActorSystem::newDecentActorRef() --3");
-        actor.setAcceptedType(accepted_type);
-        System.out.println("DecentActorSystem::newDecentActorRef() --4");
+        DecentActorRef decent_ref = ((BaseActorRef)  super.actorOf(actor_type,ActorMode.LOCAL)).upgradeToDecentActorRef();
+
+        DecentAbsActor decent_actor = decent_ref.getActor();
+        decent_actor.setAcceptedType(accepted_type);
         synchronized(created_serie_number)
         { 
-            actor.setSerieNumber(newSerieNumber());  
+            decent_actor.setSerieNumber(newSerieNumber());  
         }
-        System.out.println("DecentActorSystem::newDecentActorRef() --5");
-        return ar;
+        return decent_ref;
     }
     @Override
-    public DecentActorRef actorOf(Class<? extends Actor> actor,ActorMode mode)
+    public DecentActorRef actorOf(Class<? extends Actor> actor_type,ActorMode mode)
     {
-        System.out.println("DecentActorSystem::actorOf(arguments)");
         if (mode!=ActorMode.LOCAL)
         {
             throw new ShouldNotHappenException("Only local actors are implemented.");
         }
-        System.out.println("DecentActorSystem::actorOf -- Passage à newDecentActorRef()");
-        return newDecentActorRef();
+        return newDecentActorRef(actor_type);
     }
 }

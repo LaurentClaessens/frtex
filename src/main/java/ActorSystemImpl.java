@@ -37,6 +37,7 @@ public class ActorSystemImpl extends AbsActorSystem {
     private ActorRefImpl refToImpl(ActorRef ref) { return actors_map.refToImpl(ref); }
     public AbsActor getActor(ActorRefImpl reference) 
     {
+        System.out.println("ActorSystemImpl::getActor()    "+actors_map);
         return actors_map.getActor(reference); 
     } 
     public AbsActor getActor(ActorRef reference) 
@@ -57,21 +58,14 @@ public class ActorSystemImpl extends AbsActorSystem {
         return actor_ref;
     }
     @Override
-    public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
-
-        // ActorRef instance
+    public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor_type, ActorMode mode) {
         ActorRef<?> reference;
         try
         {
-            // Create the reference to the actor
             reference = this.createActorReference(mode);
-            // Create the new instance of the actor
-            AbsActor abs_actor = (AbsActor) actor.newInstance();
+            AbsActor abs_actor = (AbsActor) actor_type.newInstance();
             abs_actor.setSelf(reference);
 
-            //Actor actorInstance = ((AbsActor) actor.newInstance()).setSelf(reference);
-            // Associate the reference to the actor
-            
             ActorRefImpl impl = (ActorRefImpl) reference;
             impl.setActorSystem(this);
             setActor( impl  , abs_actor);

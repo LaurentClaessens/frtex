@@ -20,8 +20,19 @@ package actors.impl.base;
 
 import actors.ActorRefImpl;
 import actors.Message;
+import actors.impl.decent.DecentActorRef;
 
 import actors.exceptions.ShouldNotHappenException;
 
 public class BaseActorRef<T extends Message> extends ActorRefImpl<T>
-{ }
+{
+    public DecentActorRef upgradeToDecentActorRef()
+    // return a DecentActorRef with the same properties.
+    // - copy the actor system
+    // - the user has to give the accepted type.
+    {
+        DecentActorRef decent = new DecentActorRef();
+        decent.setActorSystem(getActorSystem());
+        return decent;
+    }
+}

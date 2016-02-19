@@ -58,11 +58,14 @@ public class ActorMap
 
     public AbsActor getActor(ActorRefImpl impl_ref) 
     {
+        System.out.println("ActorMap::getActor --0    "+impl_ref);
         if (!isActive(impl_ref)) 
         {
             throw new ShouldNotHappenException("The actor activeness should have been verified before.");
         }
+        System.out.println("ActorMap::getActor --1");
         AbsActor aa =  impl_to_actor.get(impl_ref); 
+        System.out.println("ActorMap::getActor --2");
         return impl_to_actor.get(impl_ref); 
     }
     public AbsActor getActor(ActorRef abs_ref) 

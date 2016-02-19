@@ -25,6 +25,12 @@ This is the first stage of my own implementation that will be useful for more pu
 
 For a real live actor system mechanism, you should derive from actors.impl.decent which is a more decent implementation.
 
+### BaseAbsActor 
+
+Its feature are :
+
+* __reference to the actor system__ you get the actor system with ` public BaseActorSystem getActorSystem()`.
+
 ## Third implementation stage : the Decent actor system (abstract)
 
 The "decent" implementation of the actor system is based on the "base" implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.

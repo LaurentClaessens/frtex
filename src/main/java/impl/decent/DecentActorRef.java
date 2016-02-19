@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.decent;
 
 import actors.Message;
+import actors.AbsActor;
 import actors.impl.base.BaseActorRef;
 import actors.impl.base.BaseAbsActor;
 
@@ -27,6 +28,9 @@ public class DecentActorRef extends BaseActorRef
     @Override
     public DecentAbsActor getActor()
     {
+        System.out.println("DecentActorRef::getActor");
+        AbsActor truc= super.getActor();
+        System.out.println("DecentActorRef::getAcrtor. Trouvé : "+truc);
         return (DecentAbsActor) super.getActor();
     }
     public void setAcceptedType(Class t) { getActor().setAcceptedType(t); }

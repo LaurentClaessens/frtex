@@ -28,7 +28,11 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
     public void setActorSystem(ActorSystemImpl as)  {actor_system=as;}
     public ActorSystemImpl getActorSystem()  {return actor_system;}
 
-    public AbsActor getActor() { return getActorSystem().getActor(this);  }
+    public AbsActor getActor()
+    { 
+        System.out.println("ActorRefImpl::getActor");
+        return getActorSystem().getActor(this);  
+    }
 
     @Override
     public void send(Message message, ActorRef to) 
