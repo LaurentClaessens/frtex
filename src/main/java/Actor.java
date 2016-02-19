@@ -23,15 +23,8 @@ package actors;
  * messages of a defined type.
  */
 
-public interface Actor<T extends Message> {
-
-    /**
-     * Defines the interface of the actor.
-     *
-     * @param message The type of messages the actor can receive
-     * @throws actors.exceptions.UnsupportedMessageException If the message is not supported by the actor.
-     * When an actor is created, it can only receive and send messages of one type (and subtypes). The tag of the message however can determine the action.
-     */
+public interface Actor<T extends Message> 
+{
     void receive(T message);
     void send(T message, ActorRef to);
 

@@ -41,21 +41,36 @@ public abstract class DecentActorSystem extends BaseActorSystem
     {
         System.out.println("This zero-parameter constructor is only for UNIPD tests purpose. Must not be used in real live.");
     }
+
+    // This function cannot be named 'actorOf()'. When EchoActorSystem::actorOf(2-parameters)
+    // calls the actorOf(2-parameters) here, the latter should call 'actorOf()', but
+    // that would call the Echo's actorOf() and creates circular calls ending in a
+    // StackOverflow.
+    public DecentActorRef newDecentActorRef()
+    {
+        System.out.println("DecentActorSystem::newDecentActorRef() --1");
+        DecentActorRef ar = (DecentActorRef) super.actorOf(accepted_type,ActorMode.LOCAL);
+        System.out.println("DecentActorSystem::newDecentActorRef() --2");
+        DecentAbsActor actor = (DecentAbsActor)  ar.getActor();
+        System.out.println("DecentActorSystem::newDecentActorRef() --3");
+        actor.setAcceptedType(accepted_type);
+        System.out.println("DecentActorSystem::newDecentActorRef() --4");
+        synchronized(created_serie_number)
+        { 
+            actor.setSerieNumber(newSerieNumber());  
+        }
+        System.out.println("DecentActorSystem::newDecentActorRef() --5");
+        return ar;
+    }
     @Override
     public DecentActorRef actorOf(Class<? extends Actor> actor,ActorMode mode)
     {
+        System.out.println("DecentActorSystem::actorOf(arguments)");
         if (mode!=ActorMode.LOCAL)
         {
             throw new ShouldNotHappenException("Only local actors are implemented.");
         }
-        return actorOf();
-    }
-    public DecentActorRef actorOf()
-    {
-        DecentActorRef ar = (DecentActorRef) super.actorOf(accepted_type,ActorMode.LOCAL);
-        DecentAbsActor actor = (DecentAbsActor)  ar.getActor();
-        actor.setAcceptedType(accepted_type);
-        synchronized(created_serie_number){ actor.setSerieNumber(newSerieNumber());  }
-        return ar;
+        System.out.println("DecentActorSystem::actorOf -- Passage à newDecentActorRef()");
+        return newDecentActorRef();
     }
 }

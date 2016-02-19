@@ -127,9 +127,14 @@ public class ActorSystemImpl extends AbsActorSystem {
 
         if (!isActive(ref_to)) { throw new NoSuchActorException(); }
 
+        // section à supprimer après déboguage
+        String name = Thread.currentThread().getName();
+        if (name!="main")
+        {
+        }
+
         SendingThread sending_thread=new SendingThread(message,impl_to);
         Thread t = new Thread( sending_thread );
         t.start();
-
     }
 }

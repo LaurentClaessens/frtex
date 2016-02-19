@@ -41,21 +41,27 @@ public class EchoTest
     private EchoActorRef echo_two_actor;
 
     @Before
-    public void initialize()
+    public void initialize() throws InterruptedException
     {
+        System.out.println("EchoTest::initialize ... ");
         system = new EchoActorSystem();
+        System.out.println("EchoTest::system construit");
 
         echo_actor = system.actorOf();
+        System.out.println("EchoTest::premier acteur construit");
         echo_one_actor = system.actorOf();
         echo_two_actor = system.actorOf();
+        System.out.println("EchoTest::acteurs construits");
 
         echo_one_actor.setAcceptedType(EchoTextOne.class);
         echo_two_actor.setAcceptedType(EchoTextTwo.class);
+        System.out.println("EchoTest::initialize  -- fini.");
     }
 
     @Test
     public void Numbering()
     {
+        System.out.println("LANCEMENT de Numbering.");
         EchoActorSystem system = new EchoActorSystem();
         EchoActorRef a1 = system.actorOf();
         EchoActorRef a2 = system.actorOf();
@@ -69,7 +75,7 @@ public class EchoTest
     @Test
     public void setAcceptedTypeVerification() throws InterruptedException
     {
-        System.out.println("LANCEMENT de acceptedTypeVerification");
+        System.out.println("LANCEMENT de setAcceptedTypeVerification");
 
         echo_one_actor.setAcceptedType(EchoTextOne.class);
         echo_two_actor.setAcceptedType(EchoTextTwo.class);
@@ -82,6 +88,7 @@ public class EchoTest
     @Test
     public void acceptedTypeVerification() throws InterruptedException
     {
+        System.out.println("LANCEMENT de AcceptedTypeVerification");
         EchoText mE = new EchoText(echo_actor,echo_actor,20);
         echo_actor.send(mE,echo_actor);
         Thread.sleep(1000);
@@ -112,6 +119,7 @@ public class EchoTest
         System.out.println("LANCEMENT de nonAcceptedTypeVerification");
 
         EchoTextOne mO = new EchoTextOne(echo_actor,echo_two_actor,23);
+        System.out.println("nonAcceptedTypeVerification--avant send");
         echo_actor.send(mO,echo_two_actor);
         Thread.sleep(1000);
         Assert.assertEquals((int)echo_actor.getLastMessage().getData(),1);

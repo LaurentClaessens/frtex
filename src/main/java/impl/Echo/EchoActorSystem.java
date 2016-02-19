@@ -42,12 +42,15 @@ public class EchoActorSystem extends DecentActorSystem
         {
             throw new ShouldNotHappenException("Only local actors are supported by the Echo actor system.");
         }
-        EchoActorRef ar = (EchoActorRef) actorOf(EchoActor.class,ActorMode.LOCAL);
+        System.out.println("EchoActorSystem::actorOf -- attention ...");
+        EchoActorRef ar = (EchoActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
+        System.out.println("EchoActorSystem::actorOf -- AchoActorRefConstruit ...");
         ar.setActorSystem(this);
         return ar;
     }
     public EchoActorRef actorOf()
     {
+        System.out.println("EchoActorSystem::actorOf()");
         return actorOf(EchoActor.class,ActorMode.LOCAL);
     }
 }

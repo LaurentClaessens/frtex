@@ -64,6 +64,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
                 sender=mail.getSender();
             }
             T m=(T) mail.getMessage();
+            String name = Thread.currentThread().getName();
             receive(m);
         }
     }

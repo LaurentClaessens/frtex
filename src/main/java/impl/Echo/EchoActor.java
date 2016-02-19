@@ -41,9 +41,11 @@ public class EchoActor extends DecentAbsActor
     @Override
     public void receive(Message m)
     {
+        System.out.println("EchoActor::receive -- je vais traiter le message");
         EchoText message = (EchoText) m; // at this point the message type
                                         // verification should 
                                         // already have been done.
+        System.out.println("data : "+message.getData());
         last_message=message;
         EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),message.getSender());
         Thread t = new Thread(processing_thread);
