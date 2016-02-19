@@ -41,8 +41,6 @@ public class ActorSystemImpl extends AbsActorSystem {
     } 
     public AbsActor getActor(ActorRef reference) 
     {
-        System.out.println("ActorSystemImpl::AbsActor(ActorRef)");
-        System.out.println("reference : "+reference);
         return actors_map.getActor(reference); 
     } 
     protected void setActor(ActorRefImpl impl,AbsActor actor) 
@@ -125,18 +123,13 @@ public class ActorSystemImpl extends AbsActorSystem {
     }
     public void send(Message message, ActorRef ref_to)
     {
-        System.out.println("ActorSystemImpl::send");
         ActorRefImpl impl_to=refToImpl(ref_to);
 
-        if (!isActive(ref_to))
-        {
-            throw new NoSuchActorException();
-        }
+        if (!isActive(ref_to)) { throw new NoSuchActorException(); }
 
         SendingThread sending_thread=new SendingThread(message,impl_to);
         Thread t = new Thread( sending_thread );
         t.start();
 
-        System.out.println("ActorSystemImpl::SendingThread lancé");
     }
 }

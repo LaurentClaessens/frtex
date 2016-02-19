@@ -44,8 +44,6 @@ public class ActorSystemFactory {
      */
     public static final ActorSystem buildActorSystem() {
         ActorSystem system=new ActorSystemImpl();
-        System.out.println("ActorSystemImpl créé.");
-        System.out.println("ActorSystemFactory::trouvé "+system.getClass().getSimpleName());
         return system;
     }
 }

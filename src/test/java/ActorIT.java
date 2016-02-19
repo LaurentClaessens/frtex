@@ -65,39 +65,30 @@ public class ActorIT {
      */
     @Before
     public void init() {
-        System.out.println("ActorSystemFactory en action");
         this.system = ActorSystemFactory.buildActorSystem();
     }
 
-    //@Test
+    @Test
     public void shouldBeAbleToSendAMessage() throws InterruptedException {
-        System.out.println("LANCEMENT DE 'shouldBeAbleToSendAMessage'");
         ActorRef ar = system.actorOf(StoreActor.class);
         TestActorRef ref = new TestActorRef(system.actorOf(StoreActor.class));
         StoreActor actor = (StoreActor) ref.getUnderlyingActor(system);
-        System.out.println("getUnderlyingActor ... fait");
         // Send a string to the actor
         ref.send(new StoreMessage("Hello World"), ref);
-        System.out.println("ActorIT : message envoyé");
         // Wait that the message is processed
         Thread.sleep(2000);
-        System.out.println("ActorIT : sleep fini");
         // Verify that the message is been processed
         Assert.assertEquals("The message has to be received by the actor", "Hello World", actor.getData());
-        System.out.println("FIN DE 'shouldBeAbleToSendAMessage'");
     }
 
     @Test
     public void shouldBeAbleToRespondToAMessage() throws InterruptedException {
-        System.out.println("LANCEMENT DE 'shouldBeAbleToRespondToAMessage'");
         TestActorRef pingRef = new TestActorRef(system.actorOf(PingPongActor.class));
         TestActorRef pongRef = new TestActorRef(system.actorOf(PingPongActor.class));
 
         pongRef.send(new PingMessage(), pingRef);
 
-        System.out.println("ActorIR::avant sleep");
         Thread.sleep(2000);
-        System.out.println("ActorIR::après sleep");
 
         PingPongActor pingActor = (PingPongActor) pingRef.getUnderlyingActor(system);
         PingPongActor pongActor = (PingPongActor) pongRef.getUnderlyingActor(system);
@@ -106,12 +97,10 @@ public class ActorIT {
           //      pingActor.getLastMessage().getMessage());
         //Assert.assertEquals("A pong actor has received back a pong message", "Pong",
            //     pongActor.getLastMessage().getMessage());
-        System.out.println("FIN DE 'shouldBeAbleToRespondToAMessage'");
     }
 
-    //@Test
+    @Test
     public void shouldNotLooseAnyMessage() throws InterruptedException {
-        System.out.println("LANCEMENT DE 'shouldNotLooseAnyMessage'");
         TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
         for (int i = 0; i < 200; i++) {
             TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
