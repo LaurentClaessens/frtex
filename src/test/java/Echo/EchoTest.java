@@ -43,19 +43,14 @@ public class EchoTest
     @Before
     public void initialize() throws InterruptedException
     {
-        System.out.println("EchoTest::initialize ... ");
         system = new EchoActorSystem();
-        System.out.println("EchoTest::system construit");
 
         echo_actor = system.actorOf();
-        System.out.println("EchoTest::premier acteur construit");
         echo_one_actor = system.actorOf();
         echo_two_actor = system.actorOf();
-        System.out.println("EchoTest::acteurs construits");
 
         echo_one_actor.setAcceptedType(EchoTextOne.class);
         echo_two_actor.setAcceptedType(EchoTextTwo.class);
-        System.out.println("EchoTest::initialize  -- fini.");
     }
 
     @Test

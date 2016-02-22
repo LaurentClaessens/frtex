@@ -34,12 +34,6 @@ public class ActorSystemImpl extends AbsActorSystem {
     private ActorMap actors_map;
     public ActorSystemImpl() { actors_map=new ActorMap(); }
 
-    private ActorRefImpl refToImpl(ActorRef ref) { return actors_map.refToImpl(ref); }
-    public AbsActor getActor(ActorRefImpl reference) 
-    {
-        System.out.println("ActorSystemImpl::getActor()    "+actors_map);
-        return actors_map.getActor(reference); 
-    } 
     public AbsActor getActor(ActorRef reference) 
     {
         return actors_map.getActor(reference); 
@@ -68,8 +62,7 @@ public class ActorSystemImpl extends AbsActorSystem {
 
             ActorRefImpl impl = (ActorRefImpl) reference;
             impl.setActorSystem(this);
-            setActor( impl  , abs_actor);
-            actors_map.assingRefToImpl(reference,impl); 
+            setActor(impl,abs_actor);
 
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
@@ -117,7 +110,7 @@ public class ActorSystemImpl extends AbsActorSystem {
     }
     public void send(Message message, ActorRef ref_to)
     {
-        ActorRefImpl impl_to=refToImpl(ref_to);
+        ActorRefImpl impl_to=(ActorRefImpl)  ref_to;
 
         if (!isActive(ref_to)) { throw new NoSuchActorException(); }
 

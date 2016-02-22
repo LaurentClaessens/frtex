@@ -25,6 +25,15 @@ import actors.impl.base.BaseActorRef;
 import actors.ActorSystem.ActorMode;
 import actors.exceptions.ShouldNotHappenException;
 
+/*
+ About newDecentActorRef
+This function cannot be named 'actorOf()'. When EchoActorSystem::actorOf(2-parameters)
+ calls the actorOf(2-parameters) here, the latter should call 'actorOf()', but
+that would call the Echo's actorOf() and creates circular calls ending in a
+StackOverflow.
+//*/
+
+
 
 public abstract class DecentActorSystem extends BaseActorSystem
 {
@@ -38,15 +47,10 @@ public abstract class DecentActorSystem extends BaseActorSystem
       accepted_type=t;
       created_serie_number=-1;
     }
-    public DecentActorSystem()
-    {
-        System.out.println("This zero-parameter constructor is only for UNIPD tests purpose. Must not be used in real live.");
-    }
+    
+    // For UNIPD tests purpose. Must not be used in real live. 
+    public DecentActorSystem() {}
 
-    // This function cannot be named 'actorOf()'. When EchoActorSystem::actorOf(2-parameters)
-    // calls the actorOf(2-parameters) here, the latter should call 'actorOf()', but
-    // that would call the Echo's actorOf() and creates circular calls ending in a
-    // StackOverflow.
     public DecentActorRef newDecentActorRef(Class<? extends Actor> actor_type)
     {
         DecentActorRef decent_ref = ((BaseActorRef)  super.actorOf(actor_type,ActorMode.LOCAL)).upgradeToDecentActorRef();
