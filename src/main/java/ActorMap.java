@@ -63,7 +63,12 @@ public class ActorMap
         {
             throw new ShouldNotHappenException("The actor activeness should have been verified before.");
         }
-        return getActor(reference); 
+        AbsActor a = ref_to_actor.get(reference);
+        if (a==null)
+        {
+            throw new ShouldNotHappenException("You are looking for a non existing actor");
+        }
+        return a;
     }
     public void put(ActorRef reference, AbsActor actor  )
     {
@@ -85,6 +90,11 @@ public class ActorMap
 
     public Boolean isActive(ActorRef reference)
     {
-        return ref_to_active.get(reference);
+        Boolean a = ref_to_active.get(reference);
+        if (a==null)
+        {
+            throw new ShouldNotHappenException("You are looking for a non existing actor");
+        }
+        return a;
     }
 }

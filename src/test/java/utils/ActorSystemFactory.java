@@ -24,7 +24,6 @@ import org.reflections.Reflections;
 
 import java.util.Set;
 
-import actors.impl.base.BaseActorSystem;
 import actors.ActorSystemImpl;
 
 /**

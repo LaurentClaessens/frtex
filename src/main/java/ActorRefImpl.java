@@ -30,7 +30,6 @@ public class ActorRefImpl<T extends Message> implements ActorRef<T>
 
     public AbsActor getActor()
     { 
-        System.out.println("ActorRefImpl::getActor");
         return getActorSystem().getActor(this);  
     }
 

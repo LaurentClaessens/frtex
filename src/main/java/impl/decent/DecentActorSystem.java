@@ -18,12 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.decent;
 
+import java.util.Collection;
+import java.util.Set;
+
 import actors.Message;
 import actors.Actor;
-import actors.impl.base.BaseActorSystem;
-import actors.impl.base.BaseActorRef;
+import actors.ActorMap;
+import actors.ActorSystemImpl;
+import actors.ActorRefImpl;
 import actors.ActorSystem.ActorMode;
 import actors.exceptions.ShouldNotHappenException;
+import actors.exceptions.IllegalModeException;
 
 /*
  About newDecentActorRef
@@ -33,12 +38,33 @@ that would call the Echo's actorOf() and creates circular calls ending in a
 StackOverflow.
 //*/
 
-
-
-public abstract class DecentActorSystem extends BaseActorSystem
+public abstract class DecentActorSystem extends ActorSystemImpl
 {
     private Integer created_serie_number;
     private Class accepted_type=Message.class;
+    private ActorMap actors_map;
+
+    public DecentAbsActor getActor(DecentActorRef reference) 
+    {
+        return (DecentAbsActor) actors_map.getActor(reference); 
+    } 
+    protected void setActor(DecentActorRef ref,DecentAbsActor actor) 
+    { 
+        actors_map.put(ref,actor); 
+    }
+
+    protected final DecentActorRef createActorReference(ActorMode mode) throws IllegalModeException
+    {
+        if (mode!=ActorMode.LOCAL)
+        {
+            throw new IllegalModeException(mode);
+        }
+        DecentActorRef actor_ref = new DecentActorRef();
+        return actor_ref;
+    }
+
+    private Boolean isActive(DecentActorRef ref) { return actors_map.isActive(ref);  }
+    private void setActive(DecentActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }
 
     public Integer newSerieNumber()  { return ++created_serie_number;  }
     public DecentActorSystem(Class t) 
@@ -46,14 +72,12 @@ public abstract class DecentActorSystem extends BaseActorSystem
       super(); 
       accepted_type=t;
       created_serie_number=-1;
+      actors_map=new ActorMap();
     }
     
-    // For UNIPD tests purpose. Must not be used in real live. 
-    public DecentActorSystem() {}
-
     public DecentActorRef newDecentActorRef(Class<? extends Actor> actor_type)
     {
-        DecentActorRef decent_ref = ((BaseActorRef)  super.actorOf(actor_type,ActorMode.LOCAL)).upgradeToDecentActorRef();
+        DecentActorRef decent_ref = (DecentActorRef)  super.actorOf(actor_type,ActorMode.LOCAL);
 
         DecentAbsActor decent_actor = decent_ref.getActor();
         decent_actor.setAcceptedType(accepted_type);

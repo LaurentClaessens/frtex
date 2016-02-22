@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // This is testing the Echo implementation of my actor system.
 
+// Remember : call maven with
+// mvn test -Dtest=EchoTest  -DtrimStaskTrace=false
+
 import actors.ActorRef;
 
 import java.lang.InterruptedException;

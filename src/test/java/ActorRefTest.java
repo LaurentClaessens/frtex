@@ -37,7 +37,6 @@
  */
 package actors;
 
-import actors.impl.base.BaseActorSystem;
 import actors.utils.ActorSystemFactory;
 import actors.utils.actors.TrivialActor;
 import actors.utils.messages.TrivialMessage;

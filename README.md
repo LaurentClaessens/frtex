@@ -4,7 +4,21 @@ This is the java project for the cours at unipd. The skeleton is from [rcardin](
 
 It provides an actor system and several implementations.
 
-## First implementation stage : `Abs<Foo>` and `<Foo>Impl` (non abstract)
+## General classes
+
+* `Message`
+* `Mail`
+* `MailBox`
+
+## First implementation stage : `Abs<Foo>` (abstract)
+
+The classes are :
+* `AbsActorSystem`
+* `AbsMessage`
+* `Actor`
+* `ActorRef`
+
+## Second implementation stage : `<Foo>Impl` (non abstract)
 
 These are the files that implement the very minimal actor system devoted to pass the unipd requirements. The root of the distinction between this implementation and `impl.base` is a name clash : the name `ActorRef` is imposed by unipd and is an interface. I'd like to name `ActorRef` the minimal non-abstract implementation of `AbsActorRef`, but I can't.
 
@@ -13,23 +27,17 @@ Thus the first stage of implementation have some strange naming and is decompose
 Its special feature is 
 
 ```java
-BaseActorSystem getActorSystem()
+ActorSystem getActorSystem()
 ```
 
 that returns the actor system which created him.
 
+The classes are :
+* `ActorSystemImpl`
+* `ActorRefImpl`
+* `ActorMap`
+* `SendingThread`
 
-## Second implementation stage : the Base actor system (abstract)
-
-This is the first stage of my own implementation that will be useful for more purposes than passing the unipd's tests. It mainly serves as a wrapper around the preceding one in order to get rid of naming problems.
-
-For a real live actor system mechanism, you should derive from actors.impl.decent which is a more decent implementation.
-
-### BaseAbsActor 
-
-Its feature are :
-
-* __reference to the actor system__ you get the actor system with ` public BaseActorSystem getActorSystem()`.
 
 ## Third implementation stage : the Decent actor system (abstract)
 
@@ -39,6 +47,7 @@ The "decent" implementation of the actor system is based on the "base" implement
 
 Its features are :
 
+* __reference to the actor system__ you get the actor system with `public DecentActorSystem getActorSystem()`.
 * __accepted type__ Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system.
 
 * __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.

@@ -23,17 +23,19 @@ import actors.AbsActor;
 
 public class SendingThread implements Runnable
 {
-    private ActorRefImpl actor_ref_to;
+    private ActorRef actor_ref_to;
     private Message message;
+    private ActorSystemImpl actor_system;
 
-    public SendingThread(Message m, ActorRefImpl t) 
+    public SendingThread(Message m, ActorRef t,ActorSystemImpl as) 
     {
         message=m;
         actor_ref_to=t;
+        actor_system=as;
     }
     public void run() 
     {
-        AbsActor actor_to = actor_ref_to.getActor();
+        AbsActor actor_to = actor_system.getActor(actor_ref_to);
         actor_to.putInMailBox(message); 
     }
 }

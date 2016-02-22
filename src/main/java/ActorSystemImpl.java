@@ -42,7 +42,7 @@ public class ActorSystemImpl extends AbsActorSystem {
     { 
         actors_map.put(impl,actor); 
     }
-    protected  ActorRef createActorReference(ActorMode mode) throws IllegalModeException
+    protected  ActorRefImpl createActorReference(ActorMode mode) throws IllegalModeException
     {
         if (mode!=ActorMode.LOCAL)
         {
@@ -53,7 +53,7 @@ public class ActorSystemImpl extends AbsActorSystem {
     }
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor_type, ActorMode mode) {
-        ActorRef<?> reference;
+        ActorRefImpl reference;
         try
         {
             reference = this.createActorReference(mode);
@@ -110,17 +110,9 @@ public class ActorSystemImpl extends AbsActorSystem {
     }
     public void send(Message message, ActorRef ref_to)
     {
-        ActorRefImpl impl_to=(ActorRefImpl)  ref_to;
-
         if (!isActive(ref_to)) { throw new NoSuchActorException(); }
 
-        // section à supprimer après déboguage
-        String name = Thread.currentThread().getName();
-        if (name!="main")
-        {
-        }
-
-        SendingThread sending_thread=new SendingThread(message,impl_to);
+        SendingThread sending_thread=new SendingThread(message,ref_to,this);
         Thread t = new Thread( sending_thread );
         t.start();
     }
