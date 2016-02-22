@@ -34,20 +34,13 @@ public class EchoActorSystem extends DecentActorSystem
     @Override
     public EchoActorRef actorOf(Class<? extends Actor> actor, ActorMode mode) 
     {
-        if (actor!=EchoActor.class)
-        {
-            throw new ShouldNotHappenException("Only EchoActor are supported by the Echo actor system.");
-        }
-        if (mode!=ActorMode.LOCAL)
-        {
-            throw new ShouldNotHappenException("Only local actors are supported by the Echo actor system.");
-        }
-        EchoActorRef ar = (EchoActorRef) super.actorOf(EchoActor.class,ActorMode.LOCAL);
-        ar.setActorSystem(this);
-        return ar;
+        throw new ShouldNotHappenException("ou should only use the zero-parameter actorOf() in the Echo system.");
     }
-    public EchoActorRef actorOf()
+    public EchoActorRef createPair()
     {
-        return actorOf(EchoActor.class,ActorMode.LOCAL);
+        EchoActorRef reference = new EchoActorRef();
+        EchoActor actor = new EchoActor(this);
+        setUpActor(reference,actor);
+        return reference;
     }
 }

@@ -20,9 +20,7 @@ The classes are :
 
 ## Second implementation stage : `<Foo>Impl` (non abstract)
 
-These are the files that implement the very minimal actor system devoted to pass the unipd requirements. The root of the distinction between this implementation and `impl.base` is a name clash : the name `ActorRef` is imposed by unipd and is an interface. I'd like to name `ActorRef` the minimal non-abstract implementation of `AbsActorRef`, but I can't.
-
-Thus the first stage of implementation have some strange naming and is decomposed into `Abs<Foo>` and `<Foo>Impl`.
+These are the files that implement the very minimal actor system devoted to pass the unipd requirements. 
 
 Its special feature is 
 
@@ -41,11 +39,13 @@ The classes are :
 
 ## Third implementation stage : the Decent actor system (abstract)
 
-The "decent" implementation of the actor system is based on the "base" implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.
+The "decent" implementation of the actor system is based on the precedent implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.
 
 The types are
 
-* `DecentActorSystem`
+* `DecentActorSystem` its special features are :
+    * `void setUpActor(DecentActorRef,DecentActor)`. Give to the two references the attribute they need and associate them in the actor map.
+    * `DecentActorRef createPair()` (abstract). This function has to be overridden in the extensions. The override has to create a pair actor/actor reference and call `setUpActror` with these two as arguments.
 * `DecentActorRef`
 * `DecentAbsActor` its special features are :
    * __reference to the actor system__ you get the actor system with `public DecentActorSystem getActorSystem()`.
@@ -53,8 +53,32 @@ The types are
    * __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
 
 
+## Fourth implementation stage : your actor system
 
+In order to make the things clearly you should create your own actor system by derivation from the "decent" actor system. You should create the following classes
+* `yourActor`
+* `yourActorRef`
+* `yourActorSystem`
 
+The class `yourActorSystem` should contain the following methods :
+
+```java
+public void setUpActor(yourActorRef ref,yourActor act)
+{
+    super.setUpActor(ref,act);
+    // give here to ref and act the properties they need
+}
+```
+and
+```java
+public yourActorRef createPair()
+{
+    yourActorRef reference = new yourActorRef();
+    yourActor actor = new yourActor();
+    setUpActor(reference,actor);
+    return reference;
+}
+```
 
 ## The Latex actor system
 

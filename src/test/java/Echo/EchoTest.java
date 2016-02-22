@@ -48,9 +48,9 @@ public class EchoTest
     {
         system = new EchoActorSystem();
 
-        echo_actor = system.actorOf();
-        echo_one_actor = system.actorOf();
-        echo_two_actor = system.actorOf();
+        echo_actor = system.createPair();
+        echo_one_actor = system.createPair();
+        echo_two_actor = system.createPair();
 
         echo_one_actor.setAcceptedType(EchoTextOne.class);
         echo_two_actor.setAcceptedType(EchoTextTwo.class);
@@ -61,8 +61,8 @@ public class EchoTest
     {
         System.out.println("LANCEMENT de Numbering.");
         EchoActorSystem system = new EchoActorSystem();
-        EchoActorRef a1 = system.actorOf();
-        EchoActorRef a2 = system.actorOf();
+        EchoActorRef a1 = system.createPair();
+        EchoActorRef a2 = system.createPair();
 
         // thanks to http://www.btaz.com/java/junit-4-error-reference-to-assertequals-is-ambiguous/
         Assert.assertEquals((int) a1.getSerieNumber(),0);

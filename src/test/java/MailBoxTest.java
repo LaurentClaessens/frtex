@@ -37,8 +37,8 @@ public class MailBoxTest {
     {
         MailBox<EchoText> mail_box=new MailBox<EchoText>();
         EchoActorSystem system = new EchoActorSystem();
-        ActorRef a1 = system.actorOf(EchoActor.class);
-        ActorRef a2 = system.actorOf(EchoActor.class);
+        ActorRef a1 = system.createPair();
+        ActorRef a2 = system.createPair();
 
         mail_box.add( new EchoText(a1,a2,3)  );
         mail_box.add( new EchoText(a1,a2,13)  );

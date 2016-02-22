@@ -30,14 +30,6 @@ import actors.ActorSystem.ActorMode;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.IllegalModeException;
 
-/*
- About newDecentActorRef
-This function cannot be named 'actorOf()'. When EchoActorSystem::actorOf(2-parameters)
- calls the actorOf(2-parameters) here, the latter should call 'actorOf()', but
-that would call the Echo's actorOf() and creates circular calls ending in a
-StackOverflow.
-//*/
-
 public abstract class DecentActorSystem extends ActorSystemImpl
 {
     private Integer created_serie_number;
@@ -83,21 +75,12 @@ public abstract class DecentActorSystem extends ActorSystemImpl
             actor.setSerieNumber(newSerieNumber());  
         }
     }
-    public DecentActorRef newDecentActorRef(Class<? extends Actor> actor_type)
-    {
-        DecentActorRef decent_ref = (DecentActorRef)  super.actorOf(actor_type,ActorMode.LOCAL);
-
-        DecentAbsActor decent_actor = decent_ref.getActor();
-        setUpActor(decent_ref,decent_actor);
-        return decent_ref;
-    }
     @Override
     public DecentActorRef actorOf(Class<? extends Actor> actor_type,ActorMode mode)
     {
-        if (mode!=ActorMode.LOCAL)
-        {
-            throw new ShouldNotHappenException("Only local actors are implemented.");
-        }
-        return newDecentActorRef(actor_type);
+        throw new ShouldNotHappenException("Use createPair instead.");
     }
-}
+
+    // `createPair`
+    public abstract DecentActorRef createPair();
+} 
