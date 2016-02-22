@@ -38,10 +38,6 @@ public class ActorSystemImpl extends AbsActorSystem {
     {
         return actors_map.getActor(reference); 
     } 
-    protected void setActor(ActorRefImpl impl,AbsActor actor) 
-    { 
-        actors_map.put(impl,actor); 
-    }
     protected  ActorRefImpl createActorReference(ActorMode mode) throws IllegalModeException
     {
         if (mode!=ActorMode.LOCAL)
@@ -51,6 +47,12 @@ public class ActorSystemImpl extends AbsActorSystem {
         ActorRefImpl actor_ref = new ActorRefImpl();
         return actor_ref;
     }
+    public void setUpActor(ActorRefImpl impl,AbsActor abs_actor)
+    {
+        abs_actor.setSelf(impl);
+        impl.setActorSystem(this);
+        actors_map.put(impl,abs_actor); 
+    }
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor_type, ActorMode mode) {
         ActorRefImpl reference;
@@ -58,12 +60,9 @@ public class ActorSystemImpl extends AbsActorSystem {
         {
             reference = this.createActorReference(mode);
             AbsActor abs_actor = (AbsActor) actor_type.newInstance();
-            abs_actor.setSelf(reference);
 
             ActorRefImpl impl = (ActorRefImpl) reference;
-            impl.setActorSystem(this);
-            setActor(impl,abs_actor);
-
+            setUpActor(impl,abs_actor);
         } catch (InstantiationException | IllegalAccessException e) {
             throw new NoSuchActorException(e);
         }

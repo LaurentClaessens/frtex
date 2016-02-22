@@ -107,7 +107,7 @@ public class ActorIT {
             adder.send(new Increment(), counter);
         }
 
-        Thread.sleep(2000);
+        Thread.sleep(4000);
 
         Assert.assertEquals("A counter that was incremented 1000 times should be equal to 1000",
                 200, ((CounterActor) counter.getUnderlyingActor(system)).getCounter());

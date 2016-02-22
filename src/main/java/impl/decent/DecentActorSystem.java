@@ -74,17 +74,21 @@ public abstract class DecentActorSystem extends ActorSystemImpl
       created_serie_number=-1;
       actors_map=new ActorMap();
     }
-    
+    public void setUpActor(DecentActorRef ref,DecentAbsActor actor)
+    {
+        super.setUpActor(ref,actor);
+        actor.setAcceptedType(accepted_type);
+        synchronized(created_serie_number)
+        { 
+            actor.setSerieNumber(newSerieNumber());  
+        }
+    }
     public DecentActorRef newDecentActorRef(Class<? extends Actor> actor_type)
     {
         DecentActorRef decent_ref = (DecentActorRef)  super.actorOf(actor_type,ActorMode.LOCAL);
 
         DecentAbsActor decent_actor = decent_ref.getActor();
-        decent_actor.setAcceptedType(accepted_type);
-        synchronized(created_serie_number)
-        { 
-            decent_actor.setSerieNumber(newSerieNumber());  
-        }
+        setUpActor(decent_ref,decent_actor);
         return decent_ref;
     }
     @Override
