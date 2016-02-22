@@ -43,14 +43,17 @@ The classes are :
 
 The "decent" implementation of the actor system is based on the "base" implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.
 
-### DecentAbsActor
+The types are
 
-Its features are :
+* `DecentActorSystem`
+* `DecentActorRef`
+* `DecentAbsActor` its special features are :
+   * __reference to the actor system__ you get the actor system with `public DecentActorSystem getActorSystem()`.
+   * __accepted type__ Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system.
+   * __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
 
-* __reference to the actor system__ you get the actor system with `public DecentActorSystem getActorSystem()`.
-* __accepted type__ Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system.
 
-* __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
+
 
 
 ## The Latex actor system
@@ -89,7 +92,14 @@ The actor system need more functionalities than the basic one.
 
 ## The Echo actor system
 
-It is only for testing purpose. The system manage the message type "EchoText" whose has two subtypes "EchoTextOne" and "EchoTextTwo". They only exist in order to test the "accepted_type" system.
+It is only for testing purpose. The system manage the message type "EchoText".
+
+### EchoText (the message type)
+
+The `EchoText` type has two subtypes `EchoTextOne` and `EchoTextTwo` that only exist for testing purpose of the `accepted_type` system.
+
+### Special features
+* `EchoActor` has a reference to the __last message__
 
 
 # TODO
