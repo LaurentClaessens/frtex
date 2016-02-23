@@ -43,6 +43,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         mail_box = new actors.MailBox<T>(); 
     }
     public MailBox<T> getMailBox() {return mail_box;}
+    public Class getAcceptedType() {return accepted_type; }
 
     public void setActorSystem(ActorSystemImpl as) { actor_system=as; }
     public ActorSystemImpl getActorSystem() { return actor_system;  }
@@ -70,7 +71,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     }
     public void putInMailBox(Message message)
     {
-        if (accepted_type.isInstance(message)) 
+        if (getAcceptedType().isInstance(message)) 
         { 
             Mail mail=new Mail(message,self);
             synchronized(mail_box) { mail_box.add(mail);}
@@ -80,7 +81,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     }
     public void send(T m, ActorRef to)
     {
-        if (accepted_type.isInstance(m)) 
+        if (getAcceptedType().isInstance(m)) 
         {
             actor_system.getActor(to).putInMailBox(m); 
         }

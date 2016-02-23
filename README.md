@@ -48,9 +48,14 @@ The types are
     * `DecentActorRef createPair()` (abstract). This function has to be overridden in the extensions. The override has to create a pair actor/actor reference and call `setUpActror` with these two as arguments.
 * `DecentActorRef`
 * `DecentAbsActor` its special features are :
-   * __reference to the actor system__ you get the actor system with `public DecentActorSystem getActorSystem()`.
-   * __accepted type__ Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system.
-   * __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
+    * __reference to the actor system__ you get the actor system with `public DecentActorSystem getActorSystem()`.
+    * __accepted type__ Each actor has its own accepted type of message. By default it is the one of the system, but is can be set to any other class. No check is done, but the accepted message type of one actor is supposed to be a subclass of the accepted message type of the system. 
+
+    We have the following two methods :
+        * `void setAcceptedType()` that should be used only one. During the creation process of the actor. See the method `setUpActor`.
+        * `Class getAcceptedType()`.
+        
+    * __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
 
 
 ## Fourth implementation stage : your actor system
@@ -79,6 +84,16 @@ public yourActorRef createPair()
     return reference;
 }
 ```
+
+Moreover the method `getActor` should be overridden as
+```java
+@Override
+public  yourActor getActor(ActorRef reference)
+{
+    return (yourActor) super.getActor(reference);
+}
+```
+The cast should work because the actor has a reference to its actor system. Thus only actors build from your actor system should get into that method.
 
 ## The Latex actor system
 

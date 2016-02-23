@@ -37,7 +37,8 @@ public abstract class DecentAbsActor extends AbsActor
 
     public void setSerieNumber(Integer n) {serie_number=n;}
     public Integer getSerieNumber() {return serie_number;}
-    public void setAcceptedType(Class t) {accepted_type=t;}
     public String getName() { return my_name; }
+    public void setAcceptedType(Class t) {accepted_type=t;}
+    @Override
     public Class getAcceptedType() { return accepted_type; }
 }

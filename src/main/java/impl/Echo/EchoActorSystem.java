@@ -26,7 +26,6 @@ import actors.exceptions.ShouldNotHappenException;
 
 public class EchoActorSystem extends DecentActorSystem
 {
-
     public EchoActorSystem() 
     { 
         super(EchoText.class); 
@@ -42,5 +41,10 @@ public class EchoActorSystem extends DecentActorSystem
         EchoActor actor = new EchoActor(this);
         setUpActor(reference,actor);
         return reference;
+    }
+    @Override
+    public  EchoActor getActor(ActorRef reference)
+    {   
+        return (EchoActor) super.getActor(reference);
     }
 }
