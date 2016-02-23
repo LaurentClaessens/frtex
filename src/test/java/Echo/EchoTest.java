@@ -59,7 +59,6 @@ public class EchoTest
     @Test
     public void Numbering()
     {
-        System.out.println("LANCEMENT de Numbering.");
         EchoActorSystem system = new EchoActorSystem();
         EchoActorRef a1 = system.createPair();
         EchoActorRef a2 = system.createPair();
@@ -73,7 +72,6 @@ public class EchoTest
     @Test
     public void setAcceptedTypeVerification() throws InterruptedException
     {
-        System.out.println("LANCEMENT de setAcceptedTypeVerification");
 
         echo_one_actor.setAcceptedType(EchoTextOne.class);
         echo_two_actor.setAcceptedType(EchoTextTwo.class);
@@ -86,7 +84,6 @@ public class EchoTest
     @Test
     public void acceptedTypeVerification() throws InterruptedException
     {
-        System.out.println("LANCEMENT de AcceptedTypeVerification");
         EchoText mE = new EchoText(echo_actor,echo_actor,20);
         echo_actor.send(mE,echo_actor);
         Thread.sleep(1000);
@@ -102,7 +99,6 @@ public class EchoTest
     public void NonAcceptedTypeVerificationOne() throws InterruptedException
     {
 
-        System.out.println("LANCEMENT de NonAcceptedTypeVerificationOne");
         EchoTextOne mO = new EchoTextOne(echo_actor,echo_two_actor,1);
         echo_actor.send(mO,echo_two_actor);
         Thread.sleep(1000);
@@ -110,7 +106,6 @@ public class EchoTest
     @Test(expected = UnsupportedMessageException.class)  
     public void NonAcceptedTypeVerificationTwo() throws InterruptedException
     {
-        System.out.println("LANCEMENT de NonAcceptedTypeVerificationTwo");
         EchoText mA = new EchoText(echo_one_actor,echo_two_actor,20);
         echo_one_actor.send(mA,echo_two_actor);
         Thread.sleep(1000);
@@ -123,7 +118,6 @@ public class EchoTest
         // while echo_one_actor only accepts EchoTextOne messages.
         // This test does not work well because the exception is raised
         // by a thread.
-        System.out.println("LANCEMENT de NonAcceptedTypeVerificationThree");
         EchoTextOne mB = new EchoTextOne(echo_actor,echo_one_actor,23);
         echo_actor.send(mB,echo_one_actor);
         Thread.sleep(1000);

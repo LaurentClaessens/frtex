@@ -79,7 +79,6 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         }
         else 
         { 
-            System.out.println("AbsActor::putInMailBox -- ne devrait pas.");
             throw new UnsupportedMessageException(message);
         }
     }

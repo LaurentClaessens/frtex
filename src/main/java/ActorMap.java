@@ -76,7 +76,6 @@ public class ActorMap
         {
             if (a==actor) 
             {
-                System.out.println("Il y a déjà "+ref_to_actor.size()+"/"+ref_to_active.size()+" éléments dans la liste");
                 throw new AlreadyListedActor("This actor reference is already in the list.");
             }
         }

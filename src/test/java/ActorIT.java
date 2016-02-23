@@ -106,25 +106,22 @@ public class ActorIT {
         for (int i = 0; i < 200; i++) {
             TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
             Increment inc = new Increment();
-            System.out.println("Envoi de l'incrément "+inc);
             adder.send(inc, counter);
         }
-        Thread.sleep(2000);
+        Thread.sleep(4000);
         Assert.assertEquals("A counter that was incremented 1000 times should be equal to 1000", 200, ((CounterActor) counter.getUnderlyingActor(system)).getCounter());
     }
-    //@Test
+    @Test
     public void shouldInterpretCorrectlyMessage() throws InterruptedException {
         TestActorRef counter = new TestActorRef(system.actorOf(CounterActor.class));
         for (int i = 0; i < 10; i++) {
             TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
             Increment inc = new Increment();
-            System.out.println("Envoi de l'incrément "+inc);
             adder.send(inc, counter);
         }
         for (int i = 0; i < 5; i++) {
             TestActorRef adder = new TestActorRef(system.actorOf(TrivialActor.class));
             Decrement d = new Decrement();
-            System.out.println("Envoi du décrément "+d);
             adder.send(d, counter);
         }
         Thread.sleep(4000);
