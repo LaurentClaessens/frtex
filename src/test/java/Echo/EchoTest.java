@@ -56,7 +56,7 @@ public class EchoTest
         echo_two_actor.setAcceptedType(EchoTextTwo.class);
     }
 
-    //@Test
+    @Test
     public void Numbering()
     {
         System.out.println("LANCEMENT de Numbering.");
@@ -70,7 +70,7 @@ public class EchoTest
 
         Assert.assertEquals(a2.getAcceptedType(),EchoText.class);
     }
-    //@Test
+    @Test
     public void setAcceptedTypeVerification() throws InterruptedException
     {
         System.out.println("LANCEMENT de setAcceptedTypeVerification");
@@ -83,7 +83,7 @@ public class EchoTest
         Assert.assertEquals(echo_two_actor.getAcceptedType(),EchoTextTwo.class);
     }
 
-    //@Test
+    @Test
     public void acceptedTypeVerification() throws InterruptedException
     {
         System.out.println("LANCEMENT de AcceptedTypeVerification");
@@ -92,31 +92,41 @@ public class EchoTest
         Thread.sleep(1000);
         Assert.assertEquals(1,(int) echo_actor.getLastMessage().getData());
 
-        EchoText mA = new EchoText(echo_one_actor,echo_two_actor,20);
-        echo_one_actor.send(mA,echo_two_actor);
-        Thread.sleep(1000);
-        Assert.assertEquals(1,(int) echo_actor.getLastMessage().getData());
-
-
         EchoTextOne mO = new EchoTextOne(echo_actor,echo_actor,23);
         echo_actor.send(mO,echo_actor);
         Thread.sleep(1000);
         Assert.assertEquals(1,(int)echo_actor.getLastMessage().getData());
 
+    }
+    @Test(expected = UnsupportedMessageException.class)  
+    public void NonAcceptedTypeVerificationOne() throws InterruptedException
+    {
+
+        System.out.println("LANCEMENT de NonAcceptedTypeVerificationOne");
+        EchoTextOne mO = new EchoTextOne(echo_actor,echo_two_actor,1);
+        echo_actor.send(mO,echo_two_actor);
+        Thread.sleep(1000);
+    }
+    @Test(expected = UnsupportedMessageException.class)  
+    public void NonAcceptedTypeVerificationTwo() throws InterruptedException
+    {
+        System.out.println("LANCEMENT de NonAcceptedTypeVerificationTwo");
+        EchoText mA = new EchoText(echo_one_actor,echo_two_actor,20);
+        echo_one_actor.send(mA,echo_two_actor);
+        Thread.sleep(1000);
+    }
+    @Test(expected = UnsupportedMessageException.class)  
+    public void NonAcceptedTypeVerificationThree() throws InterruptedException
+    {
+        // This one has to throw the UnsupportedMessageException because
+        // at the _second_ strike, echo_actor sends an EchoText message
+        // while echo_one_actor only accepts EchoTextOne messages.
+        // This test does not work well because the exception is raised
+        // by a thread.
+        System.out.println("LANCEMENT de NonAcceptedTypeVerificationThree");
         EchoTextOne mB = new EchoTextOne(echo_actor,echo_one_actor,23);
         echo_actor.send(mB,echo_one_actor);
         Thread.sleep(1000);
         Assert.assertEquals(2,(int)echo_actor.getLastMessage().getData());
-    }
-    @Test(expected = UnsupportedMessageException.class)  
-    public void nonAcceptedTypeVerification() throws InterruptedException
-    {
-
-        EchoTextOne mO = new EchoTextOne(echo_actor,echo_two_actor,1);
-        System.out.println("EchoTest::nonAcceptedTypeVerification accepted_type O : "+echo_actor.getAcceptedType());
-        System.out.println(" accepted_type two : "+echo_two_actor.getAcceptedType());
-        System.out.println("Type echo_actor : "+echo_actor.getClass().getSimpleName());
-        echo_actor.send(mO,echo_two_actor);
-        Thread.sleep(1000);
     }
 }

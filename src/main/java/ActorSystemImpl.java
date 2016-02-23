@@ -27,6 +27,7 @@ import java.util.Set;
 import actors.ActorMap;
 import actors.exceptions.NoSuchActorException;
 import actors.exceptions.IllegalModeException;
+import actors.exceptions.UnsupportedMessageException;
 import actors.exceptions.ShouldNotHappenException;
 
 public class ActorSystemImpl extends AbsActorSystem {
@@ -110,7 +111,11 @@ public class ActorSystemImpl extends AbsActorSystem {
     public void send(Message message, ActorRef ref_to)
     {
         if (!isActive(ref_to)) { throw new NoSuchActorException(); }
-
+        if ( !getActor(ref_to).getAcceptedType().isInstance(message)  )
+        {
+            Class at = getActor(ref_to).getAcceptedType();
+            throw new UnsupportedMessageException(message);
+        }
         SendingThread sending_thread=new SendingThread(message,ref_to,this);
         Thread t = new Thread( sending_thread );
         t.start();

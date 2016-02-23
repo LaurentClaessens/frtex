@@ -33,7 +33,7 @@ public class LatexTest
     {
         System.out.println("DÉPART DU TEST LATEX");
         LatexActorSystem system= new LatexActorSystem();
-        ActorRef main_actor = system.actorOf(LatexActor.class);
+        ActorRef main_actor = system.createPair();
         LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","mazhe/mazhe.tex");
         main_actor.send(main_message,main_actor);
         Thread.sleep(500);

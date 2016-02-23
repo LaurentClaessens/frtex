@@ -77,15 +77,20 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
             synchronized(mail_box) { mail_box.add(mail);}
             processNextMessage();
         }
-        else { throw new UnsupportedMessageException(message);  }
-    }
-    public void send(T m, ActorRef to)
-    {
-        if (getAcceptedType().isInstance(m)) 
-        {
-            actor_system.getActor(to).putInMailBox(m); 
+        else 
+        { 
+            System.out.println("AbsActor::putInMailBox -- ne devrait pas.");
+            throw new UnsupportedMessageException(message);
         }
-        else { throw new ShouldNotHappenException("Trying to send a message of wrong type. Your actor implementation should not have such evil plans.");}
+    }
+    public void send(T message, ActorRef to)
+    {
+        AbsActor actor_to = getActorSystem().getActor(to);
+        if (!actor_to.getAcceptedType().isInstance(message)) 
+        {
+            throw new UnsupportedMessageException(message);
+        }
+        actor_to.putInMailBox(message); 
     }
     public void stop() { getMailBox().close(); }
 }
