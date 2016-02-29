@@ -59,13 +59,14 @@ public class ActorMap
 
     public AbsActor getActor(ActorRef reference) 
     {
-        if (!isActive(reference)) 
+        AbsActor a;
+        synchronized(ref_to_actor)
         {
-            throw new ShouldNotHappenException("The actor activeness should have been verified before.");
+            a = ref_to_actor.get(reference);
         }
-        AbsActor a = ref_to_actor.get(reference);
         if (a==null)
         {
+            synchronized(ref_to_actor){System.out.println("The references are :"+actors_ref_list());}
             throw new ShouldNotHappenException("You are looking for a non existing actor");
         }
         return a;
@@ -79,8 +80,8 @@ public class ActorMap
                 throw new AlreadyListedActor("This actor reference is already in the list.");
             }
         }
-        ref_to_actor.put(reference,actor);
-        ref_to_active.put(reference,true);
+        synchronized(ref_to_actor) { ref_to_actor.put(reference,actor);}
+        synchronized(ref_to_active) {  ref_to_active.put(reference,true); }
     }
 
     public void setActive(ActorRef ref,Boolean b)
@@ -90,7 +91,9 @@ public class ActorMap
 
     public Boolean isActive(ActorRef reference)
     {
-        Boolean a = ref_to_active.get(reference);
+        Boolean a ;
+        synchronized(ref_to_active) { a= ref_to_active.get(reference);  }
+            
         if (a==null)
         {
             throw new ShouldNotHappenException("You are looking for a non existing actor");

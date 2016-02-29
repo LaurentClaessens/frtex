@@ -56,17 +56,16 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
     public abstract void receive(T m);
     private void processNextMessage()
     {
-        if ( mail_box.size()>0 )
+        Mail mail;
+        synchronized(this) //mail_box,sender
         {
-            Mail mail;
-            synchronized(this) //mail_box,sender
+            if ( mail_box.size()>0 )
             {
                 mail=mail_box.poll(); 
                 sender=mail.getSender();
+                T m=(T) mail.getMessage();
+                receive(m);
             }
-            T m=(T) mail.getMessage();
-            String name = Thread.currentThread().getName();
-            receive(m);
         }
     }
     public void putInMailBox(Message message)
@@ -91,5 +90,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
         }
         actor_to.putInMailBox(message); 
     }
-    public void stop() { getMailBox().close(); }
+    public void stop() { 
+        actor_system.stop(self);
+    }
 }

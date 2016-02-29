@@ -61,6 +61,7 @@ public class ActorSystemImpl extends AbsActorSystem {
         {
             reference = this.createActorReference(mode);
             AbsActor abs_actor = (AbsActor) actor_type.newInstance();
+            abs_actor.setActorSystem(this);
 
             ActorRefImpl impl = (ActorRefImpl) reference;
             setUpActor(impl,abs_actor);

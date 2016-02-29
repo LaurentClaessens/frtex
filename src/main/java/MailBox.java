@@ -33,7 +33,6 @@ import actors.exceptions.ShouldNotHappenException;
 public class MailBox<M extends Message>
 {
     private Queue<Mail> queue = new LinkedList<Mail>();
-    private Boolean closed = false;
     private ActorRef proprietary;  
 
     public void setProprietary(ActorRef ref) { proprietary=ref;  }
@@ -46,13 +45,10 @@ public class MailBox<M extends Message>
     }
     public void add(Mail m) 
     {
-        if (!closed)
+        try { synchronized(this) { queue.add(m); } }
+        catch (ClassCastException e)
         {
-            try { synchronized(this) { queue.add(m); } }
-            catch (ClassCastException e)
-            {
-               throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
-            }
+           throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
         }
     }
 
@@ -61,7 +57,5 @@ public class MailBox<M extends Message>
         synchronized(this) { return queue.poll();  }
     }           
     public int size() {return queue.size();  }
-    public Boolean isOpen()  { return !closed;  }
-    public void close() { closed=true;  }
 }
 
