@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 class FileProcessing
+/*
+    This class is has a 'run' method which is intended to read a LaTeX file and replace the "\input" lines by the content of the file (recursive)
+//*/
 {
     private String filename;
     private String content;
