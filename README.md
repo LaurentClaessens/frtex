@@ -1,11 +1,5 @@
 # actors
 
-The skeleton is from [rcardin](https://github.com/rcardin/pcd-actors), but I got quite far away from his architecture. For example
-
-* I removed the use of generics and add a class variable `accepted_type`
-* I removed the base 'abstract' first implementation.
-* I removed the interfaces
-
 It provides an actor system and several implementations.
 
 ## General classes
@@ -121,9 +115,16 @@ The `EchoText` type has two subtypes `EchoTextOne` and `EchoTextTwo` that only e
 * `EchoActor` has a reference to the __last message__
 
 
-# TODO
+### TODO
 
 * The actor reference often calls its actor in order to answer questions like the accepted type or the actor system. One should memoize them.
 * There is duplication of code between the `<Foo>impl` and the `Base` implementations. In particular, between `BaseActorMap` and `ActorMap`.
 
+### HISTORY
+
+The skeleton is from [rcardin](https://github.com/rcardin/pcd-actors), but I got quite far away from his architecture. For example
+
+* I removed the use of generics and add a class variable `accepted_type`
+* I removed the base 'abstract' first implementation.
+* I removed the interfaces
 
