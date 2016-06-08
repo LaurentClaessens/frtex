@@ -64,20 +64,13 @@ public abstract class DecentActorSystem
     private void setActive(DecentActorRef ref,Boolean b) { actors_map.setActive(ref,b);  }
 
     public Integer newSerieNumber()  { return ++created_serie_number;  }
-    public DecentActorSystem(Class t) 
-    {
-      super(); 
-      accepted_type=t;
-      created_serie_number=-1;
-      actors_map=new ActorMap();
-    }
     public void setUpActor(DecentActorRef actor_ref,DecentActor decent_actor)
     // link the actor reference 'actor_ref' to the actor 'actor'
     {
         decent_actor.setSelf(actor_ref);
         decent_actor.setAcceptedType(accepted_type);
-        actor_ref.setActorSystem(this);
         actors_map.put(actor_ref,decent_actor); 
+        actor_ref.setActorSystem(this);
         synchronized(created_serie_number)
         { 
             decent_actor.setSerieNumber(newSerieNumber());  
