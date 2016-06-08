@@ -26,21 +26,24 @@ import actors.DecentActor;
 // a LatexActor is 'working' until it succeed to send the answer to who asked that.
 public class LatexActor extends DecentActor
 {
-    private HashMap<String,String> inputed_filenames;
+    private Map<String,String> file_to_content;
     private Boolean working;
 
-    // For each inputed file, the map 'inputed_filenames' retains its content.
+    // For each inputed file, the map 'file_to_content' retains its content.
     public LatexActor() 
     {
         super();
         setAcceptedType(LatexMessage.class);
-        inputed_filenames=new HashMap<String,String>();
+        file_to_content=new HashMap<String,String>();
         working=true;
     }
     @Override
     public void receive(Message m)
     {
-        if (!getAcceptedType().isInstance(m)) { throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is reveived by the LaxteActor."); }
+        if (!getAcceptedType().isInstance(m)) 
+        { 
+            throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is reveived by the LaxteActor."); 
+        }
         LatexMessage message=(LatexMessage) m;
         String tag=message.getTag();
         synchronized(working)
@@ -49,14 +52,19 @@ public class LatexActor extends DecentActor
             {
                 throw new ShouldNotHappenException("One is asking me to deal with a new file while I'm not done with my previous work.");
             }
-            if (tag.equals("ask")) { working=true; }
+            if (tag.equals("request")) { working=true; }
         }
         if (tag.equals("answer"))
         {
         }
-        if (tag.equals("ask"))
+        if (tag.equals("request"))
         {
             String answer = new FileProcessing(message.getFilename()).run();
+
+            LatexMessage answer_message = new LatexMessage(this,message.getSender(),"answer",message.getFilename());
+            message.content=answer;
+
+            send(answer_message,message.getSender());
         }
     }
 }

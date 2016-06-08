@@ -21,7 +21,7 @@ package actors.impl.latex;
 import actors.Message;
 
 // The tag can be
-// - "ask". In this case, the message asks to provide the (recursive) content of the passed filename.
+// - "request". In this case, the message requests to provide the (recursive) content of the passed filename.
 // - "answer". In this case, the content of the message is the (recursive) content of the filename.
 public class LatexMessage implements Message
 {
