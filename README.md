@@ -1,6 +1,7 @@
 # actors
 
-It provides an actor system and several implementations.
+It provides an actor system and an implementation that read a LaTeX file and return a new LaTeX file in which the "\input" are (recursively) replaced by the content.
+(this is under development)
 
 ## General classes
 
@@ -94,8 +95,9 @@ The actor system need more functionalities than the basic one.
 
 ### Hypothesis on the LaTeX source code (simplification)
 
-* For the sake of simplicity, it assumes that all inputs are on lines that _begin_ with \input.
+* The filenames do not contain the character "}". 
 
+* The filename contains only one ".". Thus if there are no dots in the filename, it automatically means that we have to add ".tex"
 
 * We suppose that each .tex file in included only once. Thus if foo.tex needs bar.tex, it is impossible that bar.tex was already processed when the actor in charge of foo.tex initiate its work.
 

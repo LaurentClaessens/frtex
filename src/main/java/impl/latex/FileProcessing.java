@@ -26,9 +26,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import java.util.Map;
+import java.util.HashMap;
+
 class FileProcessing
 /*
-    This class is has a 'run' method which is intended to read a LaTeX file and replace the "\input" lines by the content of the file (recursive)
+    This class has a 'run' method which is intended to read a LaTeX file and replace the "\input" lines by the content of the file (recursive)
 //*/
 {
     private String filename;
@@ -48,9 +51,25 @@ class FileProcessing
             BufferedReader br = new BufferedReader(isr);
             )
         {
+            int n=0;
+            String content="";
+            Map<Integer,String> line_to_filename = new HashMap<Integer,String>();
             while ((line = br.readLine()) != null) 
             {
-                System.out.println(line);
+                content=content+line+"\n";
+                int input_index = line.indexOf("\\input{");
+                if (input_index>=0)
+                {
+                    int end_index=line.indexOf("}",input_index);
+                    String filename=line.substring(input_index+7,end_index);
+                    line_to_filename.put(n,filename);
+                }
+                n=n+1;
+            }
+            // from http://stackoverflow.com/questions/46898/how-to-efficiently-iterate-over-each-entry-in-a-map
+            for (Map.Entry<Integer, String> entry : line_to_filename.entrySet())
+            {
+                System.out.println(entry.getKey() + "/" + entry.getValue());
             }
         }
         catch (FileNotFoundException e)

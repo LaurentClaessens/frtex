@@ -35,7 +35,7 @@ public class LatexTest
         LatexActorSystem system= new LatexActorSystem();
         LatexActorRef main_actor = system.createPair();
 
-        LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","tex_files/test.tex");
+        LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","src/test/java/latex/tex_files/test.tex");
         main_actor.send(main_message,main_actor);
         Thread.sleep(500);
         System.out.println("Le fil principal LATEX se relance");
