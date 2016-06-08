@@ -19,15 +19,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors;
 
 import actors.Message;
-import actors.AbsActor;
+import actors.DecentActor;
 
 public class SendingThread implements Runnable
 {
-    private ActorRef actor_ref_to;
+    private DecentActorRef actor_ref_to;
     private Message message;
-    private ActorSystemImpl actor_system;
+    private DecentActorSystem actor_system;
 
-    public SendingThread(Message m, ActorRef t,ActorSystemImpl as) 
+    public SendingThread(Message m, DecentActorRef t,DecentActorSystem as) 
     {
         message=m;
         actor_ref_to=t;
@@ -35,7 +35,7 @@ public class SendingThread implements Runnable
     }
     public void run() 
     {
-        AbsActor actor_to = actor_system.getActor(actor_ref_to);
+        DecentActor actor_to = actor_system.getActor(actor_ref_to);
         actor_to.putInMailBox(message); 
     }
 }

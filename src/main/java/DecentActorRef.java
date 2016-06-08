@@ -18,30 +18,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-import actors.ActorRef;
-import actors.SendingThread;
+import actors.Message;
 
-public class ActorRefImpl<T extends Message> implements ActorRef<T>
-{
-    private ActorSystemImpl  actor_system;
+public class DecentActorRef 
+{ 
+    private DecentActorSystem  actor_system;
 
-    public void setActorSystem(ActorSystemImpl as)  {actor_system=as;}
-    public ActorSystemImpl getActorSystem()  {return actor_system;}
-
-    public AbsActor getActor()
-    { 
+    public DecentActorSystem getActorSystem()  {return actor_system;}
+    public DecentActor getActor()
+    {
         return getActorSystem().getActor(this);  
     }
+    public void setAcceptedType(Class t) { getActor().setAcceptedType(t); }
+    public String getName() { return getActor().getName(); }
+    public Integer getSerieNumber() {return getActor().getSerieNumber();}
 
-    @Override
-    public void send(Message message, ActorRef to) 
+    public void setActorSystem(DecentActorSystem as)
+    {
+        actor_system=as;
+        getActor().setActorSystem(as);
+    }
+
+    public Class getAcceptedType() {return getActor().getAcceptedType();}
+    public void send(Message message, DecentActorRef to) 
     { 
         getActorSystem().send(message,to);
-    }
-    @Override
-    public int compareTo(ActorRef other) { return getActorSystem().compareRefs(this,other); }
-    public void stop()
-    {
-        getActorSystem().stop(this);
     }
 }

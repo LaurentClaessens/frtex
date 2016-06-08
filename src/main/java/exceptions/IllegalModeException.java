@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
 package actors.exceptions;
-import actors.ActorSystem.ActorMode;
+import actors.DecentActorSystem.ActorMode;
 
 public class IllegalModeException extends java.lang.IllegalArgumentException {
 

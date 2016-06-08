@@ -1,6 +1,10 @@
 # actors
 
-This is the java project for the cours at unipd. The skeleton is from [rcardin](https://github.com/rcardin/pcd-actors)
+The skeleton is from [rcardin](https://github.com/rcardin/pcd-actors), but I got quite far away from his architecture. For example
+
+* I removed the use of generics and add a class variable `accepted_type`
+* I removed the base 'abstract' first implementation.
+* I removed the interfaces
 
 It provides an actor system and several implementations.
 
@@ -10,36 +14,7 @@ It provides an actor system and several implementations.
 * `Mail`
 * `MailBox`
 
-## First implementation stage : `Abs<Foo>` (abstract)
-
-The classes are :
-* `AbsActorSystem`
-* `AbsMessage`
-* `Actor`
-* `ActorRef`
-
-## Second implementation stage : `<Foo>Impl` (non abstract)
-
-These are the files that implement the very minimal actor system devoted to pass the unipd requirements. 
-
-Its special feature is 
-
-```java
-ActorSystem getActorSystem()
-```
-
-that returns the actor system which created him.
-
-The classes are :
-* `ActorSystemImpl`
-* `ActorRefImpl`
-* `ActorMap`
-* `SendingThread`
-
-
-## Third implementation stage : the Decent actor system (abstract)
-
-The "decent" implementation of the actor system is based on the precedent implementation and adds some features that are needed to decently work. This is the only stage you really worry about when you want to use this actor model.
+## An abstract implementation : the Decent actor system.
 
 The types are
 
@@ -57,8 +32,13 @@ The types are
         
     * __name/serie number__ Each actor has a name with the usual method `String getName()`. The default name is based on the creation ordering (zero for the first, and so on). The serie number is private.
 
+```java
+ActorSystem getActorSystem()
+```
+returns the actor system which created him.
 
-## Fourth implementation stage : your actor system
+
+## Next implementation : your actor system
 
 In order to make the things clearly you should create your own actor system by derivation from the "decent" actor system. You should create the following classes
 * `yourActor`
@@ -88,7 +68,7 @@ public yourActorRef createPair()
 Moreover the method `getActor` should be overridden as
 ```java
 @Override
-public  yourActor getActor(ActorRef reference)
+public  yourActor getActor(DecentActorRef reference)
 {
     return (yourActor) super.getActor(reference);
 }

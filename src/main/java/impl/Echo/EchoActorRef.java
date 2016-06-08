@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.impl.decent.DecentActorRef;
+import actors.DecentActorRef;
 
 public class EchoActorRef extends DecentActorRef
 {

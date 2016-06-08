@@ -21,10 +21,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import actors.ActorRef;
 import actors.MailBox;
 import actors.impl.Echo.EchoText;
 import actors.impl.Echo.EchoActor;
+import actors.impl.Echo.EchoActorRef;
 import actors.impl.Echo.EchoActorSystem;
 
 public class MailBoxTest {
@@ -35,19 +35,22 @@ public class MailBoxTest {
     @Test
     public void MailBoxFIFO()
     {
-        MailBox<EchoText> mail_box=new MailBox<EchoText>();
+        MailBox mail_box=new MailBox();
+        //mail_box.setAcceptedType(EchoText.class);
         EchoActorSystem system = new EchoActorSystem();
-        ActorRef a1 = system.createPair();
-        ActorRef a2 = system.createPair();
+        EchoActorRef a1 = system.createPair();
+        EchoActorRef a2 = system.createPair();
 
         mail_box.add( new EchoText(a1,a2,3)  );
         mail_box.add( new EchoText(a1,a2,13)  );
         mail_box.add( new EchoText(a1,a2,23)  );
 
-        EchoText m2=mail_box.poll().getMessage();
+        EchoText m2=EchoText.class.cast(mail_box.poll().getMessage());
         Assert.assertTrue(m2.getData()==3);
         mail_box.add( new EchoText(a1,a2,33)  );
-        m2=mail_box.poll().getMessage();
+
+        m2=EchoText.class.cast(mail_box.poll().getMessage());
+
         Assert.assertTrue(m2.getData()==13);
         Assert.assertTrue(mail_box.size()==2);
     }

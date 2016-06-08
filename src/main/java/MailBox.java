@@ -30,16 +30,20 @@ import actors.exceptions.ShouldNotHappenException;
 *  An actors has its mail box.
 */
 
-public class MailBox<M extends Message>
+public class MailBox
 {
     private Queue<Mail> queue = new LinkedList<Mail>();
-    private ActorRef proprietary;  
+    private DecentActorRef proprietary;  
+    private Class accepted_type=Message.class;
 
-    public void setProprietary(ActorRef ref) { proprietary=ref;  }
-    // It is discouraged to create a mail with this constructor.
-    // It only exists for testing purpose.
+    public void setProprietary(DecentActorRef ref) { proprietary=ref;  }
+    public void setAcceptedType(Class t) { accepted_type=t; }
     public void add(Message m)
     {
+        if (!accepted_type.isInstance(m))
+        {
+           throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
+        }
         Mail mail = new Mail(m,proprietary);
         add(mail);
     }
@@ -51,8 +55,7 @@ public class MailBox<M extends Message>
            throw new ShouldNotHappenException("Messages that are not of the correct type should be already filtered.");
         }
     }
-
-    public Mail<M> poll()  // return the first element and then remove it
+    public Mail poll()  // return the first element and then remove it
     {
         synchronized(this) { return queue.poll();  }
     }           

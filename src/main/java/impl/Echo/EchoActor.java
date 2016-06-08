@@ -20,14 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.impl.decent.DecentAbsActor;
-import actors.ActorRef;
+import actors.DecentActor;
 import actors.Message;
 
-public class EchoActor extends DecentAbsActor
+public class EchoActor extends DecentActor
 {
     private EchoText last_message;
-    private ActorRef getActorRef() { return self; }
+    private EchoActorRef getActorRef() { return (EchoActorRef) self; }
 
     public EchoText getLastMessage() { return last_message;  }
     public EchoActor(EchoActorSystem actor_system) 

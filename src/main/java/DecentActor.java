@@ -19,41 +19,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors;
 
 import actors.Mail;
+import actors.DecentActorSystem;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.UnsupportedMessageException;
 
-// accepted_type has default value 'Message', so that no verification is done.
-// Rationale :
-// Since the type of message that the actor has to deal with is only given as generic type variable, I guess that it is impossible to perform the verification.
-// The implementation 'DecentAbsActor' has a method "setAcceptedType" that allows the user to set the type of message to be accepted.
-// See also :
-// http://stackoverflow.com/questions/34989911/java-do-something-if-implementation-t-of-base-and-something-else-if-any-othe
-
-public abstract class AbsActor<T extends Message> implements Actor<T> 
+public abstract class DecentActor
 {
 
-    protected ActorRef<T> self;         // self-reference
+    private String my_name;
+    private Integer serie_number;
+    protected DecentActorRef self;         // self-reference
     protected Class accepted_type=Message.class;
-    protected MailBox<T> mail_box;
-    private  ActorSystemImpl actor_system;
-    protected ActorRef<T> sender;   // sender of the being processed message
+    protected MailBox mail_box;
+    private  DecentActorSystem actor_system;
+    protected DecentActorRef sender;   // sender of the being processed message
 
-    protected AbsActor() 
+    protected DecentActor() 
     { 
-        mail_box = new actors.MailBox<T>(); 
+        mail_box = new actors.MailBox(); 
+        mail_box.setAcceptedType(accepted_type);
     }
-    public MailBox<T> getMailBox() {return mail_box;}
+    public String getName() {return my_name;}
+    public MailBox getMailBox() {return mail_box;}
     public Class getAcceptedType() {return accepted_type; }
+    public void setAcceptedType(Class t) {accepted_type=t;}
+    public void setSerieNumber(Integer n) {serie_number=n;}
+    public Integer getSerieNumber() {return serie_number;}
 
-    public void setActorSystem(ActorSystemImpl as) { actor_system=as; }
-    public ActorSystemImpl getActorSystem() { return actor_system;  }
+    public void setActorSystem(DecentActorSystem as) { actor_system=as; }
+    public DecentActorSystem getActorSystem() { return actor_system;  }
 
-    protected final Actor<T> setSelf(ActorRef<T> self) 
+    protected final DecentActor setSelf(DecentActorRef self) 
     {
         this.self = self;
         return this;
     }
-    public abstract void receive(T m);
+    public abstract void receive(Message m);
     private void processNextMessage()
     {
         Mail mail;
@@ -63,8 +64,7 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
             {
                 mail=mail_box.poll(); 
                 sender=mail.getSender();
-                T m=(T) mail.getMessage();
-                receive(m);
+                receive( mail.getMessage()  );
             }
         }
     }
@@ -81,9 +81,9 @@ public abstract class AbsActor<T extends Message> implements Actor<T>
             throw new UnsupportedMessageException(message);
         }
     }
-    public void send(T message, ActorRef to)
+    public void send(Message message, DecentActorRef to)
     {
-        AbsActor actor_to = getActorSystem().getActor(to);
+        DecentActor actor_to = getActorSystem().getActor(to);
         if (!actor_to.getAcceptedType().isInstance(message)) 
         {
             throw new UnsupportedMessageException(message);

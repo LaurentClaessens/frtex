@@ -18,19 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.AbsMessage;
-import actors.Actor;
-import actors.ActorRef;
+import actors.Message;
 
 // 'EchoText' is a message that is supposed to be resent with a -1 on the data.
-public class EchoText extends AbsMessage<Integer>
+public class EchoText implements Message
 {
-    private ActorRef from_actor;
-    private ActorRef to_actor;
+    private EchoActorRef from_actor;
+    private EchoActorRef to_actor;
     private final Integer data;
     private final String tag="echo";
 
-    public EchoText(ActorRef from, ActorRef to,Integer d)
+    public EchoText(EchoActorRef from, EchoActorRef to,Integer d)
     {
         from_actor=from;
         to_actor=to;
@@ -38,5 +36,5 @@ public class EchoText extends AbsMessage<Integer>
     }
     public String getTag() {return tag;} 
     public Integer getData() { return data; }
-    public ActorRef getSender() { return from_actor; }
+    public EchoActorRef getSender() { return from_actor; }
 }

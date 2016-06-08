@@ -18,10 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.impl.decent.DecentActorSystem;
-import actors.impl.decent.DecentActorRef;
-import actors.ActorRef;
-import actors.Actor;
+import actors.DecentActorSystem;
+import actors.DecentActorRef;
 import actors.exceptions.ShouldNotHappenException;
 
 public class EchoActorSystem extends DecentActorSystem
@@ -29,11 +27,6 @@ public class EchoActorSystem extends DecentActorSystem
     public EchoActorSystem() 
     { 
         super(EchoText.class); 
-    }
-    @Override
-    public EchoActorRef actorOf(Class<? extends Actor> actor, ActorMode mode) 
-    {
-        throw new ShouldNotHappenException("ou should only use the zero-parameter actorOf() in the Echo system.");
     }
     public EchoActorRef createPair()
     {
@@ -43,7 +36,7 @@ public class EchoActorSystem extends DecentActorSystem
         return reference;
     }
     @Override
-    public  EchoActor getActor(ActorRef reference)
+    public  EchoActor getActor(DecentActorRef reference)
     {   
         return (EchoActor) super.getActor(reference);
     }

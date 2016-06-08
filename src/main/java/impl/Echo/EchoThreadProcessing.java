@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.ActorRef;
 import actors.Message;
 
 // Arguments are :
@@ -29,11 +28,11 @@ import actors.Message;
 
 public class EchoThreadProcessing implements Runnable
 {
-    private ActorRef actor_making;
-    private ActorRef sender;
+    private EchoActorRef actor_making;
+    private EchoActorRef sender;
     private EchoText message;
 
-    EchoThreadProcessing(Message m, ActorRef t,ActorRef s) 
+    EchoThreadProcessing(Message m, EchoActorRef t,EchoActorRef s) 
     {
         message=(EchoText)  m;
         actor_making=t;

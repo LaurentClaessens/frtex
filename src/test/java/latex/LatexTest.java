@@ -21,9 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import actors.impl.latex.LatexActorSystem;
+import actors.impl.latex.LatexActorRef;
 import actors.impl.latex.LatexMessage;
 import actors.impl.latex.LatexActor;
-import actors.ActorRef;
 
 public class LatexTest
 {
@@ -33,7 +33,7 @@ public class LatexTest
     {
         System.out.println("DÉPART DU TEST LATEX");
         LatexActorSystem system= new LatexActorSystem();
-        ActorRef main_actor = system.createPair();
+        LatexActorRef main_actor = system.createPair();
 
         LatexMessage main_message = new LatexMessage(main_actor,main_actor,"ask","tex_files/test.tex");
         main_actor.send(main_message,main_actor);

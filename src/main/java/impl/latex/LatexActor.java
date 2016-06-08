@@ -21,10 +21,10 @@ package actors.impl.latex;
 import actors.Message;
 import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
-import actors.impl.decent.DecentAbsActor;
+import actors.DecentActor;
 
 // a LatexActor is 'working' until it succeed to send the answer to who asked that.
-public class LatexActor extends DecentAbsActor
+public class LatexActor extends DecentActor
 {
     private HashMap<String,String> inputed_filenames;
     private Boolean working;

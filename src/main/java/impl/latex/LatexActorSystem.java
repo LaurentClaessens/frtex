@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
-import actors.impl.decent.DecentActorSystem;
+import actors.DecentActorSystem;
 
 public class LatexActorSystem extends DecentActorSystem
 {

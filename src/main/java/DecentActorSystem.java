@@ -16,31 +16,30 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.decent;
+package actors;
 
 import java.util.Collection;
 import java.util.Set;
 
 import actors.Message;
-import actors.Actor;
 import actors.ActorMap;
-import actors.ActorSystemImpl;
-import actors.ActorRefImpl;
-import actors.ActorSystem.ActorMode;
+import actors.DecentActorRef;
 import actors.exceptions.ShouldNotHappenException;
 import actors.exceptions.IllegalModeException;
+import actors.exceptions.NoSuchActorException;
+import actors.exceptions.UnsupportedMessageException;
 
-public abstract class DecentActorSystem extends ActorSystemImpl
+public abstract class DecentActorSystem
 {
     private Integer created_serie_number;
     private Class accepted_type=Message.class;
     private ActorMap actors_map;
 
-    public DecentAbsActor getActor(DecentActorRef reference) 
+    public DecentActor getActor(DecentActorRef reference) 
     {
-        return (DecentAbsActor) actors_map.getActor(reference); 
+        return (DecentActor) actors_map.getActor(reference); 
     } 
-    protected void setActor(DecentActorRef ref,DecentAbsActor actor) 
+    protected void setActor(DecentActorRef ref,DecentActor actor) 
     { 
         actors_map.put(ref,actor); 
     }
@@ -66,21 +65,58 @@ public abstract class DecentActorSystem extends ActorSystemImpl
       created_serie_number=-1;
       actors_map=new ActorMap();
     }
-    public void setUpActor(DecentActorRef ref,DecentAbsActor actor)
+    public void setUpActor(DecentActorRef actor_ref,DecentActor decent_actor)
+    // link the actor reference 'actor_ref' to the actor 'actor'
     {
-        super.setUpActor(ref,actor);
-        actor.setAcceptedType(accepted_type);
+        decent_actor.setSelf(actor_ref);
+        decent_actor.setAcceptedType(accepted_type);
+        actor_ref.setActorSystem(this);
+        actors_map.put(actor_ref,decent_actor); 
         synchronized(created_serie_number)
         { 
-            actor.setSerieNumber(newSerieNumber());  
+            decent_actor.setSerieNumber(newSerieNumber());  
         }
     }
-    @Override
-    public DecentActorRef actorOf(Class<? extends Actor> actor_type,ActorMode mode)
+    public DecentActorRef actorOf(Class actor_type,ActorMode mode)
     {
         throw new ShouldNotHappenException("Use createPair instead.");
     }
 
-    // `createPair`
+    public void send(Message message, DecentActorRef ref_to)
+    {
+        if (!isActive(ref_to)) { throw new NoSuchActorException(); }
+        if ( !getActor(ref_to).getAcceptedType().isInstance(message)  )
+        {
+            Class at = getActor(ref_to).getAcceptedType();
+            throw new UnsupportedMessageException(message);
+        }
+        SendingThread sending_thread=new SendingThread(message,ref_to,this);
+        Thread t = new Thread( sending_thread );
+        t.start();
+    }
+    public void stop(DecentActorRef actor_ref)
+    {
+        if (isActive(actor_ref)){  setActive(actor_ref,false) ;}
+        else { throw new NoSuchActorException("This actor is not active anymore.");  }
+    }
+    public void stop() 
+    {
+        for (DecentActorRef act_ref : actors_ref_list())
+        {
+            stop(act_ref);
+        }
+    }
+    private Set<DecentActorRef> actors_ref_list() 
+    {
+        return actors_map.actors_ref_list();
+    }
+    private Collection<DecentActor> actors_list() 
+    {
+        return actors_map.actors_list();
+    }
     public abstract DecentActorRef createPair();
+    public enum ActorMode {
+        LOCAL,
+        REMOTE
+    }
 } 

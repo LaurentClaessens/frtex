@@ -4,10 +4,9 @@
 .kk.log
 .viminfo
 *~
-other/*
 target/*
-instance.vim
-src/test/java/latex/mazhe/*
+junk/*
+session.vim
 README.html
 
 READMEactors.html

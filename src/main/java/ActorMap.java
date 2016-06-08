@@ -28,8 +28,7 @@ import java.util.Set;
 import actors.exceptions.AlreadyListedActor;
 import actors.exceptions.NoSuchActorException;
 import actors.exceptions.ShouldNotHappenException;
-import actors.Actor;
-import actors.AbsActor;
+import actors.DecentActor;
 
 
 /*
@@ -45,21 +44,21 @@ It links actor references to the actual actor and to the activity status.
 
 public class ActorMap 
 {
-    private Map<ActorRef,AbsActor>  ref_to_actor;
-    private Map<ActorRef,Boolean> ref_to_active; 
+    private Map<DecentActorRef,DecentActor>  ref_to_actor;
+    private Map<DecentActorRef,Boolean> ref_to_active; 
 
     public ActorMap()
     {
-        ref_to_actor = new HashMap<ActorRef,AbsActor>();
-        ref_to_active = new HashMap<ActorRef,Boolean>();
+        ref_to_actor = new HashMap<DecentActorRef,DecentActor>();
+        ref_to_active = new HashMap<DecentActorRef,Boolean>();
     }
 
-    public Collection<AbsActor> actors_list() { return ref_to_actor.values(); }
-    public Set<ActorRef> actors_ref_list() { return ref_to_actor.keySet(); }
+    public Collection<DecentActor> actors_list() { return ref_to_actor.values(); }
+    public Set<DecentActorRef> actors_ref_list() { return ref_to_actor.keySet(); }
 
-    public AbsActor getActor(ActorRef reference) 
+    public DecentActor getActor(DecentActorRef reference) 
     {
-        AbsActor a;
+        DecentActor a;
         synchronized(ref_to_actor)
         {
             a = ref_to_actor.get(reference);
@@ -71,9 +70,9 @@ public class ActorMap
         }
         return a;
     }
-    public void put(ActorRef reference, AbsActor actor)
+    public void put(DecentActorRef reference, DecentActor actor)
     {
-        for (Actor a : actors_list())
+        for (DecentActor a : actors_list())
         {
             if (a==actor) 
             {
@@ -84,12 +83,12 @@ public class ActorMap
         synchronized(ref_to_active) {  ref_to_active.put(reference,true); }
     }
 
-    public void setActive(ActorRef ref,Boolean b)
+    public void setActive(DecentActorRef ref,Boolean b)
     {
         ref_to_active.put( ref ,b);
     }
 
-    public Boolean isActive(ActorRef reference)
+    public Boolean isActive(DecentActorRef reference)
     {
         Boolean a ;
         synchronized(ref_to_active) { a= ref_to_active.get(reference);  }

@@ -21,13 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.Echo;
 
-import actors.AbsMessage;
-import actors.Actor;
-import actors.ActorRef;
+import actors.Message;
 
 public class EchoTextTwo extends EchoText
 {
-    public EchoTextTwo(ActorRef from, ActorRef to,Integer d)
+    public EchoTextTwo(EchoActorRef from, EchoActorRef to,Integer d)
     {
         super(from,to,d);
     }

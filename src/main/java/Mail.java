@@ -19,20 +19,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors;
 
 import actors.Message;
-import actors.ActorRef;
 
 // This is a wrapper for a message and its sender. An maybe more 
 // meta-informations in the future.
-public class Mail<T extends Message>
+public class Mail
 {
-    private T message;
-    private ActorRef sender;
+    private Message message;
+    private DecentActorRef sender;
 
-    public Mail(Message message, ActorRef sender)
+    public Mail(Message message, DecentActorRef sender)
     {
-        this.message=(T) message;
+        this.message=message;
         this.sender=sender;
     }
-    public T getMessage() { return message; }
-    public ActorRef getSender() { return sender; }
+    public Message getMessage() { return message; }
+    public DecentActorRef getSender() { return sender; }
 }
