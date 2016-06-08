@@ -35,6 +35,12 @@ public abstract class DecentActorSystem
     private Class accepted_type=Message.class;
     private ActorMap actors_map;
 
+    public DecentActorSystem(Class t) 
+    {
+      accepted_type=t;
+      created_serie_number=-1;
+      actors_map=new ActorMap();
+    }
     public DecentActor getActor(DecentActorRef reference) 
     {
         return (DecentActor) actors_map.getActor(reference); 

@@ -92,7 +92,6 @@ public class EchoTest
         echo_actor.send(mO,echo_actor);
         Thread.sleep(1000);
         Assert.assertEquals(1,(int)echo_actor.getLastMessage().getData());
-
     }
     @Test(expected = UnsupportedMessageException.class)  
     public void NonAcceptedTypeVerificationOne() throws InterruptedException

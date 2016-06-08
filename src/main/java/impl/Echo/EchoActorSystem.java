@@ -25,7 +25,7 @@ import actors.exceptions.ShouldNotHappenException;
 public class EchoActorSystem extends DecentActorSystem
 {
     public EchoActorSystem() 
-    { 
+    {
         super(EchoText.class); 
     }
     public EchoActorRef createPair()

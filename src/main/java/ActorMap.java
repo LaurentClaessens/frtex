@@ -65,7 +65,10 @@ public class ActorMap
         }
         if (a==null)
         {
-            synchronized(ref_to_actor){System.out.println("The references are :"+actors_ref_list());}
+            synchronized(ref_to_actor)
+            {
+                System.out.println("Debug 3746-24690 : The reference list is :"+actors_ref_list());
+            }
             throw new ShouldNotHappenException("You are looking for a non existing actor");
         }
         return a;
