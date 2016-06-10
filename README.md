@@ -90,10 +90,7 @@ public LatexActorSystem getActorSystem() { return (LatexActorSystem) super.getAc
 
 ```java
 @Override                                   
-public LatexActor getActor()                
-{                                           
-    return (LatexActor) super.getActor();   
-}                                           
+public LatexActor getActor() { return (LatexActor) super.getActor(); }                                           
 ```
 
 ## The Latex actor system
