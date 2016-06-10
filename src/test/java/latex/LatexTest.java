@@ -33,7 +33,7 @@ public class LatexTest
     {
         System.out.println("DÉPART DU TEST LATEX");
         LatexActorSystem system= new LatexActorSystem();
-        LatexActorRef main_actor = system.createPair();
+        LatexActorRef main_actor = system.getNonWorkingActor();
 
         LatexRequestMessage main_message = new LatexRequestMessage(main_actor,main_actor,"src/test/java/latex/tex_files/test.tex");
         main_actor.send(main_message,main_actor);

@@ -70,20 +70,24 @@ public class LatexActor extends DecentActor
     {
         return (LatexActorRef) super.getSelfReference();
     }
+    /*
+     One cannot check in 'receive' if the actor is already working.
+     Making
+         if (isWorking()) { throw something;  }
+    will not work. 
+    The reason is that the latex actor system has to set this actor to working=true before to return him (if not, the same actor could be given to several files processing requests).
+    Thus the request message will certainly be send to a working actor.
+    //*/
     @Override
     public void receive(Message m)
     {
         if (!getAcceptedType().isInstance(m)) 
         { 
-            throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is received by the LaxteActor."); 
+            throw new ShouldNotHappenException("a message of type different from 'LatexMessage' is received by the LatexActor.");
         }
 
         if (LatexRequestMessage.class.isInstance(m))
         {
-            if (isWorking())
-            {
-                throw new ShouldNotHappenException("This actor is already working and should not reveive new requests."); 
-            }
             request_message = (LatexRequestMessage) m;
             decomposition = new DecomposedTexFile();
             processing = new FileProcessing(request_message.getFilename(),decomposition,this);
