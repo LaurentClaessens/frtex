@@ -29,20 +29,33 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.HashMap;
 
-class FileProcessing
+class FileProcessing implements Runnable
 /*
-    This class has a 'run' method which is intended to read a LaTeX file and replace the "\input" lines by the content of the file (recursive)
+   This class is intended to be launch in a separate thread. It fills the blocks of the 'decomposed' tex file of the calling actor.
+   In the same time, the calling actor receive messages that fill the 'filename_to_content' map.
 //*/
 {
     private String filename;
-    private String content;
+    private LatexActor calling_actor;
+    private DecomposedTexFile decomposed_file;
+    private Boolean parsing;
 
-    FileProcessing(String filename) 
+    FileProcessing(String filename, DecomposedTexFile decomposed, LatexActor calling_actor)
     {
         this.filename=filename;
-        this.content="This should never be seen.";
+        this.decomposed_file=decomposed;
+        this.calling_actor=calling_actor;
     }
-    public String run() 
+    public Boolean isFinished()
+    {
+        if (parsing) {return false;}
+        return !decomposed_file.stillWaiting();
+    }
+    public void makeSubstitution(String filename, String content)
+    {
+        decomposed_file.makeSubstitution(filename,content);
+    }
+    public void run() 
     {
         String line;
         try (
@@ -51,39 +64,34 @@ class FileProcessing
             BufferedReader br = new BufferedReader(isr);
             )
         {
-            int n=0;
-            String content="";
-            Map<Integer,String> line_to_filename = new HashMap<Integer,String>();
+            parsing=true;
             while ((line = br.readLine()) != null) 
             {
-                content=content+line+"\n";
                 int input_index = line.indexOf("\\input{");
                 if (input_index>=0)
                 {
                     int end_index=line.indexOf("}",input_index);
                     String filename=line.substring(input_index+7,end_index);
-                    line_to_filename.put(n,filename);
+                    decomposed_file.newBlock(filename);
+                    decomposed_file.addLine(line);
+                    calling_actor.sendRequest(filename);
                 }
-                n=n+1;
-            }
-            // from http://stackoverflow.com/questions/46898/how-to-efficiently-iterate-over-each-entry-in-a-map
-            for (Map.Entry<Integer, String> entry : line_to_filename.entrySet())
-            {
-                System.out.println(entry.getKey() + "/" + entry.getValue());
+                else 
+                {
+                    decomposed_file.addLine(line);
+                }
             }
         }
         catch (FileNotFoundException e)
         {
             System.out.println("File not found : "+filename);
-            content="\\huge FILE NOT FOUND : "+filename;
-            return content;
+            decomposed_file.addLine("\\huge FILE NOT FOUND : "+filename);
         }
         catch (IOException e)
         {
             System.out.println("IO Error on file "+filename);
-            content="\\huge IO ERROR ON FILE : "+filename;
-            return content;
+            decomposed_file.addLine("\\huge IO ERROR ON FILE : "+filename);
         }
-        return "The file "+filename+" has been read";
+        parsing=false;
     }
 }

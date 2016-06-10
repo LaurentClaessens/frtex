@@ -40,7 +40,9 @@ In order to make the things clearly you should create your own actor system by d
 * `yourActorRef`
 * `yourActorSystem`
 
-The class `yourActorSystem` should contain the following methods :
+### Some override that you should do
+
+* In the class `yourActorSystem` 
 
 ```java
 public void setUpActor(yourActorRef ref,yourActor act)
@@ -49,7 +51,9 @@ public void setUpActor(yourActorRef ref,yourActor act)
     // give here to ref and act the properties they need
 }
 ```
-and
+
+* In the class `yourActorSystem` 
+
 ```java
 public yourActorRef createPair()
 {
@@ -60,15 +64,37 @@ public yourActorRef createPair()
 }
 ```
 
-Moreover the method `getActor` should be overridden as
+* In the class `yourActorSystem` 
+
 ```java
 @Override
-public  yourActor getActor(DecentActorRef reference)
-{
-    return (yourActor) super.getActor(reference);
-}
+public  yourActor getActor(DecentActorRef reference) { return (yourActor) super.getActor(reference); }
 ```
 The cast should work because the actor has a reference to its actor system. Thus only actors build from your actor system should get into that method.
+
+* In the class `yourActor` 
+
+```java
+@Override
+public  YourActorRef getSelfReference() { return (YourActorRef) super.getSelfReference() ; }
+```
+
+* In the class `yourActor` 
+
+```java
+@Override
+public LatexActorSystem getActorSystem() { return (LatexActorSystem) super.getActorSystem(); }
+```
+
+* In the class `yourActorRef` 
+
+```java
+@Override                                   
+public LatexActor getActor()                
+{                                           
+    return (LatexActor) super.getActor();   
+}                                           
+```
 
 ## The Latex actor system
 
@@ -87,17 +113,34 @@ The behaviour of an actor is :
 - when all the answers are received, recompose the LaTeX file
 - send the result to the actor whose asked.
 
-### Special feature
+### Working actor
 
-The actor system need more functionalities than the basic one.
+A `LatexActor` can be active or not, as any actor. The `LatexActor` has an other status that is "working" or not.
 
-- A method `getFreeActor` that return an actor reference to an actor that is not working (in the sense that he has already send its result). If no free actors are available, create a new one.
+An actor which is requested to create the code of the file "foo.tex" reads this file and send a request message to a new actor each time that it encounters a "\input" in "foo.tex". Such an actor has to be able to read new messages since it relies on the answer messages in order to complete its work.
+
+So such a working actor is set "inactive" in order to unlock its mail box. But it is still working and cannot be requested to work on an other tex file until "foo.tex" is completed and sent to the calling actor.
+
+The `LatexActorSystem` has a method 
+
+```java
+public LatexActorRef getNonWorkingActor()
+```
+which return an actor reference to an actor who can be requested to deal with a new tex file. The actor is 'working' from the moment it is returned.
+
+### Latex message
+
+The latex actor system recognize two types of messages.
+
+* `LatexMessage` (abstract)
+* `LatexRequestMessage` (extends `LatexMessage`)
+* `LatexAnswerMessage` (extends `LatexMessage`)
 
 ### Hypothesis on the LaTeX source code (simplification)
 
-* The filenames do not contain the character "}". 
+* The filenames are more or less standard. Like only one dot, no curly braces and so on.
 
-* The filename contains only one ".". Thus if there are no dots in the filename, it automatically means that we have to add ".tex"
+* The percent symbol should always mean a comment, with the exception of "\%". This can be a limitation if you have URL in which you substituted special characters with their %xx representation.
 
 * We suppose that each .tex file in included only once. Thus if foo.tex needs bar.tex, it is impossible that bar.tex was already processed when the actor in charge of foo.tex initiate its work.
 

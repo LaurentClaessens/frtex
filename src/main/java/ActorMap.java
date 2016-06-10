@@ -37,14 +37,13 @@ import actors.DecentActor;
 It links actor references to the actual actor and to the activity status. 
 
  The 'ActorMap' is mainly a wrapper for the two needed maps : 
- - one maps actor references to actual actors (AbsActor)
- - one maps actor references "high" to the activity status.
-
+ - one maps actor references to actual actors 
+ - one maps actor references to the activity status.
 //*/
 
 public class ActorMap 
 {
-    private Map<DecentActorRef,DecentActor>  ref_to_actor;
+    private Map<DecentActorRef,DecentActor> ref_to_actor;
     private Map<DecentActorRef,Boolean> ref_to_active; 
 
     public ActorMap()

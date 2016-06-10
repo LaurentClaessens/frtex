@@ -19,21 +19,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package actors.impl.latex;
 
 import actors.DecentActorSystem;
+import actors.DecentActorRef;
 
 public class LatexActorSystem extends DecentActorSystem
 {
     public LatexActorSystem() { super(LatexMessage.class); }
-
     void setUpActor(LatexActorRef ref,LatexActor act)
     {
         super.setUpActor(ref,act);
     }
-
+    @Override
     public LatexActorRef createPair()
     {
         LatexActorRef reference = new LatexActorRef();
         LatexActor actor = new LatexActor();
         setUpActor(reference,actor);
         return reference;
+    }
+    public synchronized LatexActorRef getNonWorkingActor()
+    // return an actor which not working
+    // create an new actor is everyone is occupied.
+
+    // See the README.md for the difference between 'working' and 'active'.
+    {
+        for (DecentActorRef ar : getActorRefList())
+        {
+            LatexActorRef actor_ref = (LatexActorRef) ar;
+            if (!actor_ref.getActor().isWorking())
+            {
+                actor_ref.getActor().setWorking();
+                return actor_ref;
+            }
+        }
+        // here all actors are working
+        LatexActorRef actor_ref = createPair();
+        actor_ref.getActor().setWorking();
+        return actor_ref;
     }
 }

@@ -49,7 +49,6 @@ public abstract class DecentActorSystem
     { 
         actors_map.put(ref,actor); 
     }
-
     protected final DecentActorRef createActorReference(ActorMode mode) throws IllegalModeException
     {
         if (mode!=ActorMode.LOCAL)
@@ -80,7 +79,6 @@ public abstract class DecentActorSystem
     {
         throw new ShouldNotHappenException("Use createPair instead.");
     }
-
     public void send(Message message, DecentActorRef ref_to)
     {
         if (!isActive(ref_to)) { throw new NoSuchActorException(); }
@@ -93,6 +91,14 @@ public abstract class DecentActorSystem
         Thread t = new Thread( sending_thread );
         t.start();
     }
+    public Set<DecentActorRef> getActorRefList() 
+    {
+        return actors_map.actors_ref_list();
+    }
+    public Collection<DecentActor> getActorList()
+    {
+        return actors_map.actors_list();
+    }
     public void stop(DecentActorRef actor_ref)
     {
         if (isActive(actor_ref)){  setActive(actor_ref,false) ;}
@@ -100,19 +106,13 @@ public abstract class DecentActorSystem
     }
     public void stop() 
     {
-        for (DecentActorRef act_ref : actors_ref_list())
+        for (DecentActorRef act_ref : getActorRefList())
         {
             stop(act_ref);
         }
     }
-    private Set<DecentActorRef> actors_ref_list() 
-    {
-        return actors_map.actors_ref_list();
-    }
-    private Collection<DecentActor> actors_list() 
-    {
-        return actors_map.actors_list();
-    }
+    // private Set<DecentActorRef> actors_ref_list() 
+    // private Collection<DecentActor> actors_list() 
     public abstract DecentActorRef createPair();
     public enum ActorMode {
         LOCAL,

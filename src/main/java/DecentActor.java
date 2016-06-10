@@ -28,7 +28,7 @@ public abstract class DecentActor
 
     private String my_name;
     private Integer serie_number;
-    protected DecentActorRef self;         // self-reference
+    private DecentActorRef self;         // self-reference
     protected Class accepted_type=Message.class;
     protected MailBox mail_box;
     private  DecentActorSystem actor_system;
@@ -45,6 +45,7 @@ public abstract class DecentActor
     public void setAcceptedType(Class t) {accepted_type=t;}
     public void setSerieNumber(Integer n) {serie_number=n;}
     public Integer getSerieNumber() {return serie_number;}
+    public DecentActorRef getSelfReference() {return self;}
 
     public void setActorSystem(DecentActorSystem as) { actor_system=as; }
     public DecentActorSystem getActorSystem() { return actor_system;  }

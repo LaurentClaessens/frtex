@@ -18,20 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
-import actors.Message;
-
-public class LatexMessage implements Message
+public class LatexAnswerMessage extends LatexMessage
 {
-    private final LatexActorRef from_actor;
-    private final LatexActorRef to_actor;
-    private final String filename;
+    private String content;
 
-    public LatexMessage(LatexActorRef from, LatexActorRef to,String filename)
+    public LatexAnswerMessage(LatexActorRef from, LatexActorRef to, String filename,String content)
     {
-        from_actor=from;
-        to_actor=to;
-        this.filename=filename;
+        super(from,to,filename);
+        this.content=content;
     }
-    public LatexActorRef getSender() { return from_actor; }
-    public String getFilename() { return filename; }
+
+    public String getContent()  {return content;}
+    public void setContent(String c)  {content=c;}
 }

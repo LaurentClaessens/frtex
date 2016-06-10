@@ -17,39 +17,121 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
 /*
-     read the LaTeX file and return two things
-     - a list of strings that are forming the file
-     - a map filename -> number that indicate that "filename" is inputed in the 'number'th element of the list.
-     EXAMPLE
-     [  "blah bla","bla \input{other1} bloh","foo \input{other2}"   ]
-     the map will contain
-     "other1"  ->  1
-     "other2"  ->  2
-     and moreover the blocks with input will contain only one line.
+
+DESCRIPTION
+
+    This describe a tex file in the "decomposed" state. That is
+    - a list of block. Each block contains a part of the tex file.
+    - a map filename -> number that indicate that "filename" is inputed in the 'number'th element of the list.
+    - a map filename -> content that indicate for each filename its recursive content.
+        
+    The blocks containing an \input contain only that line. These lines are the limits of the blocks  [1]
+
+    It is only possible to add text in the last block.
+
+EXAMPLE
+
+    Let the file
+
+    <begin of file>
+    blah bla
+    bla \input{other1} bloh
+    foo \input{other2}
+    <end of file>
+
+    The block list will be
+
+    [  "blah bla","bla \input{other1} bloh","foo \input{other2}"   ]
+
+    filename_to_number will contain
+    "other1"  ->  1
+    "other2"  ->  2
+
+    and filename_to_content will contain
+    "other1"  ->  (recursive) content of file "other1.tex"
+    "other2"  ->  (recursive) content of file "other2.tex"
+
+     [1] This is the expected use. In other words, this is how LatexActor.receive use this class.
 //*/
 
 package actors.impl.latex;
 
+
+import java.util.Map;
+import java.util.ArrayList;
+//import java.util.AbstractMap;
+import java.util.HashMap;
+//import java.util.Collection;
+//import java.util.Set;
+
+
 class DecomposedTexFile
 {
-    private ArrayList<String> decomposition;
+    private ArrayList<String> blocks_list;
     private Map<String,Integer> filename_to_number;
+    private Map<String,String> filename_to_content;
+    private StringBuilder string_builder;
+    private Integer last_block;
 
-    void DecomposedTexFile()
+    public DecomposedTexFile()
     {
-        decomposition = new ArrayList<String>();
-        filename_to_number = HashMap<String,Integer>();
+        blocks_list = new ArrayList<String>();
+        filename_to_number = new HashMap<String,Integer>();
+        filename_to_content = new HashMap<String,String>();
+        last_block=0;
+        string_builder = new StringBuilder();
     }
+    public void addLine(String line) { string_builder.append(line); }
+
     
-    public addLine(String line)
-    // add a line to the last block
+    // NEW BLOCK
+    //
+    // - closes the last block
+    // - opens a new one
+    // - If you give the 'String filename' argument, it associates the given
+    //   filename with the new block. 
+    //   If you give "foo" as argument, you mean that the block 
+    //   will contain \input{foo}
+    public void newBlock() 
     {
-        String text=decomposition.get( decomposition.size()-1  );
-        text=text+line;
-        decomposition.set( decomposition.size()-1, text  );
+        blocks_list.add(last_block,string_builder.toString());
+        blocks_list.add(""); 
+        last_block++;
+        string_builder = new StringBuilder();
     }
-    public newLine()
+    public void newBlock(String filename) 
+    { 
+        newBlock();
+        filename_to_number.put(filename,last_block);
+    }
+    public Boolean stillWaiting()
+    // A true here does not mean that the work is finished.
+    // It only means that all the \input encountered so far are filled.
+    // Maybe a new \input is still to be found.
     {
-        decomposition.add("");
+        return filename_to_number.size()>0;
+    }
+    public void makeSubstitution(String filename, String content)
+    {
+        // At this point, 'filename' should contain ".tex"
+        String initial_text=blocks_list.get(filename_to_number.get(filename));
+        String input_filename = filename;
+        String input_statement;
+        if (filename.endsWith(".tex"))
+        {
+            input_filename = input_filename.replace(".tex","");
+        }
+        input_statement = "\\input{"+input_filename+"}";
+        initial_text=initial_text.replace(input_statement,content);
+        filename_to_number.remove(filename);
+    }
+    public String getRecomposition()
+    {
+        StringBuilder content_builder = new StringBuilder();       
+        for ( String bl : blocks_list )
+        {
+            content_builder.append(bl);
+        }
+        return content_builder.toString();
     }
 }

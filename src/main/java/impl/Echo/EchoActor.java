@@ -26,7 +26,8 @@ import actors.Message;
 public class EchoActor extends DecentActor
 {
     private EchoText last_message;
-    private EchoActorRef getActorRef() { return (EchoActorRef) self; }
+    @Override
+    public EchoActorRef getSelfReference() { return (EchoActorRef) super.getSelfReference() ; }
 
     public EchoText getLastMessage() { return last_message;  }
     public EchoActor(EchoActorSystem actor_system) 
@@ -44,7 +45,7 @@ public class EchoActor extends DecentActor
                                         // verification should 
                                         // already have been done.
         last_message=message;
-        EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getActorRef(),message.getSender());
+        EchoThreadProcessing processing_thread=new EchoThreadProcessing(message,getSelfReference(),message.getSender());
         Thread t = new Thread(processing_thread);
         t.start();
     }

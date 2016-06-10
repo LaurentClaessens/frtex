@@ -23,48 +23,83 @@ import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
 import actors.DecentActor;
 
-// a LatexActor is 'working' until it succeed to send the answer to who asked that.
+// A LatexActor is 'working' until it succeed to send the answer to who asked that.
+// It is constructing the decomposition outside the 'receive' function because it is sending messages while decomposing (each time an input is found)
+// Therefore it is possible to receive answers before completing the decomposition and its mailbox has to be open before to initiate the decomposition.
+// To be clear : the 'working' attribute is not related to the openness of the mailbox.
 public class LatexActor extends DecentActor
 {
-    private Map<String,String> file_to_content;
     private Boolean working;
 
-    // For each inputed file, the map 'file_to_content' retains its content.
+    // The 'decomposition' object is shared between the file processing thread and the 'received' function.
+    // The first one is adding new blocks while the second one is filling the map 'filename_to_content'
+    private DecomposedTexFile decomposition;
+    private FileProcessing processing;
+    private LatexRequestMessage request_message;
+
     public LatexActor() 
     {
         super();
         setAcceptedType(LatexMessage.class);
-        file_to_content=new HashMap<String,String>();
-        working=true;
+    }
+    public Boolean isWorking()  {return working;}
+    public void setWorking()  {working=true;}
+
+    @Override
+    public LatexActorSystem getActorSystem()
+    {
+        return (LatexActorSystem) super.getActorSystem();
+    }
+    private void sendAnswer(LatexRequestMessage message)
+    {
+        LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),message.getSender(),"answer",message.getFilename());
+        answer_message.setContent(decomposition.getRecomposition());
+
+        send(answer_message,message.getSender());
+        working=false;
+    }
+    protected void sendRequest(String filename)
+    {
+        System.out.println("Requesting "+filename);
+        LatexActorRef to = getActorSystem().getNonWorkingActor();
+        LatexRequestMessage request_message = new LatexRequestMessage(getSelfReference(),to,filename);
+        send(request_message,to);
+    }
+    @Override
+    public LatexActorRef getSelfReference()
+    {
+        return (LatexActorRef) super.getSelfReference();
     }
     @Override
     public void receive(Message m)
     {
         if (!getAcceptedType().isInstance(m)) 
         { 
-            throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is reveived by the LaxteActor."); 
+            throw new ShouldNotHappenException("A message of type different from 'LatexMessage' is received by the LaxteActor."); 
         }
-        LatexMessage message=(LatexMessage) m;
-        String tag=message.getTag();
-        synchronized(working)
+
+        if (LatexRequestMessage.class.isInstance(m))
         {
-            if (tag.equals("aks") && working)
+            if (isWorking())
             {
-                throw new ShouldNotHappenException("One is asking me to deal with a new file while I'm not done with my previous work.");
+                throw new ShouldNotHappenException("This actor is already working and should not reveive new requests."); 
             }
-            if (tag.equals("request")) { working=true; }
+            request_message = (LatexRequestMessage) m;
+            decomposition = new DecomposedTexFile();
+            processing = new FileProcessing(request_message.getFilename(),decomposition,this);
+            Thread t = new Thread(processing);
+            t.start();
         }
-        if (tag.equals("answer"))
-        {
-        }
-        if (tag.equals("request"))
-        {
-            String answer = new FileProcessing(message.getFilename()).run();
 
-            LatexMessage answer_message = new LatexMessage(this,message.getSender(),"answer",message.getFilename());
-            message.content=answer;
-
-            send(answer_message,message.getSender());
+        if (LatexAnswerMessage.class.isInstance(m))
+        {
+            LatexAnswerMessage message = (LatexAnswerMessage) m;
+            processing.makeSubstitution(message.getFilename(),message.getContent());
+            if (processing.isFinished())
+            {
+                sendAnswer(request_message);
+            }
         }
+
     }
 }
