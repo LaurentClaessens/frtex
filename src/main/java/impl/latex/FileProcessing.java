@@ -55,6 +55,11 @@ class FileProcessing implements Runnable
     {
         decomposed_file.makeSubstitution(filename,content);
     }
+    private String input_filename_to_filename(String input_filename)
+    {
+        if (input_filename.indexOf(".")>=0) { return input_filename; }
+        return input_filename+".tex";
+    }
     public void run() 
     {
         String line;
@@ -71,10 +76,10 @@ class FileProcessing implements Runnable
                 if (input_index>=0)
                 {
                     int end_index=line.indexOf("}",input_index);
-                    String filename=line.substring(input_index+7,end_index);
-                    decomposed_file.newBlock(filename);
+                    String input_filename=line.substring(input_index+7,end_index);
+                    decomposed_file.newBlock(input_filename);
                     decomposed_file.addLine(line);
-                    calling_actor.sendRequest(filename);
+                    calling_actor.sendRequest(input_filename_to_filename(input_filename));
                 }
                 else 
                 {
