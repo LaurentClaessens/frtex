@@ -18,20 +18,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import actors.Message;
 
 public class LatexMessage implements Message
 {
     private final LatexActorRef from_actor;
     private final LatexActorRef to_actor;
-    private final String filename;
+    private final Path filepath;
 
-    public LatexMessage(LatexActorRef from, LatexActorRef to,String filename)
+    public LatexMessage(LatexActorRef from, LatexActorRef to,Path filepath)
     {
         from_actor=from;
         to_actor=to;
-        this.filename=filename;
+        this.filepath=filepath;
     }
     public LatexActorRef getSender() { return from_actor; }
-    public String getFilename() { return filename; }
+    public Path getFilepath() { return filepath; }
 }

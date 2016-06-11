@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -35,36 +37,44 @@ class FileProcessing implements Runnable
    In the same time, the calling actor receive messages that fill the 'filename_to_content' map.
 //*/
 {
-    private String filename;
+    private Path filepath;
     private LatexActor calling_actor;
     private DecomposedTexFile decomposed_file;
     private Boolean parsing;
+    private Path pwd;
 
-    FileProcessing(String filename, DecomposedTexFile decomposed, LatexActor calling_actor)
+    FileProcessing(Path filepath, DecomposedTexFile decomposed, LatexActor calling_actor)
     {
-        this.filename=filename;
+        this.filepath=filepath;
         this.decomposed_file=decomposed;
         this.calling_actor=calling_actor;
+        pwd=Paths.get(".");
     }
+    private String getFilename() { return filepath.getFileName().toString();  }
     public Boolean isFinished()
     {
         if (parsing) {return false;}
         return !decomposed_file.stillWaiting();
     }
-    public void makeSubstitution(String filename, String content)
+    public void makeSubstitution(Path filepath, String content)
     {
-        decomposed_file.makeSubstitution(filename,content);
+        decomposed_file.makeSubstitution(filepath,content);
     }
-    private String input_filename_to_filename(String input_filename)
+    private Path inputFilenameToFilename(String input_filename)
     {
-        if (input_filename.indexOf(".")>=0) { return input_filename; }
-        return input_filename+".tex";
+        String filename;
+        if (input_filename.indexOf(".")>=0) { filename=input_filename; }
+        filename=input_filename+".tex";
+        System.out.println("Je vais demander : "+filename);
+
+        //return Paths.get(filename).resolve(pwd);
+        return pwd.resolve(Paths.get(filename));
     }
     public void run() 
     {
         String line;
         try (
-            InputStream fis = new FileInputStream(filename);
+            InputStream fis = new FileInputStream(filepath.toString());
             InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(isr);
             )
@@ -79,7 +89,7 @@ class FileProcessing implements Runnable
                     String input_filename=line.substring(input_index+7,end_index);
                     decomposed_file.newBlock(input_filename);
                     decomposed_file.addLine(line);
-                    calling_actor.sendRequest(input_filename_to_filename(input_filename));
+                    calling_actor.sendRequest(inputFilenameToFilename(input_filename));
                 }
                 else 
                 {
@@ -89,13 +99,13 @@ class FileProcessing implements Runnable
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("File not found : "+filename);
-            decomposed_file.addLine("\\huge FILE NOT FOUND : "+filename);
+            System.out.println("File not found : "+getFilename());
+            decomposed_file.addLine("\\huge FILE NOT FOUND : "+getFilename());
         }
         catch (IOException e)
         {
-            System.out.println("IO Error on file "+filename);
-            decomposed_file.addLine("\\huge IO ERROR ON FILE : "+filename);
+            System.out.println("IO Error on file "+getFilename());
+            decomposed_file.addLine("\\huge IO ERROR ON FILE : "+getFilename());
         }
         parsing=false;
     }

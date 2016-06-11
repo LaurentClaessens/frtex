@@ -59,10 +59,10 @@ package actors.impl.latex;
 
 import java.util.Map;
 import java.util.ArrayList;
-//import java.util.AbstractMap;
 import java.util.HashMap;
-//import java.util.Collection;
-//import java.util.Set;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 class DecomposedTexFile
@@ -111,9 +111,9 @@ class DecomposedTexFile
     {
         return filename_to_number.size()>0;
     }
-    public void makeSubstitution(String filename, String content)
+    public void makeSubstitution(Path filepath, String content)
     {
-        // At this point, 'filename' should contain ".tex"
+        String filename = filepath.getFileName().toString();
         String initial_text=blocks_list.get(filename_to_number.get(filename));
         String input_filename = filename;
         String input_statement;

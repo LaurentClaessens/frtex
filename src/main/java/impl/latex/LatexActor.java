@@ -22,6 +22,8 @@ import actors.Message;
 import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
 import actors.DecentActor;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 // A LatexActor is 'working' until it succeed to send the answer to who asked that.
 // It is constructing the decomposition outside the 'receive' function because it is sending messages while decomposing (each time an input is found)
@@ -52,17 +54,17 @@ public class LatexActor extends DecentActor
     }
     private void sendAnswer(LatexRequestMessage message)
     {
-        LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),message.getSender(),"answer",message.getFilename());
+        LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),message.getSender(),message.getFilepath());
         answer_message.setContent(decomposition.getRecomposition());
 
         send(answer_message,message.getSender());
         working=false;
     }
-    protected void sendRequest(String filename)
+    protected void sendRequest(Path filepath)
     {
-        System.out.println("Requesting "+filename);
+        System.out.println("Requesting "+filepath);
         LatexActorRef to = getActorSystem().getNonWorkingActor();
-        LatexRequestMessage request_message = new LatexRequestMessage(getSelfReference(),to,filename);
+        LatexRequestMessage request_message = new LatexRequestMessage(getSelfReference(),to,filepath);
         send(request_message,to);
     }
     @Override
@@ -90,7 +92,7 @@ public class LatexActor extends DecentActor
         {
             request_message = (LatexRequestMessage) m;
             decomposition = new DecomposedTexFile();
-            processing = new FileProcessing(request_message.getFilename(),decomposition,this);
+            processing = new FileProcessing(request_message.getFilepath(),decomposition,this);
             Thread t = new Thread(processing);
             t.start();
         }
@@ -98,7 +100,7 @@ public class LatexActor extends DecentActor
         if (LatexAnswerMessage.class.isInstance(m))
         {
             LatexAnswerMessage message = (LatexAnswerMessage) m;
-            processing.makeSubstitution(message.getFilename(),message.getContent());
+            processing.makeSubstitution(message.getFilepath(),message.getContent());
             if (processing.isFinished())
             {
                 sendAnswer(request_message);

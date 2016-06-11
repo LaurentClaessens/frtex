@@ -18,10 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class LatexRequestMessage extends LatexMessage
 {
-    public LatexRequestMessage(LatexActorRef from, LatexActorRef to, String filename)
+    public LatexRequestMessage(LatexActorRef from, LatexActorRef to, Path filepath)
     {
-        super(from,to,filename);
+        super(from,to,filepath);
+    }
+    public LatexRequestMessage(LatexActorRef from, LatexActorRef to, String filepath)
+    {
+        super(from,to,Paths.get(filepath));
     }
 }
