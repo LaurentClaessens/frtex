@@ -25,8 +25,10 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.File;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -37,38 +39,37 @@ class FileProcessing implements Runnable
    In the same time, the calling actor receive messages that fill the 'filename_to_content' map.
 //*/
 {
-    private Path filepath;
+    private File filepath;
     private LatexActor calling_actor;
     private DecomposedTexFile decomposed_file;
     private Boolean parsing;
     private Path pwd;
 
-    FileProcessing(Path filepath, DecomposedTexFile decomposed, LatexActor calling_actor)
+    FileProcessing(File filepath, DecomposedTexFile decomposed, LatexActor calling_actor)
     {
         this.filepath=filepath;
         this.decomposed_file=decomposed;
         this.calling_actor=calling_actor;
-        pwd=Paths.get(".");
+        pwd=Paths.get(filepath.getParent());
     }
-    private String getFilename() { return filepath.getFileName().toString();  }
+    private String getFilename() { return filepath.getName().toString();  }
     public Boolean isFinished()
     {
         if (parsing) {return false;}
         return !decomposed_file.stillWaiting();
     }
-    public void makeSubstitution(Path filepath, String content)
+    public void makeSubstitution(File filepath, String content)
     {
         decomposed_file.makeSubstitution(filepath,content);
     }
-    private Path inputFilenameToFilename(String input_filename)
+    private File inputFilenameToFilename(String input_filename)
     {
         String filename;
         if (input_filename.indexOf(".")>=0) { filename=input_filename; }
         filename=input_filename+".tex";
         System.out.println("Je vais demander : "+filename);
 
-        //return Paths.get(filename).resolve(pwd);
-        return pwd.resolve(Paths.get(filename));
+        return Paths.get(filename).resolve(pwd).toFile();
     }
     public void run() 
     {

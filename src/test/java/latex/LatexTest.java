@@ -20,6 +20,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.File;
+
 import actors.impl.latex.LatexActorSystem;
 import actors.impl.latex.LatexActorRef;
 import actors.impl.latex.LatexRequestMessage;
@@ -35,7 +39,10 @@ public class LatexTest
         LatexActorSystem system= new LatexActorSystem();
         LatexActorRef main_actor = system.getNonWorkingActor();
 
-        LatexRequestMessage main_message = new LatexRequestMessage(main_actor,main_actor,"src/test/java/latex/tex_files/test.tex");
+        File main_file = new File("src/test/java/latex/tex_files/test.tex").getAbsoluteFile();
+        System.out.println("ooUKSPooOwiwqv "+main_file.toString());
+
+        LatexRequestMessage main_message = new LatexRequestMessage(main_actor,main_actor,main_file);
         main_actor.send(main_message,main_actor);
         Thread.sleep(500);
         System.out.println("Le fil principal LATEX se relance");

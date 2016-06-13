@@ -22,8 +22,8 @@ import actors.Message;
 import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
 import actors.DecentActor;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
+import java.io.File;
 
 // A LatexActor is 'working' until it succeed to send the answer to who asked that.
 // It is constructing the decomposition outside the 'receive' function because it is sending messages while decomposing (each time an input is found)
@@ -60,7 +60,7 @@ public class LatexActor extends DecentActor
         send(answer_message,message.getSender());
         working=false;
     }
-    protected void sendRequest(Path filepath)
+    protected void sendRequest(File filepath)
     {
         System.out.println("Requesting "+filepath);
         LatexActorRef to = getActorSystem().getNonWorkingActor();

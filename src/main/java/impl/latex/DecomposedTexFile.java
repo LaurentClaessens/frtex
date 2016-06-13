@@ -63,6 +63,7 @@ import java.util.HashMap;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.File;
 
 
 class DecomposedTexFile
@@ -111,9 +112,9 @@ class DecomposedTexFile
     {
         return filename_to_number.size()>0;
     }
-    public void makeSubstitution(Path filepath, String content)
+    public void makeSubstitution(File filepath, String content)
     {
-        String filename = filepath.getFileName().toString();
+        String filename = filepath.getName().toString();
         String initial_text=blocks_list.get(filename_to_number.get(filename));
         String input_filename = filename;
         String input_statement;

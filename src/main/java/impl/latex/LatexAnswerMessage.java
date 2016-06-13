@@ -18,14 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors.impl.latex;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
 
 public class LatexAnswerMessage extends LatexMessage
 {
     private String content;
 
-    public LatexAnswerMessage(LatexActorRef from, LatexActorRef to, Path filepath)
+    public LatexAnswerMessage(LatexActorRef from, LatexActorRef to, File filepath)
     {
         super(from,to,filepath);
         this.content=content;
