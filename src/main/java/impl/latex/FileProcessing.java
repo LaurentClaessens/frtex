@@ -67,9 +67,7 @@ class FileProcessing implements Runnable
         String filename;
         if (input_filename.indexOf(".")>=0) { filename=input_filename; }
         filename=input_filename+".tex";
-        System.out.println("Je vais demander : "+filename);
-
-        return Paths.get(filename).resolve(pwd).toFile();
+        return pwd.resolve(Paths.get(filename)).toFile();
     }
     public void run() 
     {
