@@ -55,18 +55,21 @@ class FileProcessing implements Runnable
     private String getFilename() { return filepath.getName().toString();  }
     public Boolean isFinished()
     {
+        System.out.println("still parsing ?");
         if (parsing) {return false;}
+        System.out.println("No still parsing !");
         return !decomposed_file.stillWaiting();
     }
     public void makeSubstitution(File filepath, String content)
     {
+        System.out.println("ooLROKooOnoXDG making substitution "+filepath.toString());
         decomposed_file.makeSubstitution(filepath,content);
     }
     private File inputFilenameToFilename(String input_filename)
     {
         String filename;
         if (input_filename.indexOf(".")>=0) { filename=input_filename; }
-        filename=input_filename+".tex";
+        else { filename=input_filename+".tex";}
         return pwd.resolve(Paths.get(filename)).toFile();
     }
     public void run() 
@@ -107,5 +110,10 @@ class FileProcessing implements Runnable
             decomposed_file.addLine("\\huge IO ERROR ON FILE : "+getFilename());
         }
         parsing=false;
+        // This manages the case in which the tex file has no input.
+        if (decomposed_file.size()==0)
+        {
+            calling_actor.sendAnswer();
+        }
     }
 }

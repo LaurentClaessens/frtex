@@ -44,7 +44,7 @@ public class LatexTest
 
         LatexRequestMessage main_message = new LatexRequestMessage(main_actor,main_actor,main_file);
         main_actor.send(main_message,main_actor);
-        Thread.sleep(500);
+        main_actor.waitWorking();
         System.out.println("Le fil principal LATEX se relance");
     }
 }

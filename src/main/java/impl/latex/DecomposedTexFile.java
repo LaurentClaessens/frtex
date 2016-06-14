@@ -83,6 +83,13 @@ class DecomposedTexFile
         string_builder = new StringBuilder();
     }
     public void addLine(String line) { string_builder.append(line); }
+    public Integer size() {return blocks_list.size();}
+
+    private String  filenameToInputFilename(String filename)
+    {
+        if (filename.endsWith(".tex")) { return filename.replace(".tex",""); }
+        return filename;
+    }
 
     
     // NEW BLOCK
@@ -115,14 +122,9 @@ class DecomposedTexFile
     public void makeSubstitution(File filepath, String content)
     {
         String filename = filepath.getName().toString();
-        String initial_text=blocks_list.get(filename_to_number.get(filename));
-        String input_filename = filename;
-        String input_statement;
-        if (filename.endsWith(".tex"))
-        {
-            input_filename = input_filename.replace(".tex","");
-        }
-        input_statement = "\\input{"+input_filename+"}";
+        String input_filename=filenameToInputFilename(filename);
+        String initial_text=blocks_list.get(filename_to_number.get(input_filename));
+        String input_statement = "\\input{"+input_filename+"}";
         initial_text=initial_text.replace(input_statement,content);
         filename_to_number.remove(filename);
     }

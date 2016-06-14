@@ -52,12 +52,13 @@ public class LatexActor extends DecentActor
     {
         return (LatexActorSystem) super.getActorSystem();
     }
-    private void sendAnswer(LatexRequestMessage message)
+    public void sendAnswer()
     {
-        LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),message.getSender(),message.getFilepath());
+        LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),request_message.getSender(),request_message.getFilepath());
         answer_message.setContent(decomposition.getRecomposition());
 
-        send(answer_message,message.getSender());
+
+        send(answer_message,request_message.getSender());
         working=false;
     }
     protected void sendRequest(File filepath)
@@ -100,12 +101,17 @@ public class LatexActor extends DecentActor
         if (LatexAnswerMessage.class.isInstance(m))
         {
             LatexAnswerMessage message = (LatexAnswerMessage) m;
+            System.out.println("Received : "+message.getFilepath().toString());
             processing.makeSubstitution(message.getFilepath(),message.getContent());
             if (processing.isFinished())
             {
-                sendAnswer(request_message);
+                sendAnswer();
             }
         }
 
+    }
+    public void waitWorking()
+    {
+        while(isWorking()){}
     }
 }

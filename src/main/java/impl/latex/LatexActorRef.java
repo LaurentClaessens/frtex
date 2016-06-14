@@ -9,4 +9,8 @@ public class LatexActorRef extends DecentActorRef
     {
         return (LatexActor) super.getActor();
     }
+    public void waitWorking()
+    {
+        getActor().waitWorking();
+    }
 }
