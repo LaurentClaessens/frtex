@@ -126,7 +126,8 @@ class DecomposedTexFile
         String initial_text=blocks_list.get(filename_to_number.get(input_filename));
         String input_statement = "\\input{"+input_filename+"}";
         initial_text=initial_text.replace(input_statement,content);
-        filename_to_number.remove(filename);
+
+        filename_to_number.remove(input_filename);
     }
     public String getRecomposition()
     {

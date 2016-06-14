@@ -40,7 +40,6 @@ public class LatexTest
         LatexActorRef main_actor = system.getNonWorkingActor();
 
         File main_file = new File("src/test/java/latex/tex_files/test.tex").getAbsoluteFile();
-        System.out.println("ooUKSPooOwiwqv "+main_file.toString());
 
         LatexRequestMessage main_message = new LatexRequestMessage(main_actor,main_actor,main_file);
         main_actor.send(main_message,main_actor);

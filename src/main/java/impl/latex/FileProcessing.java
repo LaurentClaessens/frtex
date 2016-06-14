@@ -55,14 +55,11 @@ class FileProcessing implements Runnable
     private String getFilename() { return filepath.getName().toString();  }
     public Boolean isFinished()
     {
-        System.out.println("still parsing ?");
         if (parsing) {return false;}
-        System.out.println("No still parsing !");
         return !decomposed_file.stillWaiting();
     }
     public void makeSubstitution(File filepath, String content)
     {
-        System.out.println("ooLROKooOnoXDG making substitution "+filepath.toString());
         decomposed_file.makeSubstitution(filepath,content);
     }
     private File inputFilenameToFilename(String input_filename)

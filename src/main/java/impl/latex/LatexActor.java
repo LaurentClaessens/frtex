@@ -112,6 +112,9 @@ public class LatexActor extends DecentActor
     }
     public void waitWorking()
     {
-        while(isWorking()){}
+        while(isWorking())
+        {
+            try{ Thread.sleep(10); } catch(InterruptedException a) {}
+        }
     }
 }
