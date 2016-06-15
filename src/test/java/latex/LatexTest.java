@@ -24,29 +24,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
 
-import actors.impl.latex.LatexActorSystem;
-import actors.impl.latex.LatexActorRef;
-import actors.impl.latex.LatexRequestMessage;
-import actors.impl.latex.LatexActor;
-import actors.impl.latex.LatexMainActor;
+import actors.impl.latex.LatexCode;
 
 public class LatexTest
 {
-    private LatexActorSystem system;
     @Test
     public void test_content() throws InterruptedException
     {
         System.out.println("DÉPART DU TEST LATEX");
-        LatexActorSystem system= new LatexActorSystem();
-        LatexActorRef main_actor_ref = system.getMainActor();
-        LatexMainActor main_actor = (LatexMainActor) main_actor_ref.getActor();
 
-        File main_file = new File("src/test/java/latex/tex_files/test.tex").getAbsoluteFile();
-
-        main_actor.sendRequest(main_file);
-        main_actor.waitWorking();
+        LatexCode latex_code = new LatexCode("src/test/java/latex/tex_files/test.tex");
+        String answer = latex_code.getExplicitCode();
+        System.out.println(answer);
 
         System.out.println("Le fil principal LATEX se relance");
-        System.out.println(main_actor.getAnswer());
     }
 }

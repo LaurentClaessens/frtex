@@ -121,6 +121,10 @@ The behaviour of an actor is :
 - when all the answers are received, recompose the LaTeX file
 - send the result to the actor whose asked.
 
+### What you need to know
+
+The only class you have to work with is `LatexCode`. That class provides an abstraction that hides the actor system to the user.
+
 ### Working actor
 
 A `LatexActor` can be active or not, as any actor. The `LatexActor` has an other status that is "working" or not.
