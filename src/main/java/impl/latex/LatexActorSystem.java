@@ -36,11 +36,23 @@ public class LatexActorSystem extends DecentActorSystem
         setUpActor(reference,actor);
         return reference;
     }
+    public LatexActorRef getMainActor()
+    /**
+     * Create a LatexMainActor and return a reference to it.
+     */
+    {
+        LatexActorRef reference = new LatexActorRef();
+        LatexMainActor actor = new LatexMainActor();
+        setUpActor(reference,actor);
+        return reference;
+    }
     public synchronized LatexActorRef getNonWorkingActor()
-    // return an actor which not working
-    // create an new actor is everyone is occupied.
+    /**
+    * Return an actor which not working and create an new actor is everyone is occupied.  
+    * <p>
+    * See the README.md for the difference between 'working' and 'active'.
+    */
 
-    // See the README.md for the difference between 'working' and 'active'.
     {
         for (DecentActorRef ar : getActorRefList())
         {

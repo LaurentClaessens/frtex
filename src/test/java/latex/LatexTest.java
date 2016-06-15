@@ -28,6 +28,7 @@ import actors.impl.latex.LatexActorSystem;
 import actors.impl.latex.LatexActorRef;
 import actors.impl.latex.LatexRequestMessage;
 import actors.impl.latex.LatexActor;
+import actors.impl.latex.LatexMainActor;
 
 public class LatexTest
 {
@@ -37,13 +38,15 @@ public class LatexTest
     {
         System.out.println("DÉPART DU TEST LATEX");
         LatexActorSystem system= new LatexActorSystem();
-        LatexActorRef main_actor = system.getNonWorkingActor();
+        LatexActorRef main_actor_ref = system.getMainActor();
+        LatexMainActor main_actor = (LatexMainActor) main_actor_ref.getActor();
 
         File main_file = new File("src/test/java/latex/tex_files/test.tex").getAbsoluteFile();
 
-        LatexRequestMessage main_message = new LatexRequestMessage(main_actor,main_actor,main_file);
-        main_actor.send(main_message,main_actor);
+        main_actor.sendRequest(main_file);
         main_actor.waitWorking();
+
         System.out.println("Le fil principal LATEX se relance");
+        System.out.println(main_actor.getAnswer());
     }
 }

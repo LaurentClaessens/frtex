@@ -31,10 +31,11 @@ import java.io.File;
 // To be clear : the 'working' attribute is not related to the openness of the mailbox.
 public class LatexActor extends DecentActor
 {
-    private Boolean working;
+    protected Boolean working;
 
     // The 'decomposition' object is shared between the file processing thread and the 'received' function.
     // The first one is adding new blocks while the second one is filling the map 'filename_to_content'
+    
     private DecomposedTexFile decomposition;
     private FileProcessing processing;
     private LatexRequestMessage request_message;
@@ -61,7 +62,7 @@ public class LatexActor extends DecentActor
         send(answer_message,request_message.getSender());
         working=false;
     }
-    protected void sendRequest(File filepath)
+    public void sendRequest(File filepath)
     {
         System.out.println("Requesting "+filepath);
         LatexActorRef to = getActorSystem().getNonWorkingActor();
@@ -81,23 +82,26 @@ public class LatexActor extends DecentActor
         Thread t = new Thread(processing);
         t.start();
     }
-    private void receiveAnswer(Message m)
+    protected void receiveAnswer(Message m)
     {
         LatexAnswerMessage message = (LatexAnswerMessage) m;
         System.out.println("Received : "+message.getFilepath().toString());
         processing.makeSubstitution(message.getFilepath(),message.getContent());
         if (processing.isFinished()) { sendAnswer(); }
     }
-    /*
-     One cannot check in 'receive' if the actor is already working.
-     Making
-         if (isWorking()) { throw something;  }
-    will not work. 
-    The reason is that the latex actor system has to set this actor to working=true before to return him (if not, the same actor could be given to several files processing requests).
-    Thus the request message will certainly be send to a working actor.
-    //*/
     @Override
     public void receive(Message m)
+    /**
+    * One cannot check in 'receive' if the actor is already working. 
+    * <p>
+    * Making
+    * <code>
+    *     if (isWorking()) { throw something;  }
+    * </code>
+    * will not work. 
+    * The reason is that the latex actor system has to set this actor to working=true before to return him (if not, the same actor could be given to several files processing requests). Thus the request message will certainly be send to a working actor.
+    */
+
     {
         super.receive(m);
         if (LatexRequestMessage.class.isInstance(m)) { receiveRequest(m); }
