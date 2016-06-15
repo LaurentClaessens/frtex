@@ -93,6 +93,17 @@ public LatexActorSystem getActorSystem() { return (LatexActorSystem) super.getAc
 public LatexActor getActor() { return (LatexActor) super.getActor(); }                                           
 ```
 
+* In the class `yourActor`
+```java
+    @Override
+    public void receive(Message m)
+    {
+        super.receive(m);
+        // do whatever your actor should do.
+    }
+```
+
+
 ## The Latex actor system
 
 The LaTeX implementation uses the actor system in order to, being given a LaTeX file as input, produces the LaTeX code with all the \input done (recursively). 

@@ -55,7 +55,13 @@ public abstract class DecentActor
         this.self = self;
         return this;
     }
-    public abstract void receive(Message m);
+    public void receive(Message m)
+    {
+        if (!getAcceptedType().isInstance(m)) 
+        { 
+            throw new ShouldNotHappenException("a message of type different from 'LatexMessage' is received by the LatexActor.");
+        }
+    }
     private void processNextMessage()
     {
         Mail mail;

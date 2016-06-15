@@ -73,6 +73,21 @@ public class LatexActor extends DecentActor
     {
         return (LatexActorRef) super.getSelfReference();
     }
+    private void receiveRequest(Message m)
+    {
+        request_message = (LatexRequestMessage) m;
+        decomposition = new DecomposedTexFile();
+        processing = new FileProcessing(request_message.getFilepath(),decomposition,this);
+        Thread t = new Thread(processing);
+        t.start();
+    }
+    private void receiveAnswer(Message m)
+    {
+        LatexAnswerMessage message = (LatexAnswerMessage) m;
+        System.out.println("Received : "+message.getFilepath().toString());
+        processing.makeSubstitution(message.getFilepath(),message.getContent());
+        if (processing.isFinished()) { sendAnswer(); }
+    }
     /*
      One cannot check in 'receive' if the actor is already working.
      Making
@@ -84,31 +99,9 @@ public class LatexActor extends DecentActor
     @Override
     public void receive(Message m)
     {
-        if (!getAcceptedType().isInstance(m)) 
-        { 
-            throw new ShouldNotHappenException("a message of type different from 'LatexMessage' is received by the LatexActor.");
-        }
-
-        if (LatexRequestMessage.class.isInstance(m))
-        {
-            request_message = (LatexRequestMessage) m;
-            decomposition = new DecomposedTexFile();
-            processing = new FileProcessing(request_message.getFilepath(),decomposition,this);
-            Thread t = new Thread(processing);
-            t.start();
-        }
-
-        if (LatexAnswerMessage.class.isInstance(m))
-        {
-            LatexAnswerMessage message = (LatexAnswerMessage) m;
-            System.out.println("Received : "+message.getFilepath().toString());
-            processing.makeSubstitution(message.getFilepath(),message.getContent());
-            if (processing.isFinished())
-            {
-                sendAnswer();
-            }
-        }
-
+        super.receive(m);
+        if (LatexRequestMessage.class.isInstance(m)) { receiveRequest(m); }
+        if (LatexAnswerMessage.class.isInstance(m)) { receiveAnswer(m); }
     }
     public void waitWorking()
     {
