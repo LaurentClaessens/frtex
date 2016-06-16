@@ -58,7 +58,6 @@ public class LatexActor extends DecentActor
         LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),request_message.getSender(),request_message.getFilepath());
         answer_message.setContent(decomposition.getRecomposition());
 
-
         send(answer_message,request_message.getSender());
         working=false;
     }
