@@ -125,7 +125,7 @@ The behaviour of an actor is :
 
 The only class you have to work with is `LatexCode`. That class provides an abstraction that hides the actor system to the user.
 
-### Working actor
+### Working actor vs. Active actor
 
 A `LatexActor` can be active or not, as any actor. The `LatexActor` has an other status that is "working" or not.
 
