@@ -175,7 +175,6 @@ The `EchoText` type has two subtypes `EchoTextOne` and `EchoTextTwo` that only e
 ### TODO
 
 * The actor reference often calls its actor in order to answer questions like the accepted type or the actor system. One should memoize them.
-* There is duplication of code between the `<Foo>impl` and the `Base` implementations. In particular, between `BaseActorMap` and `ActorMap`.
 
 ### HISTORY
 

@@ -26,6 +26,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.lang.Character;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
@@ -69,6 +73,27 @@ class FileProcessing implements Runnable
         else { filename=input_filename+".tex";}
         return pwd.resolve(Paths.get(filename)).toFile();
     }
+
+    private String removeComment(String line)
+        /**
+         * Remove the comment part of line
+         *
+         * <p>
+         * The comment part initiate at the first "%" which is not
+         * preceded by a "\".
+         * <p>
+         * There are some limitations. Something like \\% will be considered as the beginning of a comment, and the first \ will be kept.
+         *
+         * @return : a new String.
+         */
+    {
+        if (Character.toString(line.charAt(0)).equals("%")) {return "";}
+        Pattern pattern=Pattern.compile("[^\\\\]%");
+        Matcher m = pattern.matcher(line);
+        if (!m.find()) {return line;}
+        return line.substring(0,m.start()+1);
+    }
+
     public void run() 
     {
         String line;
@@ -81,20 +106,27 @@ class FileProcessing implements Runnable
             parsing=true;
             while ((line = br.readLine()) != null) 
             {
+
+                String t_line="a"+line;
+                String new_line=removeComment(t_line);
+                //System.out.println("La ligne : "+t_line+" est transformée en "+new_line);
+
                 line = line+"\n"; // the last one is removed at position 23685-14680
+                line=removeComment(line);
                 int input_index = line.indexOf("\\input{");
-                if (input_index>=0)
-                {
-                    int end_index=line.indexOf("}",input_index);
-                    String input_filename=line.substring(input_index+7,end_index);
-                    decomposed_file.newBlock(input_filename);
-                    decomposed_file.addLine(line);
-                    calling_actor.sendRequest(inputFilenameToFilename(input_filename));
-                    decomposed_file.newBlock();
-                }
+                if (input_index<0) { decomposed_file.addLine(line); }
                 else 
                 {
-                    decomposed_file.addLine(line);
+                    while (input_index>=0)
+                    {
+                        int end_index=line.indexOf("}",input_index);
+                        String input_filename=line.substring(input_index+7,end_index);
+                        decomposed_file.newBlock(input_filename);
+                        decomposed_file.addLine(line);
+                        calling_actor.sendRequest(inputFilenameToFilename(input_filename));
+                        decomposed_file.newBlock();
+                        input_index=-1;
+                    }
                 }
             }
         }

@@ -122,9 +122,14 @@ class DecomposedTexFile
         filename_to_number.put(filename,last_block);
     }
     public Boolean stillWaiting()
-    // A true here does not mean that the work is finished.
-    // It only means that all the \input encountered so far are filled.
-    // Maybe a new \input is still to be found.
+        /**
+         * Return true if there are still some requests that are not yet answered.
+         *
+         * <p>
+            A true here does not mean that the work is finished.
+            It only means that all the \input encountered so far are filled.
+            Maybe a new \input is still to be found.
+         */
     {
         return filename_to_number.size()>0;
     }
