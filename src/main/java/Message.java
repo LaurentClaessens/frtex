@@ -18,9 +18,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package actors;
 
-/**
- * A message that can be sent among actors
- *
- */
-
 public interface Message { };
