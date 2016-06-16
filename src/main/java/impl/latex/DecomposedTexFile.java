@@ -71,7 +71,7 @@ class DecomposedTexFile
     private ArrayList<String> blocks_list;
     private Map<String,Integer> filename_to_number;
     private Map<String,String> filename_to_content;
-    private StringBuilder string_builder;
+    private StringBuilder block_builder;
     private Integer last_block;
 
     public DecomposedTexFile()
@@ -80,9 +80,9 @@ class DecomposedTexFile
         filename_to_number = new HashMap<String,Integer>();
         filename_to_content = new HashMap<String,String>();
         last_block=0;
-        string_builder = new StringBuilder();
+        block_builder = new StringBuilder();
     }
-    public void addLine(String line) { string_builder.append(line); }
+    public void addLine(String line) { block_builder.append(line); }
     public Integer size() {return blocks_list.size();}
 
     private String  filenameToInputFilename(String filename)
@@ -91,23 +91,30 @@ class DecomposedTexFile
         return filename;
     }
 
-    
-    // NEW BLOCK
-    //
-    // - closes the last block
-    // - opens a new one
-    // - If you give the 'String filename' argument, it associates the given
-    //   filename with the new block. 
-    //   If you give "foo" as argument, you mean that the block 
-    //   will contain \input{foo}
+    public void closeBlock()
+        /**
+         * add to the block list the content of the current buffer 'block_builder'.
+         */
+    {
+        blocks_list.add(last_block,block_builder.toString());
+    }
     public void newBlock() 
     {
-        blocks_list.add(last_block,string_builder.toString());
+        /**
+         * close being building the block and initiate a new block.
+         * @see closeBlock
+         */
+        closeBlock();
         blocks_list.add(""); 
         last_block++;
-        string_builder = new StringBuilder();
+        block_builder = new StringBuilder();
     }
     public void newBlock(String filename) 
+        /**
+         * close being building the block and initiate a new block.
+         * Associate the new block with a filename.
+         * @see closeBlock(),newBlock()
+         */
     { 
         newBlock();
         filename_to_number.put(filename,last_block);
@@ -123,10 +130,14 @@ class DecomposedTexFile
     {
         String filename = filepath.getName().toString();
         String input_filename=filenameToInputFilename(filename);
-        String initial_text=blocks_list.get(filename_to_number.get(input_filename));
-        String input_statement = "\\input{"+input_filename+"}";
-        initial_text=initial_text.replace(input_statement,content);
 
+        Integer block_number =  filename_to_number.get(input_filename);
+        String initial_text=blocks_list.get(block_number);
+
+        String input_statement = "\\input{"+input_filename+"}";
+        String final_text = initial_text.replace(input_statement,content);
+
+        blocks_list.set(block_number,final_text);
         filename_to_number.remove(input_filename);
     }
     public String getRecomposition()

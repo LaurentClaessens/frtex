@@ -90,6 +90,7 @@ class FileProcessing implements Runnable
                     decomposed_file.newBlock(input_filename);
                     decomposed_file.addLine(line);
                     calling_actor.sendRequest(inputFilenameToFilename(input_filename));
+                    decomposed_file.newBlock();
                 }
                 else 
                 {
@@ -107,9 +108,10 @@ class FileProcessing implements Runnable
             System.out.println("IO Error on file "+getFilename());
             decomposed_file.addLine("\\huge IO ERROR ON FILE : "+getFilename());
         }
+        decomposed_file.closeBlock();
         parsing=false;
         // This manages the case in which the tex file has no input.
-        if (decomposed_file.size()==0)
+        if (decomposed_file.size()==1)
         {
             calling_actor.sendAnswer();
         }
