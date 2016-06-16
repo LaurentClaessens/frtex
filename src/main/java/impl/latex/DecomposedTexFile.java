@@ -16,14 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-/*
+package actors.impl.latex;
 
-DESCRIPTION
 
-    This describe a tex file in the "decomposed" state. That is
-    - a list of block. Each block contains a part of the tex file.
-    - a map filename -> number that indicate that "filename" is inputed in the 'number'th element of the list.
-    - a map filename -> content that indicate for each filename its recursive content.
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.File;
+
+
+/**
+    This describe a tex file in the "decomposed" state. 
+    <p>
+    That is
+    <ul>
+    <li> a list of block. Each block contains a part of the tex file.
+    <li> a map filename -> number that indicate that "filename" is inputed in the 'number'th element of the list.
+    <li> a map filename -> content that indicate for each filename its recursive content.
+    </ul>
         
     The blocks containing an \input contain only that line. These lines are the limits of the blocks  [1]
 
@@ -33,11 +46,11 @@ EXAMPLE
 
     Let the file
 
-    <begin of file>
+    <code>
     blah bla
     bla \input{other1} bloh
     foo \input{other2}
-    <end of file>
+    <code>
 
     The block list will be
 
@@ -52,18 +65,7 @@ EXAMPLE
     "other2"  ->  (recursive) content of file "other2.tex"
 
      [1] This is the expected use. In other words, this is how LatexActor.receive use this class.
-//*/
-
-package actors.impl.latex;
-
-
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.io.File;
+*/
 
 
 class DecomposedTexFile
@@ -73,7 +75,7 @@ class DecomposedTexFile
     private Map<String,String> filename_to_content;
     private StringBuilder block_builder;
     private Integer last_block;
-
+    
     public DecomposedTexFile()
     {
         blocks_list = new ArrayList<String>();
