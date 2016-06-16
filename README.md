@@ -185,3 +185,6 @@ The skeleton is from [rcardin](https://github.com/rcardin/pcd-actors), but I got
 * I removed the base 'abstract' first implementation.
 * I removed the interfaces
 
+### TEST
+
+use `mvn test` to see the result.

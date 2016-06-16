@@ -81,7 +81,7 @@ class FileProcessing implements Runnable
             parsing=true;
             while ((line = br.readLine()) != null) 
             {
-                line = line+"\n";
+                line = line+"\n"; // the last one is removed at position position 23685-14680
                 int input_index = line.indexOf("\\input{");
                 if (input_index>=0)
                 {

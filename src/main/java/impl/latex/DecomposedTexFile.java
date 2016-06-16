@@ -149,6 +149,10 @@ class DecomposedTexFile
         {
             content_builder.append(bl);
         }
-        return content_builder.toString();
+        String content = content_builder.toString();
+        // If the file is empty, the content does not finish with "\n".
+        // position 23685-14680
+        if (content.endsWith("\n")) { content=content.substring(0,content.length()-1); }
+        return content;
     }
 }
