@@ -106,10 +106,11 @@ public LatexActor getActor() { return (LatexActor) super.getActor(); }
 
 ## The Latex actor system
 
-The LaTeX implementation uses the actor system in order to, being given a LaTeX file as input, produces the LaTeX code with all the \input done (recursively). 
-    This is still under development.
+The "latex actor system" is intended to take as input a LaTeX filename and produce as output the "recursive" content of that file with all the \input{file} explicitly replaced by the content of "file.tex". 
 
-The "latex actor system" is intended to take as input a LaTeX filename and produce as output the "recursive" content of that file with all the \input{file} explicitly replaced by the content of "file.tex".
+The use of our actor system makes the recomposition work extremely multi-thread and then(?) efficient.
+
+This is still under development.
 
 ### How it works
 

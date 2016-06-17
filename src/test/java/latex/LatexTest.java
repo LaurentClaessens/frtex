@@ -31,12 +31,8 @@ public class LatexTest
     @Test
     public void test_content() throws InterruptedException
     {
-        System.out.println("DÉPART DU TEST LATEX");
-
         LatexCode latex_code = new LatexCode("src/test/java/latex/tex_files/test.tex");
         String answer = latex_code.getExplicitCode();
         System.out.println(answer);
-
-        System.out.println("Le fil principal LATEX se relance");
     }
 }
