@@ -87,13 +87,42 @@ class FileProcessing implements Runnable
          * @return : a new String.
          */
     {
-        if (Character.toString(line.charAt(0)).equals("%")) {return "";}
+        if (Character.toString(line.charAt(0)).equals("%")) {return "%";}
         Pattern pattern=Pattern.compile("[^\\\\]%");
         Matcher m = pattern.matcher(line);
         if (!m.find()) {return line;}
-        return line.substring(0,m.start()+1);
+        // +2 because in "foo%bar" the m.start() is on o and 
+        // we want to keep the "%" itself.
+        return line.substring(0,m.start()+2); 
     }
+    private void extractInput(String line)
+        /**
+         * Found the \input in the line and creates the corresponding blocks.
+         * <p>
+         * No return. It directly creates and manages the blocks.
+         *
+         */
+    {
+        int input_index = line.indexOf("\\input{");
+        if (input_index<0) { decomposed_file.addString(line); }
+        else 
+        { 
+            decomposed_file.addString(line.substring(0,input_index));
+            decomposed_file.closeBlock();
 
+            int end_index=line.indexOf("}",input_index);
+            String input_filename=line.substring(input_index+7,end_index);
+            String input_macro = line.substring(input_index,end_index+1);
+
+
+            decomposed_file.newBlock(input_filename);
+            decomposed_file.addString(input_macro);
+            calling_actor.sendRequest(inputFilenameToFilename(input_filename));
+            decomposed_file.closeBlock();
+            String remain_line=line.substring(end_index+1,line.length());
+            extractInput(remain_line);
+        }
+    }
     public void run() 
     {
         String line;
@@ -106,43 +135,25 @@ class FileProcessing implements Runnable
             parsing=true;
             while ((line = br.readLine()) != null) 
             {
-
-                String t_line="a"+line;
-                String new_line=removeComment(t_line);
-                //System.out.println("La ligne : "+t_line+" est transformée en "+new_line);
-
                 line = line+"\n"; // the last one is removed at position 23685-14680
                 line=removeComment(line);
-                int input_index = line.indexOf("\\input{");
-                if (input_index<0) { decomposed_file.addLine(line); }
-                else 
-                {
-                    while (input_index>=0)
-                    {
-                        int end_index=line.indexOf("}",input_index);
-                        String input_filename=line.substring(input_index+7,end_index);
-                        decomposed_file.newBlock(input_filename);
-                        decomposed_file.addLine(line);
-                        calling_actor.sendRequest(inputFilenameToFilename(input_filename));
-                        decomposed_file.newBlock();
-                        input_index=-1;
-                    }
-                }
+                extractInput(line);
             }
         }
         catch (FileNotFoundException e)
         {
             System.out.println("File not found : "+getFilename());
-            decomposed_file.addLine("\\huge FILE NOT FOUND : "+getFilename());
+            decomposed_file.addString("\\huge FILE NOT FOUND : "+getFilename());
         }
         catch (IOException e)
         {
             System.out.println("IO Error on file "+getFilename());
-            decomposed_file.addLine("\\huge IO ERROR ON FILE : "+getFilename());
+            decomposed_file.addString("\\huge IO ERROR ON FILE : "+getFilename());
         }
         decomposed_file.closeBlock();
         parsing=false;
         // This manages the case in which the tex file has no input.
+
         if (decomposed_file.size()==1)
         {
             calling_actor.sendAnswer();

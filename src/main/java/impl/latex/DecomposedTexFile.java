@@ -38,9 +38,11 @@ import java.io.File;
     <li> a map filename -> content that indicate for each filename its recursive content.
     </ul>
         
-    The blocks containing an \input contain only that line. These lines are the limits of the blocks  [1]
+    Blocks that are containing a \input contains only that statement[1].
 
     It is only possible to add text in the last block.
+
+    [1] this is the expected use. That rule is in fact enforced in the function extractInput in FileProcessing.java
 
 EXAMPLE
 
@@ -54,7 +56,7 @@ EXAMPLE
 
     The block list will be
 
-    [  "blah bla","bla \input{other1} bloh","foo \input{other2}"   ]
+    [  "blah bla","bla ","\input{other1}"," bloh","foo ","\input{other2}"   ]
 
     filename_to_number will contain
     "other1"  ->  1
@@ -70,46 +72,52 @@ EXAMPLE
 
 class DecomposedTexFile
 {
-    private ArrayList<String> blocks_list;
-    private Map<String,Integer> filename_to_number;
+    private ArrayList<DecompositionBlock> blocks_list;
+    private Map<String,DecompositionBlock> filename_to_block;
     private Map<String,String> filename_to_content;
-    private StringBuilder block_builder;
     private Integer last_block;
+    private DecompositionBlock current_block;
     
     public DecomposedTexFile()
     {
-        blocks_list = new ArrayList<String>();
-        filename_to_number = new HashMap<String,Integer>();
+        blocks_list = new ArrayList<DecompositionBlock>();
+        filename_to_block = new HashMap<String,DecompositionBlock>();
         filename_to_content = new HashMap<String,String>();
-        last_block=0;
-        block_builder = new StringBuilder();
+        current_block = new DecompositionBlock();
     }
-    public void addLine(String line) { block_builder.append(line); }
-    public Integer size() {return blocks_list.size();}
-
-    private String  filenameToInputFilename(String filename)
+    public void addString(String s) 
+    { 
+        if (current_block.isOpen()) { current_block.addString(s); }
+        else
+        {
+            createNewBlock();
+            current_block.addString(s);
+        }
+    }
+    private void createNewBlock()
     {
-        if (filename.endsWith(".tex")) { return filename.replace(".tex",""); }
-        return filename;
+        current_block = new DecompositionBlock();
     }
-
-    public void closeBlock()
+    public void attachCurrentBlock()
         /**
-         * add to the block list the content of the current buffer 'block_builder'.
+         * Attach current_block (the one being filled) to the chain.
          */
     {
-        blocks_list.add(last_block,block_builder.toString());
+        if (!current_block.isAttached())
+        {
+            blocks_list.add(current_block);
+            current_block.setAttached();
+        }
     }
     public void newBlock() 
     {
-        /**
-         * close being building the block and initiate a new block.
-         * @see closeBlock
-         */
-        closeBlock();
-        blocks_list.add(""); 
-        last_block++;
-        block_builder = new StringBuilder();
+        attachCurrentBlock();
+        createNewBlock();
+    }
+    public void closeBlock()
+    {
+        current_block.close();
+        attachCurrentBlock();
     }
     public void newBlock(String filename) 
         /**
@@ -119,7 +127,14 @@ class DecomposedTexFile
          */
     { 
         newBlock();
-        filename_to_number.put(filename,last_block);
+        filename_to_block.put(filename,current_block);
+    }
+    public Integer size() {return blocks_list.size();}
+
+    private String  filenameToInputFilename(String filename)
+    {
+        if (filename.endsWith(".tex")) { return filename.replace(".tex",""); }
+        return filename;
     }
     public Boolean stillWaiting()
         /**
@@ -131,33 +146,51 @@ class DecomposedTexFile
             Maybe a new \input is still to be found.
          */
     {
-        return filename_to_number.size()>0;
+        return filename_to_block.size()>0;
     }
     public void makeSubstitution(File filepath, String content)
     {
         String filename = filepath.getName().toString();
         String input_filename=filenameToInputFilename(filename);
 
-        Integer block_number =  filename_to_number.get(input_filename);
-        String initial_text=blocks_list.get(block_number);
+        DecompositionBlock block =  filename_to_block.get(input_filename);
+        String initial_text=block.getText();
 
         String input_statement = "\\input{"+input_filename+"}";
         String final_text = initial_text.replace(input_statement,content);
 
-        blocks_list.set(block_number,final_text);
-        filename_to_number.remove(input_filename);
+        block.setText(final_text);
+        filename_to_block.remove(input_filename);
     }
     public String getRecomposition()
     {
         StringBuilder content_builder = new StringBuilder();       
-        for ( String bl : blocks_list )
+        for ( DecompositionBlock bl : blocks_list )
         {
-            content_builder.append(bl);
+            content_builder.append(bl.getText());
         }
         String content = content_builder.toString();
         // If the file is empty, the content does not finish with "\n".
-        // position 23685-14680
+        // See position 23685-14680
         if (content.endsWith("\n")) { content=content.substring(0,content.length()-1); }
         return content;
+    }
+    public String show()
+        // for debug purpose
+    {
+        StringBuilder show_builder = new StringBuilder();       
+        show_builder.append("->");
+        for ( DecompositionBlock bl : blocks_list )
+        {
+            show_builder.append("---\n");
+            show_builder.append(bl.getText());
+            show_builder.append("---\n");
+        }
+        show_builder.append("-- current --\n");
+        show_builder.append(current_block.getText());
+        show_builder.append("-- end current --\n");
+
+        show_builder.append("<-");
+        return show_builder.toString();
     }
 }

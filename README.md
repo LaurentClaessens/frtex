@@ -156,9 +156,7 @@ The latex actor system recognize two types of messages.
 
 * We suppose that each .tex file in included only once. Thus if foo.tex needs bar.tex, it is impossible that bar.tex was already processed when the actor in charge of foo.tex initiate its work.
 
-    In this case, the answer can be sent directly to the asking actor. 
-    If a tex file could be included more than once, we should maybe use a principal actor.
-
+* The LaTeX code is supposed to be encoded in utf8
 
 ## The Echo actor system
 
