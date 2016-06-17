@@ -26,6 +26,7 @@
         <version>2.19.1</version>
         <configuration>
           <includes>
+              <include> **/ActorIT.java </include>
               <include> **/*Test.java </include>
           </includes>
         </configuration>
@@ -34,14 +35,21 @@
   </build>
   <packaging>jar</packaging>
 
-  <name>actors</name>
-  <url>https://github.com/LaurentClaessens/actors</url>
+  <name>pcd-actors</name>
+  <url>https://github.com/rcardin/pcd-actors</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.10</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
