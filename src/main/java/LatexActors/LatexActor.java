@@ -16,25 +16,41 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.latex;
+package frtex.actors;
 
 import actors.Message;
 import java.util.HashMap;
 import actors.exceptions.ShouldNotHappenException;
+
 import actors.DecentActor;
+import frtex.DecomposedTexFile;
+import frtex.FileProcessing;
 
 import java.io.File;
 
-// A LatexActor is 'working' until it succeed to send the answer to who asked that.
-// It is constructing the decomposition outside the 'receive' function because it is sending messages while decomposing (each time an input is found)
-// Therefore it is possible to receive answers before completing the decomposition and its mailbox has to be open before to initiate the decomposition.
-// To be clear : the 'working' attribute is not related to the openness of the mailbox.
+
+/**
+ *
+ * A LatexActor is 'working' until it succeed to send the answer to who asked that.
+ * It is constructing the decomposition outside the 'receive' function because it is sending messages while decomposing (each time an input is found)
+ * Therefore it is possible to receive answers before completing the decomposition and its mailbox has to be open before to initiate the decomposition.
+ * To be clear : the 'working' attribute is not related to the openness of the mailbox.
+ *
+ */
+
+
+
+
+
+
 public class LatexActor extends DecentActor
+    /**
+     * The 'decomposition' object is shared between the file processing thread and the 'received' function.
+     * The first one is adding new blocks while the second one is filling the map 'filename_to_content'
+     */
 {
     protected Boolean working;
 
-    // The 'decomposition' object is shared between the file processing thread and the 'received' function.
-    // The first one is adding new blocks while the second one is filling the map 'filename_to_content'
     
     private DecomposedTexFile decomposition;
     private FileProcessing processing;

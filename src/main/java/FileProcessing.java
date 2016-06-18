@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.latex;
+package frtex;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -37,7 +37,12 @@ import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
 
-class FileProcessing implements Runnable
+import frtex.actors.LatexActor;
+import frtex.actors.LatexMainActor;
+import frtex.actors.LatexActorRef;
+import frtex.actors.LatexActorSystem;
+
+public class FileProcessing implements Runnable
 /*
    This class is intended to be launch in a separate thread. It fills the blocks of the 'decomposed' tex file of the calling actor.
    In the same time, the calling actor receive messages that fill the 'filename_to_content' map.
@@ -49,7 +54,7 @@ class FileProcessing implements Runnable
     private Boolean parsing;
     private Path pwd;
 
-    FileProcessing(File filepath, DecomposedTexFile decomposed, LatexActor calling_actor)
+    public FileProcessing(File filepath, DecomposedTexFile decomposed, LatexActor calling_actor)
     {
         this.filepath=filepath;
         this.decomposed_file=decomposed;

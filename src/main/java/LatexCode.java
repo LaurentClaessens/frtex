@@ -16,10 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.latex;
+package frtex;
 
 import java.io.File;
 
+import frtex.actors.LatexActorSystem;
+import frtex.actors.LatexActorRef;
+import frtex.actors.LatexMainActor;
 
 /**
  * Represent a LaTeX code.

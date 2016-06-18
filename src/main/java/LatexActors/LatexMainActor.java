@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
 
-package actors.impl.latex;
+package frtex.actors;
 
 import actors.Message;
 import java.util.HashMap;

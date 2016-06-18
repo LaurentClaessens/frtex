@@ -1,0 +1,15 @@
+For using the actors package, I used the following command :
+
+frtex>$ mvn  install:install-file -Dfile=../actors/target/actors.jar
+
+That created the file
+~/.m2/repository/actors/actors/0.1/actors-0.1.jar
+
+Then it remains to add the following lines in the "dependencies" section of the pom file :
+
+    <dependency>
+      <groupId>actors</groupId>
+      <artifactId>actors</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
+  </dependency>

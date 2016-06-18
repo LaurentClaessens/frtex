@@ -16,27 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+package frtex.actors;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.io.File;
 
-import frtex.LatexCode;
+import actors.Message;
 
-public class LatexTest
+public class LatexMessage implements Message
 {
-    @Test
-    public void test_content() throws InterruptedException
+    private final LatexActorRef from_actor;
+    private final LatexActorRef to_actor;
+    private final File filepath;
+
+    public LatexMessage(LatexActorRef from, LatexActorRef to,File filepath)
     {
-        System.out.println("DÉPART DU TEST LATEX");
-
-        LatexCode latex_code = new LatexCode("src/test/java/latex/tex_files/test.tex");
-        String answer = latex_code.getExplicitCode();
-        System.out.println(answer);
-
-        System.out.println("Le fil principal LATEX se relance");
+        from_actor=from;
+        to_actor=to;
+        this.filepath=filepath;
     }
+    public LatexActorRef getSender() { return from_actor; }
+    public File getFilepath() { return filepath; }
 }

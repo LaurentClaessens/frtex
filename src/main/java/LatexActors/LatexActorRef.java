@@ -16,24 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package actors.impl.latex;
+package frtex.actors;
 
-import java.io.File;
+import actors.DecentActorRef;
 
-import actors.Message;
-
-public class LatexMessage implements Message
+public class LatexActorRef extends DecentActorRef 
 {
-    private final LatexActorRef from_actor;
-    private final LatexActorRef to_actor;
-    private final File filepath;
-
-    public LatexMessage(LatexActorRef from, LatexActorRef to,File filepath)
+    @Override
+    public LatexActor getActor()
     {
-        from_actor=from;
-        to_actor=to;
-        this.filepath=filepath;
+        return (LatexActor) super.getActor();
     }
-    public LatexActorRef getSender() { return from_actor; }
-    public File getFilepath() { return filepath; }
+    public void waitWorking()
+    {
+        getActor().waitWorking();
+    }
 }

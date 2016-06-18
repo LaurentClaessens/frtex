@@ -2,11 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>actors</groupId>
-  <artifactId>actors</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <groupId>frtex</groupId>
+  <artifactId>frtex</artifactId>
+  <version>0.1-SNAPSHOT</version>
   <build>
-    <finalName>actors</finalName>
+    <finalName>frtex</finalName>
     <plugins>
 
 
@@ -26,7 +26,6 @@
         <version>2.19.1</version>
         <configuration>
           <includes>
-              <include> **/ActorIT.java </include>
               <include> **/*Test.java </include>
           </includes>
         </configuration>
@@ -35,27 +34,26 @@
   </build>
   <packaging>jar</packaging>
 
-  <name>pcd-actors</name>
-  <url>https://github.com/rcardin/pcd-actors</url>
+  
+  <name>frtex</name>
+  <url>https://github.com/LaurentClaessens/frtex/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
-      <version>0.9.10</version>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>actors</groupId>
+      <artifactId>actors</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
+  </dependency>
   </dependencies>
 </project>
