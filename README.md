@@ -1,5 +1,16 @@
 #  FRTEX
 
+## Installation and dependencies
+
+* download the actor system from [github](https://github.com/LaurentClaessens/actors)
+* compile the actor system :
+<pre> <code> $  mvn package   </code>  </pre>
+* make it available :
+<pre><code>$ mvn  install:install-file -Dfile=path-to-actors/target/actors.jar</code></pre>
+* download `frtex` from [github](https://github.com/LaurentClaessens/frtex)
+* Use `frtex` by example performing the tests :
+<pre><code>$ mvn  test</code></pre>
+
 
 ## The Latex actor system
 
