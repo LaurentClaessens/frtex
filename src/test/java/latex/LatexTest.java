@@ -23,20 +23,23 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
 
 import frtex.LatexCode;
 
 public class LatexTest
 {
     @Test
-    public void test_content() throws InterruptedException
+    public void test_simple() throws InterruptedException
     {
-        System.out.println("DÉPART DU TEST LATEX");
-
-        LatexCode latex_code = new LatexCode("src/test/java/latex/tex_files/test.tex");
+        LatexCode latex_code = new LatexCode("src/test/java/latex/simple_tex_test/test.tex");
         String answer = latex_code.getExplicitCode();
-        System.out.println(answer);
-
-        System.out.println("Le fil principal LATEX se relance");
+        //String expected_content = readFile("expected_test.tex", StandardCharsets.UTF_8);
+        //
+        //
+        //
+        // For the record, the following line writes the result in the file.
+        //try(  PrintWriter out = new PrintWriter("src/test/java/latex/simple_tex_test/expected_test.tex" )  ) { out.println( answer ); } catch (FileNotFoundException e) {}
     }
 }

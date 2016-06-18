@@ -1,0 +1,88 @@
+
+%
+\documentclass[a4paper,oneside,11pt]{book}
+
+%%%%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}           
+\usepackage{mathabx}           %\usepackage{bbm}
+
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry} 
+
+\usepackage{hyperref}     
+
+\usepackage[english,frenchb]{babel}
+\usepackage{listingsutf8}   % 
+
+\makeindex
+
+\begin{document} 
+
+\bibliographystyle{unsrtnat} 
+\corrPosition{1}
+
+%%
+\selectlanguage{frenchb}
+
+%
+    This is the file number 2. It contains an equation that should not kill your computer.
+
+By the way, the last line of this file is the ``end equation''.
+
+\begin{equation}
+    f(x)=\frac{ x }{ 0 }.
+\end{equation}
+  
+
+\tableofcontents
+
+\chapter{First chapter}
+This is the first file which includes the number 5
+
+This is the file number 5.      %
+File number 5 done. 
+
+Here are two input on the same line. The texts have to be glued :
+Fichier numéro 12.Fichier numéro 13.
+
+This is the last line of file number 1. It has to be glued to the first line of file 6.
+And this is the first (and unique) line of the file number 6.
+
+\chapter{Second chapter}
+%
+This is file number 4. The specificity is that it starts with a comment.
+
+
+Le fichier numéro 7.
+
+
+This is a txt file. Only for testing the "extension guessing" system.
+   %
+This is file number 9.
+
+We are testing comments removal. 
+
+Here is a line that as a percent as real comment : end of line here%
+
+In the following, there should be one A and then one percent in huge size and the remaining line in normal size. (and of course this has to be normal size)
+
+\huge
+
+A\% 
+
+
+
+
+
+\end{document}
+
+%
