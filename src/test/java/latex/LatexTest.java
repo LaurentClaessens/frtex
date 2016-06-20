@@ -23,8 +23,13 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
+import java.nio.file.Files;
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import frtex.LatexCode;
 
@@ -35,11 +40,21 @@ public class LatexTest
     {
         LatexCode latex_code = new LatexCode("src/test/java/latex/simple_tex_test/test.tex");
         String answer = latex_code.getExplicitCode();
-        //String expected_content = readFile("expected_test.tex", StandardCharsets.UTF_8);
-        //
-        //
-        //
-        // For the record, the following line writes the result in the file.
+        String expected_path="src/test/java/latex/simple_tex_test/expected_test.tex";
+        
+        List<String> lines;
+        String expected_content;
+        try
+        {
+            lines = Files.readAllLines(Paths.get( expected_path  ), StandardCharsets.UTF_8);
+            expected_content = String.join("\n",lines);
+            Assert.assertTrue( expected_content.equals(answer) );
+        }
+        catch(IOException e){}
+
+        
+        // For the record, the following line writes the result in the file. And also, there is a simpler alternative from FileUtils.
         //try(  PrintWriter out = new PrintWriter("src/test/java/latex/simple_tex_test/expected_test.tex" )  ) { out.println( answer ); } catch (FileNotFoundException e) {}
+        //String expected_content = readFileToString(new File("src/test/java/latex/simple_tex_test/expected_test.tex"),Charset.UTF_8);
     }
 }
