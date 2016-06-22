@@ -39,7 +39,7 @@
                 <groups>
                     <group>
                         <title>TI</title>
-                        <packages>frtex.*</packages>
+                        <packages>frtex.utils</packages>
                     </group>
                 </groups>
 
