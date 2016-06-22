@@ -67,6 +67,23 @@ The latex actor system recognize two types of messages.
 
 * The LaTeX code is supposed to be encoded in utf8
 
+* When inputing a tex file, use
+```latex
+\input{foo}
+```
+and not
+```latex
+\input{foo.tex}
+```
+ * Filename must contain (at most) one dot. You cannot do
+```latex
+\input{fdl-1.3}
+```
+for implying an input of `fdl-1.3.tex`. And even less
+```latex
+\input{fdl-1.3.tex}
+```
+
 ### TEST
 
 use `mvn test` to see the result.

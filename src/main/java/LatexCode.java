@@ -20,9 +20,9 @@ package frtex;
 
 import java.io.File;
 
-import frtex.actors.LatexActorSystem;
-import frtex.actors.LatexActorRef;
-import frtex.actors.LatexMainActor;
+import frtex.LatexActors.LatexActorSystem;
+import frtex.LatexActors.LatexActorRef;
+import frtex.LatexActors.LatexMainActor;
 
 /**
  * Represent a LaTeX code.

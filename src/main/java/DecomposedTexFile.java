@@ -68,7 +68,6 @@ EXAMPLE
      [1] This is the expected use. In other words, this is how LatexActor.receive use this class.
 */
 
-
 public class DecomposedTexFile
 {
     private ArrayList<DecompositionBlock> blocks_list;
@@ -153,6 +152,11 @@ public class DecomposedTexFile
         String input_filename=filenameToInputFilename(filename);
 
         DecompositionBlock block =  filename_to_block.get(input_filename);
+
+        if (block==null)
+        {
+            System.out.println("Seem to have a problem with "+filename);
+        }
         String initial_text=block.getText();
 
         String input_statement = "\\input{"+input_filename+"}";

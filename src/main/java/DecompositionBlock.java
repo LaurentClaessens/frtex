@@ -56,6 +56,11 @@ class DecompositionBlock
     public String getText() 
     {
         if (text!=null) {return text;}
+        String a = block_builder.toString();
+        if (a==null)
+        {
+            System.out.println("Je crois que je vais bientôt mourir.");
+        }
         return block_builder.toString(); 
     }
 }

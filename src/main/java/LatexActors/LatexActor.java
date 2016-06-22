@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //*/
 
-package frtex.actors;
+package frtex.LatexActors;
 
 import actors.Message;
 import java.util.HashMap;
@@ -79,7 +79,7 @@ public class LatexActor extends DecentActor
     }
     public void sendRequest(File filepath)
     {
-        System.out.println("Requesting "+filepath);
+        //System.out.println("Requesting "+filepath);
         LatexActorRef to = getActorSystem().getNonWorkingActor();
         LatexRequestMessage request_message = new LatexRequestMessage(getSelfReference(),to,filepath);
         send(request_message,to);
@@ -100,7 +100,7 @@ public class LatexActor extends DecentActor
     protected void receiveAnswer(Message m)
     {
         LatexAnswerMessage message = (LatexAnswerMessage) m;
-        System.out.println("Received : "+message.getFilepath().toString());
+        //System.out.println("Received : "+message.getFilepath().toString());
         processing.makeSubstitution(message.getFilepath(),message.getContent());
         if (processing.isFinished()) { sendAnswer(); }
     }

@@ -12,4 +12,5 @@ src/test/java/latex/simple_tex_test/*.log
 src/test/java/latex/simple_tex_test/*.out
 src/test/java/latex/simple_tex_test/*.pdf
 src/test/java/latex/simple_tex_test/*.toc
+src/test/java/latex/mazhe/*
 session.vim

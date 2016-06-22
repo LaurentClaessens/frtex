@@ -37,10 +37,13 @@ import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
 
-import frtex.actors.LatexActor;
-import frtex.actors.LatexMainActor;
-import frtex.actors.LatexActorRef;
-import frtex.actors.LatexActorSystem;
+import frtex.LatexActors.LatexActor;
+import frtex.LatexActors.LatexMainActor;
+import frtex.LatexActors.LatexActorRef;
+import frtex.LatexActors.LatexActorSystem;
+
+import frtex.exceptions.BadInputException;
+import frtex.utils.StringUtils;
 
 public class FileProcessing implements Runnable
 /*
@@ -117,8 +120,17 @@ public class FileProcessing implements Runnable
 
             int end_index=line.indexOf("}",input_index);
             String input_filename=line.substring(input_index+7,end_index);
-            String input_macro = line.substring(input_index,end_index+1);
 
+            if (input_filename.endsWith(".tex"))
+            {
+                throw new BadInputException(input_filename+" : If your LaTeX code has to input a .tex file, you must not explicitly write '.tex'. See README.md");
+            }
+            if (StringUtils.stringCounter(input_filename,'.')>1)
+            {
+                throw new BadInputException(input_filename+" : Your filename must contain at most one dot. See README.md");
+            }
+
+            String input_macro = line.substring(input_index,end_index+1);
 
             decomposed_file.newBlock(input_filename);
             decomposed_file.addString(input_macro);

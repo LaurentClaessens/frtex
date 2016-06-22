@@ -32,9 +32,17 @@
       </plugin>
 
         <plugin>
-			<artifactId>maven-javadoc-plugin</artifactId>
-			<version>2.9</version>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.4</version>
 			<configuration>
+                <groups>
+                    <group>
+                        <title>TI</title>
+                        <packages>frtex.*</packages>
+                    </group>
+                </groups>
+
 				<doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
 				<docletArtifact>
 					<groupId>ch.raffael.pegdown-doclet</groupId>

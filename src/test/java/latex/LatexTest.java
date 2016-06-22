@@ -35,12 +35,11 @@ import frtex.LatexCode;
 
 public class LatexTest
 {
-    @Test
-    public void test_simple() throws InterruptedException
+    public Boolean isTexOk(String filename,String expected)
     {
-        LatexCode latex_code = new LatexCode("src/test/java/latex/simple_tex_test/test.tex");
+        LatexCode latex_code = new LatexCode(filename);
         String answer = latex_code.getExplicitCode();
-        String expected_path="src/test/java/latex/simple_tex_test/expected_test.tex";
+        String expected_path=expected;
         
         List<String> lines;
         String expected_content;
@@ -48,13 +47,23 @@ public class LatexTest
         {
             lines = Files.readAllLines(Paths.get( expected_path  ), StandardCharsets.UTF_8);
             expected_content = String.join("\n",lines);
-            Assert.assertTrue( expected_content.equals(answer) );
+            return expected_content.equals(answer);
         }
-        catch(IOException e){}
-
+        catch(IOException e){System.out.println("Your expected test file does not exist ?");}
+        return false;
         
         // For the record, the following line writes the result in the file. And also, there is a simpler alternative from FileUtils.
         //try(  PrintWriter out = new PrintWriter("src/test/java/latex/simple_tex_test/expected_test.tex" )  ) { out.println( answer ); } catch (FileNotFoundException e) {}
         //String expected_content = readFileToString(new File("src/test/java/latex/simple_tex_test/expected_test.tex"),Charset.UTF_8);
+    }
+    @Test
+    public void test_simple() throws InterruptedException
+    {
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/simple_tex_test/test.tex","src/test/java/latex/simple_tex_test/expected_test.tex"  )  );
+    }
+    @Test
+    public void test_mazhe() throws InterruptedException
+    {
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe/mazhe.tex","src/test/java/latex/simple_tex_test/expected_test.tex"  )  );
     }
 }
