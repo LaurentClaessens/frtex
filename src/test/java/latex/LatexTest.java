@@ -40,7 +40,6 @@ public class LatexTest
         LatexCode latex_code = new LatexCode(filename);
         String answer = latex_code.getExplicitCode();
         String expected_path=expected;
-        try(  PrintWriter out = new PrintWriter(expected)  ) { out.println( answer ); } catch (FileNotFoundException e) {}
         
         List<String> lines;
         String expected_content;

@@ -99,6 +99,10 @@ for implying an input of `fdl-1.3.tex`. And even less
 \input{fdl-1.3.tex}
 ```
 
+### TODO
+
+I sometimes have a `NullPointerException` in `MultiFIFOMap.poll`. Not always. Search in progress ...
+
 ### TEST
 
 use `mvn test` to see the result.
