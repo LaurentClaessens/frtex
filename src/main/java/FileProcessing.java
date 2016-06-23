@@ -101,7 +101,7 @@ public class FileProcessing implements Runnable
         if (!m.find()) {return line;}
         // +2 because in "foo%bar" the m.start() is on o and 
         // we want to keep the "%" itself.
-        return line.substring(0,m.start()+2); 
+        return line.substring(0,m.start()+2)+"\n"; 
     }
     private void extractInput(String line)
         /**
