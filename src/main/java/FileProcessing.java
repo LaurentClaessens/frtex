@@ -95,7 +95,7 @@ public class FileProcessing implements Runnable
          * @return : a new String.
          */
     {
-        if (Character.toString(line.charAt(0)).equals("%")) {return "%";}
+        if (Character.toString(line.charAt(0)).equals("%")) {return "%\n";}
         Pattern pattern=Pattern.compile("[^\\\\]%");
         Matcher m = pattern.matcher(line);
         if (!m.find()) {return line;}
