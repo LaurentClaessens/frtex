@@ -169,9 +169,17 @@ public class FileProcessing implements Runnable
         }
         decomposed_file.closeBlock();
         parsing=false;
-        // This manages the case in which the tex file has no input.
 
-        if (decomposed_file.size()==1)
+        // TWO SPECIAL CASES
+        //
+        // 1.  The tex file has no input.
+        // 
+        // 2. It received the last answer BEFORE to finish
+        // parsing the last block. 
+        //
+        // In both cases, 'receive' function will not trigger the sending 
+        // of the answer.
+        if (decomposed_file.size()==1 || isFinished())
         {
             calling_actor.sendAnswer();
         }

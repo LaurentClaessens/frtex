@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package frtex.utils;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,15 +55,20 @@ public class MultiFIFOMap<K,V>
         _size=0;
     }
 
-    public V poll(K k) 
+    public synchronized V poll(K k) 
         /**
          * Poll the first element of the FIFO queue associated with the key `k`
          */
     {
         _size--;
-        return key_to_values.get(k).poll();
+        V answer = key_to_values.get(k).poll();
+        if (key_to_values.get(k).size()==0)
+        {
+            key_to_values.remove(k);
+        }
+        return answer;
     }
-    public void add(K k,V v) 
+    public synchronized void add(K k,V v) 
         /**
          * Add the value `v` at the end of the FIFO queue associated with the key `k`.
          */
@@ -90,4 +96,8 @@ public class MultiFIFOMap<K,V>
          * Return the number of values associated with the key `k`.
          */
     {return key_to_values.get(k).size();}
+    public Set<K> keySet()
+    {
+        return key_to_values.keySet();
+    }
 }

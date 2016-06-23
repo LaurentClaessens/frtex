@@ -6,11 +6,10 @@
 *~
 target/*
 junk/*
-src/test/java/latex/simple_tex_test/*.aux
-src/test/java/latex/simple_tex_test/*.idx
-src/test/java/latex/simple_tex_test/*.log
-src/test/java/latex/simple_tex_test/*.out
-src/test/java/latex/simple_tex_test/*.pdf
-src/test/java/latex/simple_tex_test/*.toc
-src/test/java/latex/mazhe/*
+src/test/java/latex/*_tex_test/*.aux
+src/test/java/latex/*_tex_test/*.idx
+src/test/java/latex/*_tex_test/*.log
+src/test/java/latex/*_tex_test/*.out
+src/test/java/latex/*_tex_test/*.pdf
+src/test/java/latex/*_tex_test/*.toc
 session.vim

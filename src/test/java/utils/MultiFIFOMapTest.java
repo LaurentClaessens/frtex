@@ -53,12 +53,15 @@ public class MultiFIFOMapTest
     public void sizeIsOk() 
     {
         MultiFIFOMap<String,String> cm = new MultiFIFOMap<String,String>();
-        cm.put("foo","bar1");
-        cm.put("foo","bar2");
+        cm.add("foo","bar1");
+        cm.add("foo","bar2");
         Assert.assertTrue(cm.size()==2);
         cm.poll("foo");
         Assert.assertTrue(cm.size()==1);
         cm.add("cao","bao1");
         Assert.assertTrue(cm.size()==2);
+        cm.poll("foo");
+        cm.poll("cao");
+        Assert.assertTrue(cm.size()==0);
     }
 }

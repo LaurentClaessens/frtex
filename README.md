@@ -57,15 +57,30 @@ The latex actor system recognize two types of messages.
 * `LatexRequestMessage` (extends `LatexMessage`)
 * `LatexAnswerMessage` (extends `LatexMessage`)
 
-### Hypothesis on the LaTeX source code (simplification)
+### Hypothesis on the LaTeX source code (simplification and limitations)
 
 * The filenames are more or less standard. Like only one dot, no curly braces and so on.
 
 * The percent symbol should always mean a comment, with the exception of "\%". This can be a limitation if you have URL in which you substituted special characters with their %xx representation.
 
-* We suppose that each .tex file in included only once. Thus if foo.tex needs bar.tex, it is impossible that bar.tex was already processed when the actor in charge of foo.tex initiate its work.
+* If a file in inputed more than once, it will be computed at each input. Moreover, this is a static tool, so you cannot do
+```latex
+\input{foo}
+% something that modify foo.tex during the LaTeX compilation.
+\input{foo}
+```
+
+* More generally, if your LaTeX compilation itself create/modify a file that is then inputed, you cannot hope `frtex` to make its job.
 
 * The LaTeX code is supposed to be encoded in utf8
+
+* The `\input` has to be explicit. `frtex` will not make the substitution on
+```latex
+\newcommand{\myInput}[1]{\input{#1}}
+\myInput{foo}
+```
+
+* In the same spirit, `\lstinput` from package `listingutf8` will not be recognized. It is however in my plans to make it in the future (send me a patch).
 
 * When inputing a tex file, use
 ```latex

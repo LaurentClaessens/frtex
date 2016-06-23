@@ -26,6 +26,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
 
+import frtex.utils.MultiFIFOMap;
+
 
 /**
     This describe a tex file in the "decomposed" state. 
@@ -71,7 +73,7 @@ EXAMPLE
 public class DecomposedTexFile
 {
     private ArrayList<DecompositionBlock> blocks_list;
-    private Map<String,DecompositionBlock> filename_to_block;
+    private MultiFIFOMap<String,DecompositionBlock> filename_to_block;
     private Map<String,String> filename_to_content;
     private Integer last_block;
     private DecompositionBlock current_block;
@@ -79,7 +81,7 @@ public class DecomposedTexFile
     public DecomposedTexFile()
     {
         blocks_list = new ArrayList<DecompositionBlock>();
-        filename_to_block = new HashMap<String,DecompositionBlock>();
+        filename_to_block = new MultiFIFOMap<String,DecompositionBlock>();
         filename_to_content = new HashMap<String,String>();
         current_block = new DecompositionBlock();
     }
@@ -125,7 +127,7 @@ public class DecomposedTexFile
          */
     { 
         newBlock();
-        filename_to_block.put(filename,current_block);
+        filename_to_block.add(filename,current_block);
     }
     public Integer size() {return blocks_list.size();}
 
@@ -151,7 +153,7 @@ public class DecomposedTexFile
         String filename = filepath.getName().toString();
         String input_filename=filenameToInputFilename(filename);
 
-        DecompositionBlock block =  filename_to_block.get(input_filename);
+        DecompositionBlock block =  filename_to_block.poll(input_filename);
 
         if (block==null)
         {
@@ -163,7 +165,6 @@ public class DecomposedTexFile
         String final_text = initial_text.replace(input_statement,content);
 
         block.setText(final_text);
-        filename_to_block.remove(input_filename);
     }
     public String getRecomposition()
     {
