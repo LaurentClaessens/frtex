@@ -62,6 +62,12 @@ public class MultiFIFOMap<K,V>
     {
         _size--;
         V answer = key_to_values.get(k).poll();
+
+        if (key_to_values.get(k)==null)
+        {
+            System.out.println("NullPointer for the key "+k.toString());
+        }
+
         if (key_to_values.get(k).size()==0)
         {
             key_to_values.remove(k);

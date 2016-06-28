@@ -39,6 +39,10 @@ public class LatexTest
     {
         LatexCode latex_code = new LatexCode(filename);
         String answer = latex_code.getExplicitCode();
+
+        // Uncomment that line to record the answer in 'expected_test.tex'.
+        // try(  PrintWriter out = new PrintWriter(expected)  ) { out.println( answer ); } catch (FileNotFoundException e) {}
+
         String expected_path=expected;
         
         List<String> lines;
@@ -52,8 +56,6 @@ public class LatexTest
         catch(IOException e){System.out.println("Your expected test file does not exist ?");}
         return false;
         
-        // For the record, the following line writes the result in the file. And also, there is a simpler alternative from FileUtils.
-        //try(  PrintWriter out = new PrintWriter(expected)  ) { out.println( answer ); } catch (FileNotFoundException e) {}
     }
     @Test
     public void simpleTest() throws InterruptedException
@@ -67,10 +69,22 @@ public class LatexTest
         System.out.println("MULTIPLE INPUT TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/multiple_input_tex_test/test.tex","src/test/java/latex/multiple_input_tex_test/expected_test.tex"  )  );
     }
-    @Test
+    //@Test
     public void mazheTest() throws InterruptedException
     {
         System.out.println("MAZHE TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_test.tex"  )  );
+    }
+    @Test
+    public void ecmOneTest() throws InterruptedException
+    {
+        System.out.println("ECM 1 TEST");
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm1_tex_test/ecm1.tex","src/test/java/latex/ecm1_tex_test/expected_test.tex"  )  );
+    }
+    @Test
+    public void ecmTwoTest() throws InterruptedException
+    {
+        System.out.println("ECM 2 TEST");
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_test.tex"  )  );
     }
 }

@@ -26,6 +26,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
 
+import java.util.StringJoiner;
+
 import frtex.utils.MultiFIFOMap;
 
 
@@ -87,7 +89,10 @@ public class DecomposedTexFile
     }
     public void addString(String s) 
     { 
-        if (current_block.isOpen()) { current_block.addString(s); }
+        if (current_block.isOpen()) 
+        {
+            current_block.addString(s); 
+        }
         else
         {
             createNewBlock();
@@ -168,16 +173,12 @@ public class DecomposedTexFile
     }
     public String getRecomposition()
     {
-        StringBuilder content_builder = new StringBuilder();       
+        StringBuilder content_builder = new StringBuilder();
         for ( DecompositionBlock bl : blocks_list )
         {
             content_builder.append(bl.getText());
         }
-        String content = content_builder.toString();
-        // If the file is empty, the content does not finish with "\n".
-        // See position 23685-14680
-        if (content.endsWith("\n")) { content=content.substring(0,content.length()-1); }
-        return content;
+        return content_builder.toString();
     }
     public String show()
         // for debug purpose

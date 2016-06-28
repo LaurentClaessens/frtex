@@ -44,6 +44,7 @@ import frtex.LatexActors.LatexActorSystem;
 
 import frtex.exceptions.BadInputException;
 import frtex.utils.StringUtils;
+import frtex.utils.LineReader;
 
 public class FileProcessing implements Runnable
 /*
@@ -82,26 +83,53 @@ public class FileProcessing implements Runnable
         return pwd.resolve(Paths.get(filename)).toFile();
     }
 
-    private String removeComment(String line)
+    private Integer commentPosition(String line)
         /**
-         * Remove the comment part of line
+         * Return the position at which the line begins to be a comment 
          *
-         * <p>
          * The comment part initiate at the first "%" which is not
          * preceded by a "\".
-         * <p>
+         *
+         * If no comment, Return -1.
+         *
          * There are some limitations. Something like \\% will be considered as the beginning of a comment, and the first \ will be kept.
          *
          * @return : a new String.
          */
     {
-        if (Character.toString(line.charAt(0)).equals("%")) {return "%\n";}
+        if (line.length()==0) {return -1;}
+        if (Character.toString(line.charAt(0)).equals("%")) 
+        {
+            return 0;
+        }
         Pattern pattern=Pattern.compile("[^\\\\]%");
         Matcher m = pattern.matcher(line);
-        if (!m.find()) {return line;}
-        // +2 because in "foo%bar" the m.start() is on o and 
-        // we want to keep the "%" itself.
-        return line.substring(0,m.start()+2)+"\n"; 
+        if (!m.find()) { return -1; }
+        return m.start()+1;
+    }
+    private String removeComment(String line)
+        /**
+         * Remove the comment on a line, but leave the % at the end.
+         */
+    {
+        Integer start_comment = commentPosition(line);
+        if (start_comment==-1)
+        {
+            return line;
+        }
+        if (start_comment==0)
+        {
+            return "%\n";
+        }
+
+        // 'line' ends with \n when it is not the last line of the file.
+        // In the case of the last line of the file, we must not add
+        // an additive \n.
+        if (line.endsWith("\n"))
+        {
+            return line.substring(0,start_comment)+"%\n";
+        }
+        return line.substring(0,start_comment)+"%";
     }
     private void extractInput(String line)
         /**
@@ -112,7 +140,10 @@ public class FileProcessing implements Runnable
          */
     {
         int input_index = line.indexOf("\\input{");
-        if (input_index<0) { decomposed_file.addString(line); }
+        if (input_index<0) 
+        { 
+            decomposed_file.addString(line); 
+        }
         else 
         { 
             decomposed_file.addString(line.substring(0,input_index));
@@ -147,15 +178,15 @@ public class FileProcessing implements Runnable
             InputStream fis = new FileInputStream(filepath.toString());
             InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(isr);
+            LineReader lr = new LineReader(br);
             )
         {
             parsing=true;
-            while ((line = br.readLine()) != null) 
+            while ((line = lr.readLine()) != null) 
             {
-                line = line+"\n"; // the last one is removed at position 23685-14680
-                line=removeComment(line);
+                line = removeComment(line);
                 extractInput(line);
-            }
+             }
         }
         catch (FileNotFoundException e)
         {

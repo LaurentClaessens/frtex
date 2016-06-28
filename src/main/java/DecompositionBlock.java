@@ -26,6 +26,7 @@ class DecompositionBlock
     private StringBuilder block_builder;
     private Boolean is_open;
     private Boolean is_attached;
+    private Boolean add_return;
     private String text;
 
     DecompositionBlock()
@@ -34,6 +35,7 @@ class DecompositionBlock
         is_open=true;
         is_attached=false;
         text=null;
+        add_return=false;
     }
 
     public Boolean isOpen() {return is_open;}
@@ -60,6 +62,10 @@ class DecompositionBlock
         if (a==null)
         {
             System.out.println("Je crois que je vais bientôt mourir.");
+        }
+        if (add_return)
+        {
+            a=a+"\n";
         }
         return block_builder.toString(); 
     }

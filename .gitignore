@@ -12,4 +12,8 @@ src/test/java/latex/*_tex_test/*.log
 src/test/java/latex/*_tex_test/*.out
 src/test/java/latex/*_tex_test/*.pdf
 src/test/java/latex/*_tex_test/*.toc
+src/test/java/latex/*_tex_test/*.md5
+src/test/java/latex/*_tex_test/*.nlo
+src/test/java/latex/*_tex_test/*.auxlock
+src/test/java/latex/mazhe_tex_test/*
 session.vim

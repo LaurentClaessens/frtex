@@ -99,6 +99,18 @@ for implying an input of `fdl-1.3.tex`. And even less
 \input{fdl-1.3.tex}
 ```
 
+### Not standalone
+
+The produced LaTeX code is in general not a standalone that can be fed to `pdflatex`. 
+
+* Commands like `\inlcudegraphic` or `\lstinputlisting` are including external files that are not processed here. 
+
+* For the bibliography, it is in project to make the replacement of `\bibliography{foo}` by the content of `foo.bbl`.
+
+* In particular for [mazhe](https://github.com/LaurentClaessens/mazhe), the exercices are included by the macro `\Exo` that makes a conditional `\input`.
+
+These points explain why the test directory `mazhe_tex_test` is so large : this is a real live test, and the real live does not fulfills the limitations of some softwares (one should fix the live).
+
 ### TODO
 
 I sometimes have a `NullPointerException` in `MultiFIFOMap.poll`. Not always. Search in progress ...
@@ -106,3 +118,5 @@ I sometimes have a `NullPointerException` in `MultiFIFOMap.poll`. Not always. Se
 ### TEST
 
 use `mvn test` to see the result.
+
+Notice that this software is still under development. I try to not commit (and even less push) versions that do nothing else than a crash...

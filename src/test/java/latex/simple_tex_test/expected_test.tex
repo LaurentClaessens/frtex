@@ -1,8 +1,13 @@
 
 %
+
 \documentclass[a4paper,oneside,11pt]{book}
 
-%%%%
+%
+%
+%
+%
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
@@ -31,17 +36,20 @@
 
 \bibliographystyle{unsrtnat} 
 
-%%
+%
+%
+
 \selectlanguage{frenchb}
 
 %
+
     This is the file number 2. It contains an equation that should not kill your computer.
 
 By the way, the last line of this file is the ``end equation''.
 
 \begin{equation}
     f(x)=\frac{ x }{ 0 }.
-\end{equation}
+\end{equation}%          %
   
 
 \tableofcontents
@@ -61,6 +69,7 @@ And this is the first (and unique) line of the file number 6.
 
 \chapter{Second chapter}
 %
+
 This is file number 4. The specificity is that it starts with a comment.
 
 
@@ -77,11 +86,13 @@ We are testing comments removal.
 Here is a line that as a percent as real comment : end of line here%
 
 
-In the following, there should be one A and then one percent in huge size and the remaining line in normal size. (and of course this has to be normal size)
 
-\huge
+\% \huge \normalsize AA
 
-A\% 
+Some A and B are glued :
+
+AAAAAAAAA%
+BBBBBB
 
 
 
@@ -90,3 +101,4 @@ A\%
 \end{document}
 
 %
+
