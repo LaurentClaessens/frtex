@@ -72,30 +72,30 @@ public class LatexTest
     public void simpleTest() throws InterruptedException
     {
         System.out.println("SIMPLE TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/simple_tex_test/test.tex","src/test/java/latex/simple_tex_test/expected_test.tex"  )  );
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/simple_tex_test/test.tex","src/test/java/latex/simple_tex_test/expected_result.tex"  )  );
     }
     @Test
     public void MultipleInputTest() throws InterruptedException
     {
         System.out.println("MULTIPLE INPUT TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/multiple_input_tex_test/test.tex","src/test/java/latex/multiple_input_tex_test/expected_test.tex"  )  );
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/multiple_input_tex_test/test.tex","src/test/java/latex/multiple_input_tex_test/expected_result.tex"  )  );
     }
     //@Test
     public void mazheTest() throws InterruptedException
     {
         System.out.println("MAZHE TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_test.tex"  )  );
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_result.tex"  )  );
     }
     @Test
     public void ecmOneTest() throws InterruptedException
     {
         System.out.println("ECM 1 TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm1_tex_test/ecm1.tex","src/test/java/latex/ecm1_tex_test/expected_test.tex"  )  );
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm1_tex_test/ecm1.tex","src/test/java/latex/ecm1_tex_test/expected_result.tex"  )  );
     }
     @Test
     public void ecmTwoTest() throws InterruptedException
     {
         System.out.println("ECM 2 TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_test.tex" )  );
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_result.tex" )  );
     }
 }
