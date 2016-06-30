@@ -178,7 +178,12 @@ public class DecomposedTexFile
         {
             content_builder.append(bl.getText());
         }
-        return content_builder.toString();
+        String base = content_builder.toString();
+        if (base.substring(base.length()-1).equals("%") )
+        {
+            base=base+"\n";
+        }
+        return base;
     }
     public String show()
         // for debug purpose
