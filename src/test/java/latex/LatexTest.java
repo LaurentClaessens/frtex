@@ -35,29 +35,40 @@ import frtex.LatexCode;
 
 public class LatexTest
 {
-    public Boolean isTexOk(String filename,String expected)
+    public Boolean isTexOk(String filename,String expected,Boolean doWrite)
     {
         LatexCode latex_code = new LatexCode(filename);
         String answer = latex_code.getExplicitCode();
-
-        // Uncomment that line to record the answer in 'expected_test.tex'.
-        // try(  PrintWriter out = new PrintWriter(expected)  ) { out.println( answer ); } catch (FileNotFoundException e) {}
-
-        String expected_path=expected;
+        Path expected_path=Paths.get(expected);
+        Path directory=expected_path.getParent();
+        Path obtained_path = directory.resolve(Paths.get("obtained_result.tex"));
+        try
+        (  
+            PrintWriter out = new PrintWriter(obtained_path.toString());
+        ) {
+                out.println( answer ); 
+        }
+        catch (FileNotFoundException e) {}
+        if (doWrite)
+        {
+            try(  PrintWriter out = new PrintWriter(expected)  ) { out.println( answer ); } catch (FileNotFoundException e) {}
+        }
         
         List<String> lines;
         String expected_content;
         try
         {
-            lines = Files.readAllLines(Paths.get( expected_path  ), StandardCharsets.UTF_8);
+            lines = Files.readAllLines( expected_path , StandardCharsets.UTF_8);
             expected_content = String.join("\n",lines);
             return expected_content.equals(answer);
         }
         catch(IOException e){System.out.println("Your expected test file does not exist ?");}
         return false;
-        
     }
-    @Test
+    public Boolean isTexOk(String filename,String expected)
+    {
+        return isTexOk(filename,expected,false);
+    }
     public void simpleTest() throws InterruptedException
     {
         System.out.println("SIMPLE TEST");
@@ -85,6 +96,6 @@ public class LatexTest
     public void ecmTwoTest() throws InterruptedException
     {
         System.out.println("ECM 2 TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_test.tex"  )  );
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_test.tex" )  );
     }
 }
