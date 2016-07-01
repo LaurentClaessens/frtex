@@ -154,6 +154,9 @@ public class DecomposedTexFile
         return filename_to_block.size()>0;
     }
     public void makeSubstitution(File filepath, String content)
+        // The block containing the \input{foo} could contain an additive \n.
+        // 'till I'm ok : there is an optimization to be done : we know that
+        // \input{foo} is the beginning of the block.
     {
         String filename = filepath.getName().toString();
         String input_filename=filenameToInputFilename(filename);
@@ -179,10 +182,6 @@ public class DecomposedTexFile
             content_builder.append(bl.getText());
         }
         String base = content_builder.toString();
-        if (base.substring(base.length()-1).equals("%") )
-        {
-            base=base+"\n";
-        }
         return base;
     }
     public String show()

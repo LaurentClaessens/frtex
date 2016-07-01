@@ -2,5 +2,33 @@
 
 
 \begin{document}
-\input{bar}
+
+%    B%
+test1 : 
+
+A\input{foo1}C
+
+test2 : 
+%    B
+
+A\input{foo2}C
+
+test3 : 
+%     B
+%     %comment
+
+A\input{foo3}C
+
+test4 : 
+%     B
+%     <empty line>
+A\input{foo4}C
+
+test5 : 
+%     B
+%     <empty line>
+
+A\input{foo4}
+C
+
 \end{document}

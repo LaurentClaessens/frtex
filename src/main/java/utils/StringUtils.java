@@ -38,5 +38,18 @@ public class StringUtils
         }
         return counter;
     }
+    public static Boolean isNextCharacterNewline(String s,int start)
+        /**
+         * Says if from position `start`, the next (non-space) character is a newline.
+         *
+         * In `Foo   \n` you get True when the `start` argument is 2 or more.
+         */
+    {
+        String test=s.substring( start+1,s.length()  ).replace(" ","").replace("   ","");      // The second one is a TAB (*)
+        return test.startsWith("\n");
+    }
 }
 
+
+
+// (*) Who on Earth use TABs in a LaTeX code ?

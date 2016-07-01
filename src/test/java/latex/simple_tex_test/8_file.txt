@@ -1,3 +1,0 @@
-
-This is a txt file. Only for testing the "extension guessing" system.
-

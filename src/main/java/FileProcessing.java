@@ -113,23 +113,30 @@ public class FileProcessing implements Runnable
          */
     {
         Integer start_comment = commentPosition(line);
+        Boolean finish_by_newline=line.endsWith("\n");
         if (start_comment==-1)
         {
             return line;
         }
         if (start_comment==0)
         {
-            return "%\n";
+            if (finish_by_newline)
+            {
+                return "%\n";
+            }
+            else 
+            {
+                return "%";
+            }
         }
-
-        // 'line' ends with \n when it is not the last line of the file.
-        // In the case of the last line of the file, we must not add
-        // an additive \n.
-        if (line.endsWith("\n"))
+        if (finish_by_newline)
         {
             return line.substring(0,start_comment)+"%\n";
         }
-        return line.substring(0,start_comment)+"%";
+        else
+        {
+            return line.substring(0,start_comment)+"%";
+        }
     }
     private void extractInput(String line)
         /**
@@ -166,6 +173,17 @@ public class FileProcessing implements Runnable
             decomposed_file.newBlock(input_filename);
             decomposed_file.addString(input_macro);
             calling_actor.sendRequest(inputFilenameToFilename(input_filename));
+
+            // If \input{foo} is not followed by a \n 
+            // we add a \n.
+            // That seems to be the behaviour of TeX.
+            // The following question is not really answered :
+            // http://tex.stackexchange.com/questions/317361/how-does-input-adds-a-space
+            if (!StringUtils.isNextCharacterNewline(line,end_index))
+            {
+                decomposed_file.addString("\n");
+            }
+
             decomposed_file.closeBlock();
             String remain_line=line.substring(end_index+1,line.length());
             extractInput(remain_line);
@@ -184,6 +202,7 @@ public class FileProcessing implements Runnable
             parsing=true;
             while ((line = lr.readLine()) != null) 
             {
+                String original = line;
                 line = removeComment(line);
                 extractInput(line);
              }

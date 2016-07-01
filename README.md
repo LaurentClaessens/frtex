@@ -111,6 +111,34 @@ The produced LaTeX code is in general not a standalone that can be fed to `pdfla
 
 These points explain why the test directory `mazhe_tex_test` is so large : this is a real live test, and the real live does not fulfills the limitations of some softwares (one should fix the live).
 
+### Bugs
+
+The input mechanism in LaTeX seems complex and I didn't study it. In particular, what makes the space after an input ? [This question](http://tex.stackexchange.com/questions/317361/how-does-input-adds-a-space) has still no answer.
+
+```latex
+\documentclass{minimal}     
+\begin{document}            
+                            
+AB                          
+                            
+\input{1_file}\input{2_file}
+                            
+\input{1_file}              
+\input{2_file}              
+                            
+\end{document}              
+```
+
+with `1_file.tex` containing only "A" and `2_file.tex` containing "B" (no 'new line' or something). `frtex` will add a `\n` after the input *if* it is not followed by an other `\n`. So it will translate the second and third examples in the same way. LaTeX makes a difference that I do not understand.
+
+```latex
+\begin{equation}
+\input{foo}
+\end{equation}
+```
+with `foo.tex` containing "a=b" does not provoke error. This is why `frtex` does not add a "\n" if the input statement is already followed by a newline.
+
+
 ### TODO
 
 I sometimes have a `NullPointerException` in `MultiFIFOMap.poll`. Not always. Search in progress ...
