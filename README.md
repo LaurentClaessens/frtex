@@ -113,7 +113,9 @@ These points explain why the test directory `mazhe_tex_test` is so large : this 
 
 ### Bugs
 
-The input mechanism in LaTeX seems complex and I didn't study it. In particular, what makes the space after an input ? [This question](http://tex.stackexchange.com/questions/317361/how-does-input-adds-a-space) has still no answer.
+The input mechanism in LaTeX seems complex and I didn't study it. In particular, what makes the space after an input ? [This question](http://tex.stackexchange.com/questions/317361/how-does-input-adds-a-space) has an answer that is too complicated for me.
+
+If someone can explain me that clearly, I'd appreciate.
 
 ```latex
 \documentclass{minimal}     
@@ -138,6 +140,7 @@ with `1_file.tex` containing only "A" and `2_file.tex` containing "B" (no 'new l
 ```
 with `foo.tex` containing "a=b" does not provoke error. This is why `frtex` does not add a "\n" if the input statement is already followed by a newline.
 
+Fixing this bug would require pure LaTeX (not Java) knowledge that I don't have. In particular, clearly understand the answer [here](http://tex.stackexchange.com/questions/317361/how-does-input-adds-a-space).
 
 ### TODO
 
