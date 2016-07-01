@@ -95,12 +95,6 @@ public class LatexTest
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm1_tex_test/ecm1.tex","src/test/java/latex/ecm1_tex_test/expected_result.tex"  )  );
     }
     @Test
-    public void ecmTwoTest() throws InterruptedException
-    {
-        System.out.println("ECM 2 TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_result.tex" )  );
-    }
-    @Test
     public void ecmThreeTest() throws InterruptedException
     {
         System.out.println("ECM 3 TEST");
