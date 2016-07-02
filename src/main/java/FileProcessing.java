@@ -220,7 +220,7 @@ public class FileProcessing implements Runnable
         decomposed_file.closeBlock();
         parsing=false;
 
-        // TWO SPECIAL CASES
+        // TWO SPECIAL CASES (position 137-18485)
         //
         // 1.  The tex file has no input.
         // 

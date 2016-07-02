@@ -61,6 +61,7 @@ public class MultiFIFOMap<K,V>
          */
     {
         _size--;
+
         V answer = key_to_values.get(k).poll();
 
         if (key_to_values.get(k)==null)
@@ -91,13 +92,13 @@ public class MultiFIFOMap<K,V>
         }
         _size++;
     }
-    public Integer size() 
+    public synchronized Integer size() 
         /**
          * Return the number of keys, counting the multiplicity.
          *
          */
     { return _size; }
-    public Integer count(K k)
+    public synchronized Integer count(K k)
         /**
          * Return the number of values associated with the key `k`.
          */

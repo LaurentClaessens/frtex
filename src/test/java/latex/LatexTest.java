@@ -69,7 +69,13 @@ public class LatexTest
     {
         return isTexOk(filename,expected,false);
     }
-
+    @Test
+    public void mazheTest() throws InterruptedException
+    {
+        System.out.println("MAZHE TEST");
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_result.tex"  )  );
+    }
+    /*
     @Test
     public void ecmFourTest() throws InterruptedException
     {
@@ -101,10 +107,4 @@ public class LatexTest
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm3_tex_test/ecm3.tex","src/test/java/latex/ecm3_tex_test/expected_result.tex" )  );
     }
     //*/
-    //@Test
-    public void mazheTest() throws InterruptedException
-    {
-        System.out.println("MAZHE TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_result.tex"  )  );
-    }
 }

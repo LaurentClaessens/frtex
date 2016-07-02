@@ -59,13 +59,13 @@ public class LatexActorSystem extends DecentActorSystem
             LatexActorRef actor_ref = (LatexActorRef) ar;
             if (!actor_ref.getActor().isWorking())
             {
-                actor_ref.getActor().setWorking();
+                actor_ref.getActor().makeNew();
                 return actor_ref;
             }
         }
         // here all actors are working
         LatexActorRef actor_ref = createPair();
-        actor_ref.getActor().setWorking();
+        actor_ref.getActor().makeNew();
         return actor_ref;
     }
 }

@@ -45,6 +45,7 @@ public class LatexActor extends DecentActor
      */
 {
     protected Boolean working;
+    private Boolean answer_sended;
 
     
     private DecomposedTexFile decomposition;
@@ -55,9 +56,17 @@ public class LatexActor extends DecentActor
     {
         super();
         setAcceptedType(LatexMessage.class);
+        answer_sended=false;
     }
     public Boolean isWorking()  {return working;}
-    public void setWorking()  {working=true;}
+    private void setWorking()  {working=true;}
+    private void setNotSend() {answer_sended=false;}
+
+    public void makeNew()
+    {
+        setWorking();
+        setNotSend();
+    }
 
     @Override
     public LatexActorSystem getActorSystem()
@@ -66,11 +75,28 @@ public class LatexActor extends DecentActor
     }
     public void sendAnswer()
     {
-        LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),request_message.getSender(),request_message.getFilepath());
-        answer_message.setContent(decomposition.getRecomposition());
+    
+        // See position 137-18485 in FileProcessing.java
+        //
+        // It happens that the last answer arrives before the end of parsing, but
+        // that the parsing finishes before to arrive here 
+        // at the line "working=false".
+        // In this case, the answer is sens twice and triggers 
+        // a NullPointerException in MultiFIFOMap.poll().
+        // We prevent this case by explicitly checking that the answer is not yet
+        // sent.
+        synchronized(answer_sended)
+        {
+            if (!answer_sended)
+            {
+                LatexAnswerMessage answer_message = new LatexAnswerMessage(getSelfReference(),request_message.getSender(),request_message.getFilepath());
+                answer_message.setContent(decomposition.getRecomposition());
 
-        send(answer_message,request_message.getSender());
-        working=false;
+                send(answer_message,request_message.getSender());
+                working=false;
+                answer_sended=true;
+            }
+        }
     }
     public void sendRequest(File filepath)
     {
