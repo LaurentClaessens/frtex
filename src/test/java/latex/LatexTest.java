@@ -75,7 +75,6 @@ public class LatexTest
         System.out.println("MAZHE TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_result.tex"  )  );
     }
-    /*
     @Test
     public void ecmFourTest() throws InterruptedException
     {

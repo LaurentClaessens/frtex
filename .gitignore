@@ -15,6 +15,5 @@ src/test/java/latex/*_tex_test/*.toc
 src/test/java/latex/*_tex_test/*.md5
 src/test/java/latex/*_tex_test/*.nlo
 src/test/java/latex/*_tex_test/*.auxlock
-src/test/java/latex/ecm*_tex_test/obtained_result.tex
-src/test/java/latex/multiple_input_tex_test/obtained_result.tex
+src/test/java/latex/*_test/obtained_result.tex
 session.vim
