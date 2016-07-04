@@ -16,4 +16,6 @@ src/test/java/latex/*_tex_test/*.md5
 src/test/java/latex/*_tex_test/*.nlo
 src/test/java/latex/*_tex_test/*.auxlock
 src/test/java/latex/*_test/obtained_result.tex
+src/test/java/latex/mazhe_tex_test/*
+src/test/java/latex/ecm6_tex_test/corr.tex
 session.vim

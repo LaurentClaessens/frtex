@@ -69,14 +69,14 @@ public class LatexTest
     {
         return isTexOk(filename,expected,false);
     }
-    //@Test
+    @Test
     public void mazheTest() throws InterruptedException
     {
         System.out.println("MAZHE TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/mazhe_tex_test/mazhe.tex","src/test/java/latex/mazhe_tex_test/expected_result.tex"  )  );
     }
     @Test
-    public void ecmFourTest() throws InterruptedException
+    public void ecm4Test() throws InterruptedException
     {
         System.out.println("ECM 4 TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm4_tex_test/ecm4.tex","src/test/java/latex/ecm4_tex_test/expected_result.tex" )  );
@@ -98,13 +98,7 @@ public class LatexTest
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm6_tex_test/ecm6.tex","src/test/java/latex/ecm6_tex_test/expected_result.tex" )  );
     }
     @Test
-    public void ecm2Test() throws InterruptedException
-    {
-        System.out.println("ECM 2 TEST");
-        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_result.tex" )  );
-    }
-    @Test
-    public void ecmFiveTest() throws InterruptedException
+    public void ecm5Test() throws InterruptedException
     {
         System.out.println("ECM 5 TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm5_tex_test/ecm5.tex","src/test/java/latex/ecm5_tex_test/expected_result.tex"  )  );
@@ -116,13 +110,13 @@ public class LatexTest
         Assert.assertTrue( isTexOk(  "src/test/java/latex/multiple_input_tex_test/test.tex","src/test/java/latex/multiple_input_tex_test/expected_result.tex"  )  );
     }
     @Test
-    public void ecmOneTest() throws InterruptedException
+    public void ecm1Test() throws InterruptedException
     {
         System.out.println("ECM 1 TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm1_tex_test/ecm1.tex","src/test/java/latex/ecm1_tex_test/expected_result.tex"  )  );
     }
     @Test
-    public void ecmThreeTest() throws InterruptedException
+    public void ecm3Test() throws InterruptedException
     {
         System.out.println("ECM 3 TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm3_tex_test/ecm3.tex","src/test/java/latex/ecm3_tex_test/expected_result.tex" )  );
