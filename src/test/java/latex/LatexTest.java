@@ -69,7 +69,7 @@ public class LatexTest
     {
         return isTexOk(filename,expected,false);
     }
-    @Test
+    //@Test
     public void mazheTest() throws InterruptedException
     {
         System.out.println("MAZHE TEST");
@@ -80,6 +80,28 @@ public class LatexTest
     {
         System.out.println("ECM 4 TEST");
         Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm4_tex_test/ecm4.tex","src/test/java/latex/ecm4_tex_test/expected_result.tex" )  );
+    }
+    @Test
+    public void ecm6Test() throws InterruptedException
+    /**
+     * This test is merely a pure LaTeX test. When inputing a [.pstricks](https://github.com/LaurentClaessens/pstricks) file I encounter two problems
+     * - \@ifundefined does not work inside \text  (for some reasons) and the LaTeX code produced by frtex from [mazhe](https://github.com/LaurentClaessens/mazhe)  is not compilable.
+     * - there were too many \write open, once again because of a malfunction of \@ifundefined.
+     *
+     *   The common solution is to use 
+     *   ```latex
+     *   \ifthenelse{ \isundefined{...}  } {...}{...}
+     *   ```
+     */
+    {
+        System.out.println("ECM 6 TEST");
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm6_tex_test/ecm6.tex","src/test/java/latex/ecm6_tex_test/expected_result.tex" )  );
+    }
+    @Test
+    public void ecm2Test() throws InterruptedException
+    {
+        System.out.println("ECM 2 TEST");
+        Assert.assertTrue( isTexOk(  "src/test/java/latex/ecm2_tex_test/ecm2.tex","src/test/java/latex/ecm2_tex_test/expected_result.tex" )  );
     }
     @Test
     public void ecmFiveTest() throws InterruptedException
